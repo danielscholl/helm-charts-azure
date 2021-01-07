@@ -4,9 +4,9 @@ __Compatability Matrix__
 
 | [osdu-istio](osdu-istio/README.md)   | [osdu-airflow](osdu-airflow/README.md)   | [osdu-azure](osdu-azure/README.md)   |  [infrastucture](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/master/infra/templates/osdu-r3-mvp)     |
 | ------------------------------------ | ---------------------------------------- | ------------------------------------ | ------------------ |
-|  1.0.0                               | None                                     | 1.0.0                                | 0.4.0              |
-|  1.0.0                               | None                                     | 1.0.1                                | 0.4.1              |
 |  1.0.0                               | None                                     | 1.1.0                                | azure-0.4.2        |
+|  1.0.0                               | None                                     | 1.0.1                                | 0.4.1              |
+|  1.0.0                               | None                                     | 1.0.0                                | 0.4.0              |
 
 
 # App Version 0.4.2 (2020-12-30)
