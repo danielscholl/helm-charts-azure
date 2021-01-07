@@ -1,0 +1,20 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  namespace: {{ .Release.namespace }}
+  name: istio-default
+spec:
+  profile: default
+  addonComponents:
+    grafana:
+      enabled: true
+    kiali:
+      # Enable the Kiali deployment for a service mesh observability dashboard
+      enabled: true
+    tracing:
+      # Enable the Jaeger deployment for tracing
+      enabled: true
+  values:
+    global:
+      proxy:
+        logLevel: info

@@ -1,0 +1,31 @@
+{{- $tenant := .Values.global.azure.tenant -}}
+{{- $ad_application := .Values.global.azure.appid -}}
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: osdu-jwt-auth
+  namespace: {{ .Release.namespace}}
+spec:
+  jwtRules:
+    - issuer: "https://login.microsoftonline.com/{{ $tenant }}/v2.0"
+      jwksUri: "https://login.microsoftonline.com/common/discovery/v2.0/keys"
+      audiences:
+        - "{{ $ad_application}}"
+      forwardOriginalToken: TRUE
+      outputPayloadToHeader: "x-payload"
+    - issuer: "https://sts.windows.net/{{ $tenant }}/"
+      jwksUri: "https://login.microsoftonline.com/common/discovery/v2.0/keys"
+      audiences:
+        - "{{ $ad_application }}"
+      forwardOriginalToken: TRUE
+      outputPayloadToHeader: "x-payload"
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: osdu-peer-auth
+  namespace: {{ .Release.namespace }}
+spec:
+  mtls:
+    mode: PERMISSIVE
