@@ -1,5 +1,7 @@
 # Helm Charts for OSDU on Azure
 
+> This project is a work in progress in an effort to further the goal of Release Management.
+
 __Compatability Matrix__
 
 | [osdu-istio](osdu-istio/README.md)   | [osdu-airflow](osdu-airflow/README.md)   | [osdu-azure](osdu-azure/README.md)   |  [infrastucture](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/master/infra/templates/osdu-r3-mvp)     |
