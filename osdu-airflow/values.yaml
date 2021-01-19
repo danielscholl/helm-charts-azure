@@ -1,0 +1,27 @@
+# This file contains the essential configs for the osdu airflow on azure helm chart
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <tenant_id>
+  subscription: <subscription_id>
+  resourcegroup: <central_resource_group>
+  identity: <identity_name>
+  identity_id: <identity_id>
+  keyvault: <keyvault_name>
+  appid: <client_id>
+
+airflow:
+  externalDatabase:
+    user:  <postgres_username>   # formatted as {username}@{hostname}
+    host: <postgres_host>
+  externalRedis:
+    host: <redis_host>
+
+# Optional Overrides
+
+image:
+  repository: msosdu.azurecr.io/statsd
+
+airflowLogin:
+  name: admin
