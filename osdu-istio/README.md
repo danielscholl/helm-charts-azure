@@ -75,5 +75,12 @@ kubectl create namespace $NAMESPACE
 # Install Charts
 helm install istio-base osdu-istio/istio-base -n $NAMESPACE
 helm install istio-operator osdu-istio/istio-operator -n $NAMESPACE
+
+helm install istio-operator osdu-istio/istio-operator \
+  --set hub=docker.io/istio \
+  --set tag=1.8.2 \
+  --set operatorNamespace=istio-operator
+
+
 helm install osdu-istio osdu-istio -n $NAMESPACE -f istio_custom_values.yaml
 ```
