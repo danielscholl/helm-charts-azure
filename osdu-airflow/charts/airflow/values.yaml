@@ -39,8 +39,7 @@ airflow:
   ## GENERATE:
   ##   python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)"
   ##
-
-  # fernetKey: "7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc="  # <-- THIS IS SET BY KEYVAULT SECRET --
+  # fernetKey: "7T512UXSSmBOkpWimFHIVb8jK6lfmSAvx4mO6Arehnc=" # <-- THIS IS SET BY KEYVAULT SECRET --
 
   ## environment variables for the web/scheduler/worker Pods (for airflow configs)
   ##
@@ -80,27 +79,7 @@ airflow:
   ##     ## Proxy Config
   ##     HTTP_PROXY: "http://proxy.example.com:8080"
   ##
-  config:
-    AIRFLOW__SCHEDULER__STATSD_ON: "False"
-    AIRFLOW__SCHEDULER__STATSD_HOST: "appinsights-statsd"
-    AIRFLOW__SCHEDULER__STATSD_PORT: 8125
-    AIRFLOW__SCHEDULER__STATSD_PREFIX: "osdu_airflow"
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
-    ## Enable for Debug purpose
-    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "False"
-    AIRFLOW__WEBSERVER__AUTHENTICATE: "True"
-    AIRFLOW__WEBSERVER__AUTH_BACKEND: "airflow.contrib.auth.backends.password_auth"
-    AIRFLOW__API__AUTH_BACKEND: "airflow.contrib.auth.backends.password_auth"
-    AIRFLOW__CORE__REMOTE_LOGGING: "True"
-    AIRFLOW__CORE__REMOTE_LOG_CONN_ID: "az_log"
-    AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
-    AIRFLOW__CORE__LOGGING_CONFIG_CLASS: "log_config.DEFAULT_LOGGING_CONFIG"
-    AIRFLOW__CORE__LOG_FILENAME_TEMPLATE: "{{ run_id }}/{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{% if 'correlationId' in dag_run.conf %}{{ dag_run.conf['correlationId'] }}{% else %}None{% endif %}/{{ try_number }}.log"
-    AIRFLOW__CELERY__SSL_ACTIVE: "True"
-    AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
-    AIRFLOW__CORE__PLUGINS_FOLDER: "/opt/airflow/plugins"
-    AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
-
+  config: {}
 
   ## extra annotations for the web/scheduler/worker Pods
   ##
@@ -125,17 +104,7 @@ airflow:
   ##           name: airflow-ldap-password
   ##           key: value
   ##
-  extraEnv:
-    - name: AIRFLOW__CORE__FERNET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: airflow
-          key: fernet-key
-    - name: AIRFLOW_CONN_AZ_LOG
-      valueFrom:
-        secretKeyRef:
-          name: airflow
-          key: remote-log-connection
+  extraEnv: []
 
   ## extra configMap volumeMounts for the web/scheduler/worker Pods
   ##
@@ -147,11 +116,7 @@ airflow:
   ##       readOnly: true
   ##       subPath: webserver_config.py
   ##
-  extraConfigmapMounts:
-    - name: remote-log-config
-      mountPath: /opt/airflow/config
-      configMap: airflow-remote-log-config
-      readOnly: true
+  extraConfigmapMounts: []
 
   ## extra containers for the web/scheduler/worker Pods
   ##
@@ -171,12 +136,7 @@ airflow:
   ##   extraPipPackages:
   ##     - "airflow-exporter==1.3.1"
   ##
-  extraPipPackages: [
-    "flask-bcrypt",
-    "apache-airflow[statsd]",
-    "apache-airflow[kubernetes]",
-    "apache-airflow-backport-providers-microsoft-azure"
-  ]
+  extraPipPackages: []
 
   ## extra volumeMounts for the web/scheduler/worker Pods
   ##
@@ -185,13 +145,7 @@ airflow:
   ##     - name: synchronised-dags
   ##       mountPath: /opt/airflow/dags
   ##
-  extraVolumeMounts:
-    - name: azure-keyvault
-      mountPath: "/mnt/azure-keyvault"
-      readOnly: true
-    - name: dags-data
-      mountPath: /opt/airflow/plugins
-      subPath: plugins
+  extraVolumeMounts: []
 
   ## extra volumes for the web/scheduler/worker Pods
   ##
@@ -200,13 +154,8 @@ airflow:
   ##     - name: synchronised-dags
   ##       emptyDir: {}
   ##
-  extraVolumes:
-    - name: azure-keyvault
-      csi:
-        driver: secrets-store.csi.k8s.io
-        readOnly: true
-        volumeAttributes:
-          secretProviderClass: azure-keyvault
+  extraVolumes: []
+
 
 ###################################
 # Airflow - Scheduler Configs
@@ -240,8 +189,7 @@ scheduler:
 
   ## Pod labels for the scheduler Deployment
   ##
-  podLabels:
-    aadpodidbinding: "osdu-identity"
+  podLabels: {}
 
   ## annotations for the scheduler Deployment
   ##
@@ -394,8 +342,7 @@ web:
 
   ## Pod labels for the web Deployment
   ##
-  podLabels:
-    aadpodidbinding: "osdu-identity"
+  podLabels: {}
 
   ## annotations for the web Deployment
   ##
@@ -541,8 +488,7 @@ workers:
 
   ## Pod labels for the worker StatefulSet
   ##
-  podLabels:
-    aadpodidbinding: "osdu-identity"
+  podLabels: {}
 
   ## annotations for the worker StatefulSet
   ##
@@ -567,8 +513,8 @@ workers:
   ##           averageUtilization: 80
   ##
   autoscaling:
-    enabled: true
-    maxReplicas: 4
+    enabled: false
+    maxReplicas: 2
     metrics: []
 
   ## the number of seconds to wait (in bash) before starting each worker container
@@ -641,7 +587,7 @@ flower:
   ## NOTE:
   ## - only takes effect if `airflow.executor` is `CeleryExecutor`
   ##
-  enabled: false
+  enabled: true
 
   ## resource requests/limits for the flower Pods
   ##
@@ -793,22 +739,22 @@ dags:
   ## - if set to true, and you are using `dags.git.gitSync`, you must also enable
   ## `dags.initContainer` to ensure the requirements.txt is available at Pod start
   ##
-  installRequirements: true
+  installRequirements: false
 
   ## configs for the dags PVC
   ##
   persistence:
     ## if a persistent volume is mounted at `dags.path`
     ##
-    enabled: true
+    enabled: false
 
     ## the name of an existing PVC to use
     ##
-    existingClaim: "airflowdagpvc"
+    existingClaim: ""
 
     ## sub-path under `dags.persistence.existingClaim` to use
     ##
-    subPath: "dags"
+    subPath: ""
 
     ## the name of the StorageClass used by the PVC
     ##
@@ -1175,7 +1121,7 @@ postgresql:
   ## NOTE:
   ## - set to `false` if using an external database
   ##
-  enabled: false
+  enabled: true
 
   ## the postgres database to use
   ##
@@ -1198,7 +1144,7 @@ postgresql:
 
   ## the key within `postgresql.existingSecret` containing the password string
   ##
-  existingSecretKey: "postgres-password"
+  existingSecretKey: "postgresql-password"
 
   ## configs for the PVC of postgresql
   ##
@@ -1234,7 +1180,7 @@ externalDatabase:
 
   ## the host of the external database
   ##
-  # host: localhost  # <-- THIS IS UNIQUE FOR EACH ENVIRONMENT --
+  host: localhost
 
   ## the port of the external database
   ##
@@ -1246,19 +1192,18 @@ externalDatabase:
 
   ## the user of the external database
   ##
-
-  # user: airflow  # <-- THIS IS UNIQUE FOR EACH ENVIRONMENT --
+  user: airflow
 
   ## the name of a pre-created secret containing the external database password
   ##
-  passwordSecret: "postgres"
+  passwordSecret: ""
 
   ## the key within `externalDatabase.passwordSecret` containing the password string
   ##
-  passwordSecretKey: "postgres-password"
+  passwordSecretKey: "postgresql-password"
 
   ## the connection properties for external database, e.g. "?sslmode=require"
-  properties: "?sslmode=require"
+  properties: ""
 
 ###################################
 # Database - Redis Chart
@@ -1271,7 +1216,7 @@ redis:
   ## - set to `false` if using an external redis database
   ## - set to `false` if `airflow.executor` is `KubernetesExecutor`
   ##
-  enabled: false
+  enabled: true
 
   ## the redis password
   ##
@@ -1372,11 +1317,11 @@ redis:
 externalRedis:
   ## the host of the external redis
   ##
-  # host: localhost  # <-- THIS IS UNIQUE FOR EACH ENVIRONMENT --
+  host: localhost
 
   ## the port of the external redis
   ##
-  port: 6380
+  port: 6379
 
   ## the database number to use within the the external redis
   ##
@@ -1384,7 +1329,7 @@ externalRedis:
 
   ## the name of a pre-created secret containing the external redis password
   ##
-  passwordSecret: "redis"
+  passwordSecret: ""
 
   ## the key within `externalRedis.passwordSecret` containing the password string
   ##

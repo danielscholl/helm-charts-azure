@@ -56,6 +56,15 @@ azure:
   keyvault: $ENV_VAULT
   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
 
+################################################################################
+# Specify any optional override values
+#
+airflowLogin:
+  name: admin                 #<-- Default Airflow Web UI username
+
+################################################################################
+# Specify the airflow configuration override values
+#
 airflow:
   externalDatabase:
     host: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-pg.postgres.database.azure.com
