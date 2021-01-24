@@ -1,14 +1,25 @@
 # Helm Chart for OSDU on Azure
 
-__Version Tracking__
+### Version Tracking
 
+__v1.2.0 -- app-version 0.4.3__
+Moved to Isolated Charts
 
-| osdu-azure  | app-version  |
-| ----------- | ----------   |
-| 1.0.1       | 0.4.1        |
-| 1.0.0       | 0.4.0        |
+- osdu-azure-base
+- osdu-azure-core
+- osdu-azure-reference
 
+__v1.1.0 -- app-version 0.4.2__
+Adds Unit and CRS Catalog
 
+__v1.0.1 -- app-version 0.4.1__
+Adds File and Delivery
+
+__v1.0.0 -- app-version 0.4.0__
+
+Initial Chart supporting R2 Services
+
+### Installation
 
 __Pull Helm Chart__
 
@@ -17,7 +28,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.0.1
+VERSION=1.2.0
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -85,9 +96,9 @@ NAMESPACE=osdu-azure
 kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install osdu-common osdu-azure/osdu-common -n $NAMESPACE
-helm install osdu osdu-azure -n $NAMESPACE -f osdu_azure_custom_values.yaml
-
-# Upgrade Chart
-helm upgrade osdu osdu-azure -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install partition-services osdu-azure/osdu-partition_base -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```

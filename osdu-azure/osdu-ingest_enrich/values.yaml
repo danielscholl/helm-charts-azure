@@ -1,0 +1,202 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  replicaCount: 1
+
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <tenant_id>
+  subscription: <subscription_id>
+  resourcegroup: <central_resource_group>
+  identity: <identity_name>
+  identity_id: <identity_id>
+  keyvault: <keyvault_name>
+  appid: <client_id>
+  dns: <fqdn>
+
+
+################################################################################
+# Specify the Ingress Settings
+# Lets Encrypt SSL Server
+#     https://acme-staging-v02.api.letsencrypt.org/directory  --> Staging Server
+#     https://acme-v02.api.letsencrypt.org/directory          --> Production Server
+#
+ingress:
+  admin: admin@email.com                                     # ie: admin@email.com
+  sslServer: https://acme-v02.api.letsencrypt.org/directory  # Production Server
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/request-timeout: "300"
+    appgw.ingress.kubernetes.io/connection-draining: "true"
+    appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/acme-challenge-type: http01
+
+identity:
+  name: osdu-identity
+
+service:
+  type: ClusterIP
+  port: 80
+
+
+################################################################################
+# Specify the OSDU Services to Load
+#
+configuration:
+
+  ########################
+  ##  WKS SERVICE
+  #
+  - service: wks
+    repository: msosdu.azurecr.io/wks
+    keyvault: true
+    env:
+    - name: spring_application_name
+      value: wks
+    - name: server_port
+      value: 80
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: servicebus_topic_name
+      value: recordstopiceg
+    - name: servicebus_topic_subscription
+      value: eg_sb_wkssubscription
+    - name: storage_container
+      value: osdu-wks-mappings
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
+    - name: storage_service_endpoint
+      value: "http://storage/api/storage/v2"
+    - name: schema_service_endpoint
+      value: "http://schema-service/api/schema-service/v1"
+    - name: search_service_endpoint
+      value: "http://search-service/api/search/v2"
+    - name: default_tenant
+      value:
+    - name: max_concurrent_calls
+      value: "32"
+    - name: executor_n_threads
+      value: "32"
+    - name: max_lock_renew_duration_seconds
+      value: "600"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: AZURE_APP_RESOURCE_ID
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
+
+
+################################################################################
+# Specify the OSDU Scaled Objects to Load
+#
+serverless:
+
+  ########################
+  ##  WKS Service
+  #
+  - function: wks
+    repository: msosdu.azurecr.io/wks
+    minReplicaCount: 1
+    maxReplicaCount: 10
+    servicebusSubscription: eg_sb_wkssubscription
+    servicebusTopic: recordstopiceg
+
+    env:
+    - name: spring_application_name
+      value: wks
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: servicebus_topic_name
+      value: recordstopiceg
+    - name: servicebus_topic_subscription
+      value: eg_sb_wkssubscription
+    - name: storage_container
+      value: osdu-wks-mappings
+    - name: server_port
+      value: "80"
+    - name: storage_service_endpoint
+      value: "http://storage/api/storage/v2"
+    - name: search_service_endpoint
+      value: "http://search-service/api/search/v2"
+    - name: schema_service_endpoint
+      value: "http://schema-service/api/schema-service/v1"
+    - name: partition_service_endpoint
+      value: "http://partition/api/partition/v1"
+    - name: default_tenant
+      value:
+    - name: max_concurrent_calls
+      value: "32"
+    - name: executor_n_threads
+      value: "32"
+    - name: max_lock_renew_duration_seconds
+      value: "600"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: AZURE_APP_RESOURCE_ID
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights

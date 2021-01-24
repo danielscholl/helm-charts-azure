@@ -43,11 +43,13 @@ spec:
             - name: http
               containerPort: {{ $servicePort }}
               protocol: TCP
+          {{- if .probe }}
           readinessProbe:
             httpGet:
               path: {{ .probe }}
               port: http
             initialDelaySeconds: 20
+          {{- end }}
           resources:
           {{- if .request }}
             requests:

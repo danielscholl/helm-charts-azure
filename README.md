@@ -6,9 +6,67 @@ __Compatability Matrix__
 
 | [osdu-istio](osdu-istio/README.md)   | [osdu-airflow](osdu-airflow/README.md)   | [osdu-azure](osdu-azure/README.md)   |  [infrastucture](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/master/infra/templates/osdu-r3-mvp)     |
 | ------------------------------------ | ---------------------------------------- | ------------------------------------ | ------------------ |
+|  1.0.0                               | 1.0.0                                    | 1.2.0                                | azure-0.4.3        |
 |  1.0.0                               | None                                     | 1.1.0                                | azure-0.4.2        |
 |  1.0.0                               | None                                     | 1.0.1                                | 0.4.1              |
 |  1.0.0                               | None                                     | 1.0.0                                | 0.4.0              |
+
+# App Version 0.4.3 (2021-1-25)
+
+__Infrastructure Version:__ [tag/azure-0.4.3](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tags/azure-0.4.3)
+
+__Charts__
+
+| Chart         | OCI Package                         | Tag   |
+| ------------- | ----------------------------------- | ----- |
+| osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.0.0 |
+| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.0 |
+| osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.1.0 |
+
+
+__Microsoft Images__
+
+| Service          | Image                             | Tag   |
+| ---------------- | --------------------------------- | ----- |
+| Partition        | msosdu.azurecr.io/partition       | 0.4.3 |
+| Entitlements     | msosdu.azurecr.io/entitlements    | 0.4.3 |
+| Legal            | msosdu.azurecr.io/legal           | 0.4.3 |
+| Storage          | msosdu.azurecr.io/storage         | 0.4.3 |
+| Schema           | msosdu.azurecr.io/schema          | 0.4.3 |
+| Indexer-Queue    | msosdu.azurecr.io/indexer-queue   | 0.4.3 |
+| Indexer          | msosdu.azurecr.io/indexer         | 0.4.3 |
+| Search           | msosdu.azurecr.io/search          | 0.4.3 |
+| Delivery         | msosdu.azurecr.io/delivery        | 0.4.3 |
+| File             | msosdu.azurecr.io/file            | 0.4.3 |
+| Unit             | msosdu.azurecr.io/unit            | 0.4.3 |
+| CRS-Catalog      | msosdu.azurecr.io/crs-catalog     | 0.4.3 |
+| CRS-Conversion   | msosdu.azurecr.io/crs-conversion  | 0.4.3 |
+| Register         | msosdu.azurecr.io/register        | 0.4.3 |
+| Notification     | msosdu.azurecr.io/notification    | 0.4.3 |
+| WKS              | msosdu.azurecr.io/wks             | 0.4.3 |
+
+
+__Community Images__
+
+| Service | Image | SHA/Tag |
+| ------- | ----- | ------- |
+| Partition     | community.opengroup.org:5555/osdu/platform/system/partition/partition-master | [fc6f1fa97b0785e91051edec2a38a61a8f433e26](https://community.opengroup.org/osdu/platform/system/partition/-/tree/fc6f1fa97b0785e91051edec2a38a61a8f433e26) |
+| Entitlements  | community.opengroup.org:5555/osdu/platform/security-and-compliance/entitlements-azure/entitlements-azure-master | [0edd0cbb95f14139794d2905b734bff9af1139ff](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements-azure/-/tree/0edd0cbb95f14139794d2905b734bff9af1139ff) |
+| Legal         | community.opengroup.org:5555/osdu/platform/security-and-compliance/legal/legal-master | [5c805c30fc2f810699940f8a92b837baee1bd9ec](https://community.opengroup.org/osdu/platform/security-and-compliance/legal/-/tree/5c805c30fc2f810699940f8a92b837baee1bd9ec) |
+| Storage       | community.opengroup.org:5555/osdu/platform/system/storage/storage-master | [d18b7c3598a7018405a2b8dd104f595e1eb76f7e](https://community.opengroup.org/osdu/platform/system/storage/-/tree/d18b7c3598a7018405a2b8dd104f595e1eb76f7e) |
+| Schema       | community.opengroup.org:5555/osdu/platform/system/schema-service/schema-service-master | [bdfe35319380e121e66ed785cd2ea4db8c54c451](https://community.opengroup.org/osdu/platform/system/schema-service/-/tree/bdfe35319380e121e66ed785cd2ea4db8c54c451) |
+| Indexer-Queue | community.opengroup.org:5555/osdu/platform/system/indexer-queue/indexer-queue-master | [85c09538370082b8aef8fba4bd4dacc239ccadbb](https://community.opengroup.org/osdu/platform/system/indexer-queue/-/tree/85c09538370082b8aef8fba4bd4dacc239ccadbb) |
+| Indexer       | community.opengroup.org:5555/osdu/platform/system/indexer-service/indexer-service-master | [32c4c9827adf97aa8ac0d0952ca23cae25cdb944](https://community.opengroup.org/osdu/platform/system/indexer-service/-/tree/32c4c9827adf97aa8ac0d0952ca23cae25cdb944) |
+| Search        | community.opengroup.org:5555/osdu/platform/system/search-service/search-service-master | [60dc4c431405c1fef1fd964e3e95105691bd1568](https://community.opengroup.org/osdu/platform/system/search-service/-/tree/60dc4c431405c1fef1fd964e3e95105691bd1568) |
+| Delivery      | community.opengroup.org:5555/osdu/platform/system/delivery/delivery-master | [805197d60656330229a0879d7ad407eec4f254d4](https://community.opengroup.org/osdu/platform/system/delivery/-/tree/805197d60656330229a0879d7ad407eec4f254d4) |
+| File          | community.opengroup.org:5555/osdu/platform/system/file/file-master | [d5918b6f2f01881415045f5731bcc0da5f586755](https://community.opengroup.org/osdu/platform/system/file/-/tree/d5918b6f2f01881415045f5731bcc0da5f586755) |
+| Unit          | community.opengroup.org:5555/osdu/platform/system/reference/unit-service/unit-service-master | [b40b14b34aa263089c952c1b72fecde2f36c0ecb](https://community.opengroup.org/osdu/platform/system/reference/unit-service/-/tree/b40b14b34aa263089c952c1b72fecde2f36c0ecb) |
+| CRS-Catalog   | community.opengroup.org:5555/osdu/platform/system/reference/crs-catalog-service/crs-catalog-service-master | [4363f20ebb315a912359d8388ff0dcecb2eb49dc](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/tree/4363f20ebb315a912359d8388ff0dcecb2eb49dc) |
+| CRS-Conversion  | community.opengroup.org:5555/osdu/platform/system/reference/crs-conversion-service/crs-conversion-service-master | [4363f20ebb315a912359d8388ff0dcecb2eb49dc](https://community.opengroup.org/osdu/platform/system/reference/crs-conversion-service/-/tree/4363f20ebb315a912359d8388ff0dcecb2eb49dc) |
+| Register      | community.opengroup.org:5555/osdu/platform/system/register/register-master | [9558848651c0eb964a5e2b3d4189f1064de30789](https://community.opengroup.org/osdu/platform/system/register/-/tree/9558848651c0eb964a5e2b3d4189f1064de30789) |
+| Notification  | community.opengroup.org:5555/osdu/platform/system/notification/notification-master | [2cd2d058196add71824784c7c9b0e736f55a6cc7](https://community.opengroup.org/osdu/platform/system/notification/-/tree/2cd2d058196add71824784c7c9b0e736f55a6cc7) |
+| WKS           | community.opengroup.org:5555/osdu/platform/data-flow/enrichment/wks/wks-master | [118bc73b1ccd8e40740a1691acd7bfb8a1c8ec80](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks/-/tree/118bc73b1ccd8e40740a1691acd7bfb8a1c8ec80) |
+
 
 
 # App Version 0.4.2 (2020-12-30)

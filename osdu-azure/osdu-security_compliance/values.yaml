@@ -1,0 +1,208 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  replicaCount: 1
+
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <tenant_id>
+  subscription: <subscription_id>
+  resourcegroup: <central_resource_group>
+  identity: <identity_name>
+  identity_id: <identity_id>
+  keyvault: <keyvault_name>
+  appid: <client_id>
+  dns: <fqdn>
+
+
+################################################################################
+# Specify the Ingress Settings
+# Lets Encrypt SSL Server
+#     https://acme-staging-v02.api.letsencrypt.org/directory  --> Staging Server
+#     https://acme-v02.api.letsencrypt.org/directory          --> Production Server
+#
+ingress:
+  admin: admin@email.com                                     # ie: admin@email.com
+  sslServer: https://acme-v02.api.letsencrypt.org/directory  # Production Server
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/request-timeout: "300"
+    appgw.ingress.kubernetes.io/connection-draining: "true"
+    appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/acme-challenge-type: http01
+
+identity:
+  name: osdu-identity
+
+service:
+  type: ClusterIP
+  port: 80
+
+################################################################################
+# Specify the OSDU Services to Load
+#
+configuration:
+
+  ########################
+  ##  ENTITLEMENTS SERVICE
+  #
+  - service: entitlements
+    repository: msosdu.azurecr.io/entitlements
+    path: /entitlements/v1/*
+    probe: /entitlements/v1/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/v2/api-docs"
+        - "*/swagger-resources"
+        - "*/swagger-ui.html"
+        - "*/actuator/health"
+        - "/entitlements/v1/swagger-resources/*"
+        - "/entitlements/v1/webjars/*"
+    env:
+    - name: spring_application_name
+      value: entitlements-azure
+    - name: server.servlet.contextPath
+      value: /entitlements/v1/
+    - name: server_port
+      value: "80"
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: service_domain_name
+      value: contoso.com
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: azure_activedirectory_AppIdUri
+      value: "api://$(aad_client_id)"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: REDIS_DATABASE
+      config:
+        name: osdu-svc-config
+        key: REDIS_DB_ENTITLEMENTS
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
+
+  ########################
+  ##  LEGAL SERVICE
+  #
+  - service: legal
+    repository: msosdu.azurecr.io/legal
+    path: /api/legal/v1/*
+    probe: /api/legal/v1/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/index.html"
+        - "*/v1/api-docs"
+        - "*/configuration/ui"
+        - "*/configuration/security"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "/api/legal/v1/swagger-resources/*"
+        - "/api/legal/v1/webjars/*"
+        - "*/actuator/health"
+        - "*/_ah/**"
+    env:
+    - name: spring_application_name
+      value: legal
+    - name: server.servlet.contextPath
+      value: /api/legal/v1/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: LOG_PREFIX
+      value: legal
+    - name: azure_storage_container_name
+      value: legal-service-azure-configuration
+    - name: azure_storage_enable_https
+      value: true
+    - name: legal_service_region
+      value: us
+    - name: servicebus_topic_name
+      value: legaltags
+    - name: entitlements_service_endpoint
+      value: http://entitlements/entitlements/v1
+    - name: entitlements_service_api_key
+      value: OBSOLETE
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
+    - name: azure_istioauth_enabled
+      value: true
+    - name: azure_activedirectory_AppIdUri
+      value: api://$(aad_client_id)
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: REDIS_DATABASE
+      config:
+        name: osdu-svc-config
+        key: REDIS_DB_LEGAL
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
