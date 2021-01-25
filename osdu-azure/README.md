@@ -1,24 +1,5 @@
 # Helm Chart for OSDU on Azure
 
-### Version Tracking
-
-__v1.2.0 -- app-version 0.4.3__
-Moved to Isolated Charts
-
-- osdu-azure-base
-- osdu-azure-core
-- osdu-azure-reference
-
-__v1.1.0 -- app-version 0.4.2__
-Adds Unit and CRS Catalog
-
-__v1.0.1 -- app-version 0.4.1__
-Adds File and Delivery
-
-__v1.0.0 -- app-version 0.4.0__
-
-Initial Chart supporting R2 Services
-
 ### Installation
 
 __Pull Helm Chart__
@@ -86,7 +67,7 @@ EOF
 ```
 
 
-__Helm Chart Intall__
+__Helm Chart Install => v1.2.0__
 
 Create a Namespace and install the helm chart for OSDU on Azure.
 
@@ -101,4 +82,19 @@ helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE
 helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
+```
+
+
+__Helm Chart Install <= v1.1.0__
+
+Create a Namespace and install the helm chart for OSDU on Azure.
+
+```bash
+# Create Namespace
+NAMESPACE=osdu-azure
+kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
+
+# Install Charts
+helm install osdu-common osdu-azure/osdu-common -n $NAMESPACE
+helm install osdu osdu-azure -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```

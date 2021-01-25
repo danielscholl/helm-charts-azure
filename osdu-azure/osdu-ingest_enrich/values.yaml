@@ -57,7 +57,6 @@ service:
   type: ClusterIP
   port: 80
 
-
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -67,7 +66,10 @@ configuration:
   ##  WKS SERVICE
   #
   - service: wks
+    scaledObject: true
     repository: msosdu.azurecr.io/wks
+    servicebusSubscription: eg_sb_wkssubscription
+    servicebusTopic: recordstopiceg
     keyvault: true
     env:
     - name: spring_application_name
@@ -128,50 +130,55 @@ configuration:
         key: appinsights
 
 
-################################################################################
-# Specify the OSDU Scaled Objects to Load
-#
-serverless:
-
   ########################
-  ##  WKS Service
+  ##  INGEST WORKFLOW SERVICE
   #
-  - function: wks
-    repository: msosdu.azurecr.io/wks
-    minReplicaCount: 1
-    maxReplicaCount: 10
-    servicebusSubscription: eg_sb_wkssubscription
-    servicebusTopic: recordstopiceg
-
+  - service: workflow
+    repository: msosdu.azurecr.io/workflow
+    path: /api/workflow/v1/*
+    probe: /api/workflow/v1/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/index.html"
+        - "*/v2/api-docs"
+        - "*/configuration/ui"
+        - "*/configuration/security"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "/api/workflow/v1/swagger-resources/*"
+        - "/api/workflow/v1/webjars/*"
+        - "*/actuator/health"
+        - "*/_ah/**"
     env:
     - name: spring_application_name
-      value: wks
+      value: workflow
+    - name: server.servlet.contextPath
+      value: /api/workflow/v1/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: LOG_PREFIX
+      value: "workflow"
     - name: cosmosdb_database
       value: osdu-db
-    - name: servicebus_topic_name
-      value: recordstopiceg
-    - name: servicebus_topic_subscription
-      value: eg_sb_wkssubscription
-    - name: storage_container
-      value: osdu-wks-mappings
-    - name: server_port
-      value: "80"
-    - name: storage_service_endpoint
-      value: "http://storage/api/storage/v2"
-    - name: search_service_endpoint
-      value: "http://search-service/api/search/v2"
-    - name: schema_service_endpoint
-      value: "http://schema-service/api/schema-service/v1"
     - name: partition_service_endpoint
       value: "http://partition/api/partition/v1"
-    - name: default_tenant
-      value:
-    - name: max_concurrent_calls
-      value: "32"
-    - name: executor_n_threads
-      value: "32"
-    - name: max_lock_renew_duration_seconds
-      value: "600"
+    - name: OSDU_ENTITLEMENTS_URL
+      value: "http://entitlements-azure/entitlements/v1"
+    - name: OSDU_ENTITLEMENTS_APPKEY
+      value: "OBSOLETE"
+    - name: airflow_url
+      value: "http://airflow-web:8080/airflow"
+    - name: airflow_username
+      value: "admin"
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: azure_activedirectory_AppIdUri
+      value: "api://$(aad_client_id)"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -192,11 +199,19 @@ serverless:
       secret:
         name: active-directory
         key: application-appid
-    - name: AZURE_APP_RESOURCE_ID
-      secret:
-        name: active-directory
-        key: application-appid
     - name: appinsights_key
       secret:
         name: central-logging
         key: appinsights
+    - name: airflow_password
+      secret:
+        name: airflow
+        key: admin-password
+    - name: AIRFLOW_STORAGE_ACCOUNT_NAME
+      secret:
+        name: airflow
+        key: azurestorageaccountname
+    - name: AIRFLOW_STORAGE_ACCOUNT_KEY
+      secret:
+        name: airflow
+        key: azurestorageaccountkey

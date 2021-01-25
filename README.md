@@ -44,6 +44,7 @@ __Microsoft Images__
 | Register         | msosdu.azurecr.io/register        | 0.4.3 |
 | Notification     | msosdu.azurecr.io/notification    | 0.4.3 |
 | WKS              | msosdu.azurecr.io/wks             | 0.4.3 |
+| Workflow         | msosdu.azurecr.io/workflow        | 0.4.3 |
 
 
 __Community Images__
@@ -66,6 +67,8 @@ __Community Images__
 | Register      | community.opengroup.org:5555/osdu/platform/system/register/register-master | [9558848651c0eb964a5e2b3d4189f1064de30789](https://community.opengroup.org/osdu/platform/system/register/-/tree/9558848651c0eb964a5e2b3d4189f1064de30789) |
 | Notification  | community.opengroup.org:5555/osdu/platform/system/notification/notification-master | [2cd2d058196add71824784c7c9b0e736f55a6cc7](https://community.opengroup.org/osdu/platform/system/notification/-/tree/2cd2d058196add71824784c7c9b0e736f55a6cc7) |
 | WKS           | community.opengroup.org:5555/osdu/platform/data-flow/enrichment/wks/wks-master | [118bc73b1ccd8e40740a1691acd7bfb8a1c8ec80](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks/-/tree/118bc73b1ccd8e40740a1691acd7bfb8a1c8ec80) |
+| Workflow           | ccommunity.opengroup.org:5555/osdu/platform/data-flow/ingestion/ingestion-workflow/ingestion-workflow-master | [a11c145e6d7cf2649fc51c8c76facc01937650d5](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow/-/tree/a11c145e6d7cf2649fc51c8c76facc01937650d5) |
+
 
 
 

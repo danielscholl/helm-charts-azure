@@ -3,17 +3,18 @@
 {{- $serviceType := .Values.service.type }}
 {{- $servicePort := .Values.service.port }}
 {{- $release := .Release.Name }}
-{{- range .Values.serverless }}
+{{- range .Values.configuration }}
+{{- if .scaledObject }}
 apiVersion: keda.k8s.io/v1alpha1
 kind: ScaledObject
 metadata:
-  name: {{ .function }}
+  name: {{ .service }}
   namespace: {{ $namespace }}
   labels:
-    deploymentName: {{ .function }}
+    deploymentName: {{ .service }}
 spec:
   scaleTargetRef:
-    deploymentName: {{ .function }}
+    deploymentName: {{ .service }}
   triggers:
   - type: azure-servicebus
     metadata:
@@ -23,6 +24,6 @@ spec:
       subscriptionName: {{ .servicebusSubscription }}
       topicName: {{ .servicebusTopic }}
       connection: SERVICE_BUS
-
+{{- end }}
 ---
 {{- end }}
