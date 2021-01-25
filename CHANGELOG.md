@@ -1,11 +1,11 @@
 *Note:** This file is manually edited and is best effort information at this time.
 
-# Application Release v0.4.3 (2021-1-30)
+# Application Release v0.4.3 (2021-1-25)
 
 __Chart:__ osdu-istio (v1.1.0)
 
 - Updated Support for Istio v1.8.2
-- Istio Auth Support
+
 
 __Chart:__ osdu-airflow (v1.0.0)
 
@@ -13,6 +13,7 @@ __Chart:__ osdu-airflow (v1.0.0)
 - Added Services
   - statsd
   - logger
+
 
 __Chart:__ osdu-azure (v1.2.0)
 
@@ -51,6 +52,7 @@ __Chart:__ osdu-azure (v1.0.1)
 __Chart:__ osdu-istio (v1.0.0)
 
 - Initial Chart Support for Istio
+- Istio Auth Support
 
 
 __Chart:__ osdu-azure (v1.0.0)
