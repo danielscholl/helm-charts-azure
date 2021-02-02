@@ -5,12 +5,12 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: {{ $release }}-{{ .service }}-jwt-authz
+  name: {{ .service }}-jwt-authz
   namespace: {{ $namespace }}
 spec:
   selector:
     matchLabels:
-      app: {{ $release }}-{{ .service }}
+      app: {{ .service }}
   action: DENY
   rules:
     - from:
