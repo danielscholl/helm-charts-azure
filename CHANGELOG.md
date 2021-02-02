@@ -1,13 +1,20 @@
-*Note:** This file is manually edited and is best effort information at this time.
+# Change Log
 
-# Application Release v0.4.3 (2021-1-25)
+All notable changes to this project will be documented in this file.
 
-__Chart:__ osdu-istio (v1.1.0)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+[markdownlint](https://dlaa.me/markdownlint/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [0.4.3] - 2021-02-1
+
+__Chart:__ osdu-istio [1.1.0]
 
 - Updated Support for Istio v1.8.2
 
 
-__Chart:__ osdu-airflow (v1.0.0)
+__Chart:__ osdu-airflow [v1.0.0]
 
 - Initial Chart Support running Airflow v1.10.10
 - Added Services
@@ -15,7 +22,7 @@ __Chart:__ osdu-airflow (v1.0.0)
   - logger
 
 
-__Chart:__ osdu-azure (v1.2.0)
+__Chart:__ osdu-azure [v1.2.0]
 
 - Moved to Isolated Sub Charts
 - Added Services
@@ -24,10 +31,9 @@ __Chart:__ osdu-azure (v1.2.0)
   - WKS
   - Workflow
 
+## [0.4.2] - 2020-12-30
 
-# Application Release v0.4.2 (2020-12-30)
-
-__Chart:__ osdu-azure (v1.1.0)
+__Chart:__ osdu-azure [v1.1.0]
 
 - Moved to Isolated Sub Charts
 - Added Services
@@ -36,26 +42,24 @@ __Chart:__ osdu-azure (v1.1.0)
   - Register
   - Notification
 
+## [0.4.1] - 2020-11-30
 
-# Application Release v0.4.1 (2020-11-30)
-
-__Chart:__ osdu-azure (v1.0.1)
+__Chart:__ osdu-azure [v1.0.1]
 
 - Moved to Isolated Sub Charts
 - Added Services
   - File
   - Delivery
 
+## [0.4.0] - 2020-11-12
 
-# Application Release v0.4.0 (2020-11-12)
-
-__Chart:__ osdu-istio (v1.0.0)
+__Chart:__ osdu-istio [v1.0.0]
 
 - Initial Chart Support for Istio
 - Istio Auth Support
 
 
-__Chart:__ osdu-azure (v1.0.0)
+__Chart:__ osdu-azure [v1.0.0]
 
 - Initial Chart Support for Application
 
