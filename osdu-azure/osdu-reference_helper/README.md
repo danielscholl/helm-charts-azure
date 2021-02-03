@@ -1,7 +1,5 @@
 # Helm Chart for OSDU on Azure Reference and Helper Services
 
-__v1.0.0__
-
 | osdu-azure-core  | app-version  |
 | ---------------- | ----------   |
 | 1.0.0            | 0.4.3        |

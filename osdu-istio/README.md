@@ -2,9 +2,10 @@
 
 __Version Tracking__
 
-| Helm Chart Version | istio-base                       | istio-operator                   |
-| ------------------ | -------------------------------- | -------------------------------- |
-| `1.0.0`            | `1.1.0`                          | `1.7.0`                          |
+| Helm Chart Version | istio-base   | istio-operator  |
+| ------------------ | ------------ | --------------- |
+| `1.1.0`            | `1.1.0`      | `1.7.0`         |
+| `1.0.0`            | `1.1.0`      | `1.7.0`         |
 
 
 __Pull Helm Chart__
@@ -14,7 +15,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-istio
-VERSION=1.0.0
+VERSION=1.0.1
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -23,7 +24,7 @@ helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
 helm chart export msosdu.azurecr.io/helm/$CHART:$VERSION
 ```
 
-__Helm Chart Values__
+__Create Helm Chart Values__
 
 Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
 
@@ -41,7 +42,7 @@ GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
 # Translate Values File
-cat > istio_custom_values.yaml << EOF
+cat > osdu_istio_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
 global:
 
@@ -63,9 +64,9 @@ EOF
 ```
 
 
-__Helm Chart Intall__
+__Install Helm Chart__
 
-Create a Namespace and install the helm chart for OSDU on Azure.
+Install the helm chart.
 
 ```bash
 # Create Namespace
@@ -74,13 +75,11 @@ kubectl create namespace $NAMESPACE
 
 # Install Charts
 helm install istio-base osdu-istio/istio-base -n $NAMESPACE
-helm install istio-operator osdu-istio/istio-operator -n $NAMESPACE
-
 helm install istio-operator osdu-istio/istio-operator \
   --set hub=docker.io/istio \
   --set tag=1.8.2 \
-  --set operatorNamespace=istio-operator
+  --set operatorNamespace=istio-operator \
+  -n $NAMESPACE
 
-
-helm install osdu-istio osdu-istio -n $NAMESPACE -f istio_custom_values.yaml
+helm install osdu-istio osdu-istio -n $NAMESPACE -f osdu_istio_custom_values.yaml
 ```

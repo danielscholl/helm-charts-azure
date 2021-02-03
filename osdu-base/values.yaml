@@ -12,9 +12,15 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-apiVersion: v2
-name: osdu-istio
-type: application
-description: Installs required Istio Components for OSDU on Azure
-appVersion: latest
-version: 1.1.0
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+
+################################################################################
+# Specify the Ingress Settings
+# Lets Encrypt Settings
+#
+ingress:
+  admin: admin@email.com                                     # ie: admin@email.com

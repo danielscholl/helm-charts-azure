@@ -1,7 +1,5 @@
 # Helm Chart for OSDU on Azure
 
-### Installation
-
 __Pull Helm Chart__
 
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
@@ -9,7 +7,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.2.0
+VERSION=1.2.1
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -18,7 +16,7 @@ helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
 helm chart export msosdu.azurecr.io/helm/$CHART:$VERSION
 ```
 
-__Helm Chart Values__
+__Create Helm Chart Values__
 
 Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
 
@@ -27,7 +25,6 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
-CERT_EMAIL="<your_admin_email>"     # ie: admin@email.com
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -55,21 +52,20 @@ azure:
   identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
   keyvault: $ENV_VAULT
   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-  dns: $DNS_HOST
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  admin: $CERT_EMAIL
   issuer: letsencrypt-prod-dns
+  dns: $DNS_HOST
 EOF
 ```
 
 
-__Helm Chart Install => v1.2.0__
+__Install Helm Chart__
 
-Create a Namespace and install the helm chart for OSDU on Azure.
+Install the helm chart.
 
 ```bash
 # Create Namespace
@@ -82,19 +78,4 @@ helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE
 helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
-```
-
-
-__Helm Chart Install <= v1.1.0__
-
-Create a Namespace and install the helm chart for OSDU on Azure.
-
-```bash
-# Create Namespace
-NAMESPACE=osdu-azure
-kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
-
-# Install Charts
-helm install osdu-common osdu-azure/osdu-common -n $NAMESPACE
-helm install osdu osdu-azure -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```

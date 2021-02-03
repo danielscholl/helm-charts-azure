@@ -16,5 +16,5 @@ apiVersion: v2
 name: osdu-core_services
 type: application
 description: Installs the OSDU on Azure Core System Services
-appVersion: 0.4.3
 version: 1.0.0
+appVersion: 0.4.3
