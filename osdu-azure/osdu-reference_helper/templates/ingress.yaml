@@ -16,10 +16,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ .Values.azure.dns }}
+    - {{ .Values.ingress.dns }}
     secretName: osdu-certificate
   rules:
-    - host: {{ .Values.azure.dns }}
+    - host: {{ .Values.ingress.dns }}
       http:
         paths:
         {{- range .Values.configuration }}

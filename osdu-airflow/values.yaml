@@ -13,6 +13,14 @@ azure:
 
 
 ################################################################################
+# Specify the Ingress Settings
+#
+ingress:
+  dns: <dns_hostname>
+  issuer: letsencrypt-prod-dns
+
+
+################################################################################
 # Specify any optional override values
 #
 image:
@@ -26,6 +34,31 @@ airflowLogin:
 # Specify the airflow configuration
 #
 airflow:
+
+  ###################################
+  # Kubernetes - Ingress Configs
+  ###################################
+  ingress:
+    enabled: false
+    web:
+      annotations:
+        kubernetes.io/ingress.class: azure/application-gateway
+        appgw.ingress.kubernetes.io/request-timeout: "300"
+        appgw.ingress.kubernetes.io/connection-draining: "true"
+        appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+        cert-manager.io/cluster-issuer: <your_issuer>
+        cert-manager.io/acme-challenge-type: http01
+      path: "/airflow"
+      host: <your_host>
+      livenessPath: "/airflow/health"
+      tls:
+        enabled: true
+        secretName: osdu-certificate
+      precedingPaths:
+        - path: "/airflow/*"
+          serviceName: airflow-web
+          servicePort: 8080
+
 
   ###################################
   # Database - External Database
@@ -89,7 +122,6 @@ airflow:
   ###################################
   flower:
     enabled: false
-
 
 
   ###################################

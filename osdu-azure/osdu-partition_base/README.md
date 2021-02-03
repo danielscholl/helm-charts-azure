@@ -1,14 +1,11 @@
-# Helm Chart for OSDU on Azure Partition and Infrastructure Base Components
-
-__v1.0.0__
+# Helm Chart for OSDU on Azure Partition and Base Components
 
 | osdu-infrastructure  | app-version  |
 | -------------------- | ----------   |
-| 1.0.0                | latest       |
+| 1.0.0                | 0.4.3        |
 
 __Supported Base Features__
 
-- Lets Encrypt Cluster Issuer
 - Redis Config Map
 - Azure OSDU Identity
 - Azure Keyvault Secret Provider

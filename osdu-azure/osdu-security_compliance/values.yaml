@@ -30,32 +30,30 @@ azure:
   identity_id: <identity_id>
   keyvault: <keyvault_name>
   appid: <client_id>
-  dns: <fqdn>
 
 
 ################################################################################
 # Specify the Ingress Settings
-# Lets Encrypt SSL Server
-#     https://acme-staging-v02.api.letsencrypt.org/directory  --> Staging Server
-#     https://acme-v02.api.letsencrypt.org/directory          --> Production Server
 #
 ingress:
-  admin: admin@email.com                                     # ie: admin@email.com
-  sslServer: https://acme-v02.api.letsencrypt.org/directory  # Production Server
-  annotations:
-    kubernetes.io/ingress.class: azure/application-gateway
-    appgw.ingress.kubernetes.io/request-timeout: "300"
-    appgw.ingress.kubernetes.io/connection-draining: "true"
-    appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-    cert-manager.io/cluster-issuer: letsencrypt
-    cert-manager.io/acme-challenge-type: http01
+  dns: <fqdn>
+  issuer: letsencrypt-prod-dns
 
+
+################################################################################
+# Specify the Pod Identity
+#
 identity:
   name: osdu-identity
 
+
+################################################################################
+# Specify the Service Settings
+#
 service:
   type: ClusterIP
   port: 80
+
 
 ################################################################################
 # Specify the OSDU Services to Load
@@ -137,7 +135,7 @@ configuration:
       disable:
         - "/"
         - "*/index.html"
-        - "*/v1/api-docs"
+        - "*/v2/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
