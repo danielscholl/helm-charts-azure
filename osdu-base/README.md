@@ -34,7 +34,7 @@ CERT_EMAIL="<your_admin_email>"     # ie: admin@email.com
 
 
 # Translate Values File
-cat > osdu_azure_custom_values.yaml << EOF
+cat > osdu_base_custom_values.yaml << EOF
 # This file contains the essential values for the osdu on azure base helm chart
 
 ################################################################################
@@ -52,5 +52,5 @@ Install the helm chart.
 
 ```bash
 # Install Common Charts
-helm install osdu-base osdu-base -n default
+helm install osdu-base osdu-base -n default -f osdu_base_custom_values.yaml
 ```
