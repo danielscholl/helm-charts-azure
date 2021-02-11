@@ -59,7 +59,6 @@ airflow:
           serviceName: airflow-web
           servicePort: 8080
 
-
   ###################################
   # Database - External Database
   ###################################
@@ -75,7 +74,6 @@ airflow:
     properties: "?sslmode=require"
     database: airflow
 
-
   ###################################
   # Database - Redis Chart
   ###################################
@@ -87,7 +85,6 @@ airflow:
     passwordSecretKey: "redis-password"
     port: 6380
 
-
   ###################################
   # Airflow - DAGs Configs
   ###################################
@@ -98,7 +95,6 @@ airflow:
       existingClaim: airflowdagpvc
       subPath: "dags"
 
-
   ###################################
   # Airflow - WebUI Configs
   ###################################
@@ -106,7 +102,6 @@ airflow:
     podLabels:
       aadpodidbinding: "osdu-identity"
     baseUrl: "http://localhost/airflow"
-
 
   ###################################
   # Airflow - Worker Configs
@@ -116,13 +111,11 @@ airflow:
       aadpodidbinding: "osdu-identity"
     replicas: 2
 
-
   ###################################
   # Airflow - Flower Configs
   ###################################
   flower:
     enabled: false
-
 
   ###################################
   # Airflow - Scheduler Configs
@@ -165,10 +158,10 @@ airflow:
     extraEnv:
     - name: CLOUD_PROVIDER
       value: "azure"
-    - name: KEYVAULT_URI
+    - name: AIRFLOW_VAR_KEYVAULT_URI
       valueFrom:
         configMapKeyRef:
-          name: osdu-svc-config
+          name: osdu-svc-properties
           key: ENV_KEYVAULT
     - name: AIRFLOW__CORE__FERNET_KEY
       valueFrom:
@@ -238,4 +231,3 @@ airflow:
             readOnly: true
             volumeAttributes:
               secretProviderClass: azure-keyvault
-
