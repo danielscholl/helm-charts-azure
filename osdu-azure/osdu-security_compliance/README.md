@@ -1,8 +1,9 @@
 # Helm Chart for OSDU on Azure Security and Compliance Services
 
-| osdu-azure-core  | app-version  |
-| ---------------- | ----------   |
-| 1.0.0            | 0.4.3        |
+| osdu-security_compliance  | app-version  |
+| ------------------------- | ----------   |
+| 1.3.0                     | 0.5.0        |
+| 1.0.0                     | 0.4.3        |
 
 __Supported OSDU Services__
 

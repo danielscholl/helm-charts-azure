@@ -161,7 +161,7 @@ airflow:
     - name: AIRFLOW_VAR_KEYVAULT_URI
       valueFrom:
         configMapKeyRef:
-          name: osdu-svc-properties
+          name: osdu-svc-config
           key: ENV_KEYVAULT
     - name: AIRFLOW__CORE__FERNET_KEY
       valueFrom:
@@ -211,6 +211,7 @@ airflow:
         "dataclasses",
         "google-cloud-storage",
         "msal",
+        "python-keycloak",
         "azure-identity",
         "azure-keyvault-secrets",
         "azure-storage-blob",

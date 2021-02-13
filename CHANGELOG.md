@@ -7,6 +7,69 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## App Version 0.5 (2021-2-12)
+
+__Infrastructure Version:__ [release/0.5](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.5)
+
+__Charts__
+
+| Chart         | OCI Package                         | Tag   |
+| ------------- | ----------------------------------- | ----- |
+| osdu-base     | msosdu.azurecr.io/helm/osdu-base    | 1.0.0 |
+| osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.0 |
+| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.2 |
+| osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.3.0 |
+
+
+__Microsoft Images__
+
+| Service          | Image                             | Tag   |
+| ---------------- | --------------------------------- | ----- |
+| Partition        | msosdu.azurecr.io/partition       | 0.5.0 |
+| Entitlements     | msosdu.azurecr.io/entitlements    | 0.5.0 |
+| Legal            | msosdu.azurecr.io/legal           | 0.5.0 |
+| Storage          | msosdu.azurecr.io/storage         | 0.5.0 |
+| Schema           | msosdu.azurecr.io/schema          | 0.5.0 |
+| Indexer-Queue    | msosdu.azurecr.io/indexer-queue   | 0.5.0 |
+| Indexer          | msosdu.azurecr.io/indexer         | 0.5.0 |
+| Search           | msosdu.azurecr.io/search          | 0.5.0 |
+| Delivery         | msosdu.azurecr.io/delivery        | 0.5.0 |
+| File             | msosdu.azurecr.io/file            | 0.5.0 |
+| Unit             | msosdu.azurecr.io/unit            | 0.5.0 |
+| CRS-Catalog      | msosdu.azurecr.io/crs-catalog     | 0.5.0 |
+| CRS-Conversion   | msosdu.azurecr.io/crs-conversion  | 0.5.0 |
+| Register         | msosdu.azurecr.io/register        | 0.5.0 |
+| Notification     | msosdu.azurecr.io/notification    | 0.5.0 |
+| WKS              | msosdu.azurecr.io/wks             | 0.5.0 |
+| Workflow         | msosdu.azurecr.io/workflow        | 0.5.0 |
+| SDMS             | msosdu.azurecr.io/sdms            | 0.5.0 |
+
+
+__Community Images__
+
+| Service | Image | SHA/Tag |
+| ------- | ----- | ------- |
+| Partition     | community.opengroup.org:5555/osdu/platform/system/partition/partition-release-0-5 | [f9385bf561906a9ab3f2053989b1b329b47de4b3](https://community.opengroup.org/osdu/platform/system/partition/-/tree/release/0.5) |
+| Entitlements  | community.opengroup.org:5555/osdu/platform/security-and-compliance/entitlements-azure/entitlements-azure-v0-5-0 | [0a090120039232cd75337cf4c40b5aadf62a3f58](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements-azure/-/tree/release/0.5) |
+| Legal         | community.opengroup.org:5555/osdu/platform/security-and-compliance/legal/legal-v0-5-0 | [a180d14d6eb3f3a8573afc3e4e3dbe4306202182](https://community.opengroup.org/osdu/platform/security-and-compliance/legal/-/tree/release/0.5) |
+| Storage       | community.opengroup.org:5555/osdu/platform/system/storage/storage-v0-5-0 | [83e00f253049b7b5c490f35b8b80b7b317421527](https://community.opengroup.org/osdu/platform/system/storage/-/tree/release/0.5) |
+| Schema       | community.opengroup.org:5555/osdu/platform/system/schema-service/schema-service-release-0-5 | [5707b2ab35be9533607794a4dd46130df4aa9e96](https://community.opengroup.org/osdu/platform/system/schema-service/-/tree/release/0.5) |
+| Indexer-Queue | community.opengroup.org:5555/osdu/platform/system/indexer-queue/indexer-queue-release-0-5 | [3d3d3a006ae0d7a8081661b059b1ec1b7eec78a6](https://community.opengroup.org/osdu/platform/system/indexer-queue/-/tree/release/0.5) |
+| Indexer       | community.opengroup.org:5555/osdu/platform/system/indexer-service/indexer-service-release-0-5 | [ad66055f30937411db71ad9403cbc018f547f3dc](https://community.opengroup.org/osdu/platform/system/indexer-service/-/tree/release/0.5) |
+| Search        | community.opengroup.org:5555/osdu/platform/system/search-service/search-service-v0-5-0 | [01a8c5e684223e8f7f85078ede05ab82f980063a](https://community.opengroup.org/osdu/platform/system/search-service/-/tree/release/0.5) |
+| File          | community.opengroup.org:5555/osdu/platform/system/file/file-release-0-5 | [120a575c92fc9e5cedb885687d35a14d91c19a96](https://community.opengroup.org/osdu/platform/system/file/-/tree/release/0.5) |
+| Unit          | community.opengroup.org:5555/osdu/platform/system/reference/unit-service/unit-service-v0-5-0 | [1a6a58aee7dd8a8628327e15405be916d97eb292](https://community.opengroup.org/osdu/platform/system/reference/unit-service/-/tree/release/0.5) |
+| CRS-Catalog   | community.opengroup.org:5555/osdu/platform/system/reference/crs-catalog-service/crs-catalog-service-v0-5-0 | [eee80b4959355f911be8fd7fd7e0fc0f3e763fe9](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/tree/release/0.5) |
+| CRS-Conversion  | community.opengroup.org:5555/osdu/platform/system/reference/crs-conversion-service/crs-conversion-service-v0-5-0 | [9b783cb9b6b649ea7175dd1f231f561ae20fef64](https://community.opengroup.org/osdu/platform/system/reference/crs-conversion-service/-/tree/release/0.5) |
+| Register      | community.opengroup.org:5555/osdu/platform/system/register/register-release-0-5 | [f6126e03bc5bb3292a9db2b9c33697228ec7e866](https://community.opengroup.org/osdu/platform/system/register/-/tree/release/0.5) |
+| Notification  | community.opengroup.org:5555/osdu/platform/system/notification/notification-release-0-5 | [caa5522253166d5a289e942ead7766575fa92630](https://community.opengroup.org/osdu/platform/system/notification/-/tree/release/0.5) |
+| WKS           | community.opengroup.org:5555/osdu/platform/data-flow/enrichment/wks/wks-v0-5-0 | [1b1b2a883747f4aa6097b8ad16ca9b1063b3f850](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks/-/tree/release/0.5) |
+| Workflow           | community.opengroup.org:5555/osdu/platform/data-flow/ingestion/ingestion-workflow/ingestion-workflow-release-0-5 | [5d418dd059aee4866addf6847c49d24eeccda0c1](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow/-/tree/release/0.5) |
+| SDMS           | community.opengroup.org:5555/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/seismic-store-service-v0-5-0 | [067f42a97ef1a93f1a06bfb03a07ada92bebaf31](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/-/tree/release/0.5) |
+
+
+
+
 ## App Version 0.4.3 (2021-1-25)
 
 __Infrastructure Version:__ [tag/azure-0.4.3](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tags/azure-0.4.3)

@@ -51,6 +51,9 @@ __Install Helm Chart__
 Install the helm chart.
 
 ```bash
+# Ensure your context is set.
+# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
+
 # Install Common Charts
 helm install osdu-base osdu-base -n default -f osdu_base_custom_values.yaml
 ```

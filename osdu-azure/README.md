@@ -68,6 +68,9 @@ __Install Helm Chart__
 Install the helm chart.
 
 ```bash
+# Ensure your context is set.
+# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
+
 # Create Namespace
 NAMESPACE=osdu-azure
 kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
@@ -78,4 +81,5 @@ helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE
 helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install sdms-services osdu-azure/osdu-seismic_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```
