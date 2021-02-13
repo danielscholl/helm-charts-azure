@@ -69,6 +69,9 @@ __Install Helm Chart__
 Install the helm chart.
 
 ```bash
+# Ensure your context is set.
+# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
+
 # Create Namespace
 NAMESPACE=istio-system
 kubectl create namespace $NAMESPACE

@@ -1,8 +1,9 @@
 # Helm Chart for OSDU on Azure Partition and Base Components
 
-| osdu-infrastructure  | app-version  |
-| -------------------- | ----------   |
-| 1.0.0                | 0.4.3        |
+| osdu-partition_base | app-version  |
+| ------------------- | ----------   |
+| 1.3.0               | 0.5.0        |
+| 1.0.0               | 0.4.3        |
 
 __Supported Base Features__
 

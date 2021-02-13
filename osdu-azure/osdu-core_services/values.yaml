@@ -177,6 +177,10 @@ configuration:
       value: http://entitlements/entitlements/v1
     - name: entitlements_service_api_key
       value: "OBSOLETE"
+    - name: partition_service_endpoint
+      value: "http://partition/api/partition/v1"
+    - name: shared_partition
+      value: opendes    # Make this configurable
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_activedirectory_AppIdUri
@@ -205,10 +209,10 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: storage_account
-      secret:
-        name: storage
-        key: storage-account
+    # - name: storage_account
+    #   secret:
+    #     name: storage
+    #     key: storage-account
 
   ########################
   ##  FILE SERVICE
@@ -256,14 +260,16 @@ configuration:
       value: http://search/api/search/v2
     - name: JAVA_HEAP_MEMORY
       value: 4096
-    - name: ENVIRONMENT
-      value: dev
-    - name: TENANT_NAME
-      value: opendes
     - name: osdu_storage_url
       value: http://storage/api/storage/v2
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: BATCH_SIZE
+      value: "100"
+    - name: SEARCH_QUERY_LIMIT
+      value: "1000"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -272,10 +278,6 @@ configuration:
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: REDIS_DATABASE
-      config:
-        name: osdu-svc-config
-        key: REDIS_DB_FILE
     - name: AZURE_CLIENT_ID
       secret:
         name: active-directory
@@ -292,18 +294,10 @@ configuration:
       secret:
         name: active-directory
         key: application-appid
-    - name: aad_client_id
-      secret:
-        name: active-directory
-        key: application-appid
     - name: appinsights_key
       secret:
         name: central-logging
         key: appinsights
-    - name: storage_account    # <-- Not Partition Aware
-      secret:
-        name: airflow
-        key: azurestorageaccountname
 
   ########################
   ##  INDEXER SERVICE
