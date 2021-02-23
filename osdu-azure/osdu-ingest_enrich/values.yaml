@@ -132,8 +132,8 @@ configuration:
   #
   - service: workflow
     repository: msosdu.azurecr.io/workflow
-    path: /api/workflow/v1/*
-    probe: /api/workflow/v1/swagger-ui.html
+    path: /api/workflow/*
+    probe: /api/workflow/swagger-ui.html
     keyvault: true
     auth:
       disable:
@@ -145,15 +145,15 @@ configuration:
         - "*/swagger"
         - "*/swagger-ui.html"
         - "*/swagger-resources"
-        - "/api/workflow/v1/swagger-resources/*"
-        - "/api/workflow/v1/webjars/*"
+        - "/api/workflow/swagger-resources/*"
+        - "/api/workflow/webjars/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:
     - name: spring_application_name
       value: workflow
     - name: server.servlet.contextPath
-      value: /api/workflow/v1/
+      value: /api/workflow/
     - name: server_port
       value: 80
     - name: ACCEPT_HTTP
@@ -165,12 +165,12 @@ configuration:
     - name: partition_service_endpoint
       value: "http://partition/api/partition/v1"
     - name: OSDU_ENTITLEMENTS_URL
-      value: "http://entitlements-azure/entitlements/v1"
+      value: "http://entitlements/entitlements/v1"
     - name: OSDU_ENTITLEMENTS_APPKEY
       value: "OBSOLETE"
-    - name: airflow_url
-      value: "http://airflow-web:8080/airflow"
-    - name: airflow_username
+    - name: OSDU_AIRFLOW_URL
+      value: "http://airflow-web.airflow.svc.cluster.local:8080/airflow"
+    - name: OSDU_AIRFLOW_USERNAME
       value: "admin"
     - name: azure_istioauth_enabled
       value: "true"
@@ -200,7 +200,7 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: airflow_password
+    - name: OSDU_AIRFLOW_PASSWORD
       secret:
         name: airflow
         key: admin-password
