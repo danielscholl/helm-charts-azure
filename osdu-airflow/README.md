@@ -4,7 +4,7 @@ __Version Tracking__
 
 | Helm Chart Version | airflow     | statsd  |
 | ------------------ | ----------- |-------- |
-| `1.0.2`            | `7.5.0`     | `1.0.0` |
+| `1.0.3`            | `7.5.0`     | `1.0.0` |
 | `1.0.1`            | `7.5.0`     | `1.0.0` |
 | `1.0.0`            | `7.5.0`     | `1.0.0` |
 
@@ -16,7 +16,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.2
+VERSION=1.0.3
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -68,7 +68,7 @@ airflowLogin:
 #
 airflow:
   ingress:
-    enabled: false           #<-- Set this enabled to true Admin UI
+    enabled: true           #<-- Set this to false to disable Admin UI ingress
     web:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns

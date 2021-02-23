@@ -198,6 +198,30 @@ airflow:
          secretKeyRef:
           name: central-logging
           key: appinsights
+    ## Begin -- Ingest Manifest DAG variables
+    - name: AIRFLOW_VAR_ACL
+      value: "{}"
+    - name: AIRFLOW_VAR_DATALOAD_CONFIG_PATH
+      value: "/opt/airflow/dags/configs/dataload.ini"
+    - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
+      value: "entitlements_client"
+    - name: AIRFLOW_VAR_LEGAL
+      value: "{}"
+    - name: AIRFLOW_VAR_PROVIDER
+      value: "azure"
+    - name: AIRFLOW_VAR_SEARCH_QUERY_EP
+      value: "api/search/v2/query"
+    - name: AIRFLOW_VAR_FILE_SERVICE_URL
+      value: "http://file.osdu-azure.svc.cluster.local/api/file/v2"
+    - name: AIRFLOW_VAR_SCHEMA_SERVICE_URL
+      value: "http://schema.osdu-azure.svc.cluster.local/api/schema-service/v1/schema"
+    - name: AIRFLOW_VAR_SEARCH_URL
+      value: "http://search.osdu-azure.svc.cluster.local/api/search/v2"
+    - name: AIRFLOW_VAR_STORAGE_URL
+      value: "http://storage.osdu-azure.svc.cluster.local/api/storage/v2/records"
+    - name: AIRFLOW_VAR_WORKFLOW_URL
+      value: "http://workflow.osdu-azure.svc.cluster.local/api/workflow"
+    ## End -- Ingest Manifest DAG variables
     extraConfigmapMounts:
         - name: remote-log-config
           mountPath: /opt/airflow/config
