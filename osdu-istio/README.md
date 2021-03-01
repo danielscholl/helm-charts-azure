@@ -4,6 +4,7 @@ __Version Tracking__
 
 | Helm Chart Version | istio-base   | istio-operator  |
 | ------------------ | ------------ | --------------- |
+| `1.1.1`            | `1.1.0`      | `1.7.0`         |
 | `1.1.0`            | `1.1.0`      | `1.7.0`         |
 | `1.0.0`            | `1.1.0`      | `1.7.0`         |
 
@@ -32,8 +33,6 @@ _The following commands can help generate a prepopulated custom_values file._
 ```bash
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
-ISTIO_USERNAME="<your_username>"
-ISTIO_PASSWORD="<your_password>"
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -52,14 +51,6 @@ global:
   azure:
     tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
     appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-
-  ################################################################################
-  # Specify the istio specific values
-  # based64 encoded username and password
-  #
-  istio:
-    username: $(echo ${ISTIO_USERNAME} | base64)
-    password: $(echo ${ISTIO_PASSWORD} | base64)
 EOF
 ```
 
