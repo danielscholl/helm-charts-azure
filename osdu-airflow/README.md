@@ -4,10 +4,7 @@ __Version Tracking__
 
 | Helm Chart Version | airflow     | statsd  |
 | ------------------ | ----------- |-------- |
-| `1.0.3`            | `7.5.0`     | `1.0.0` |
-| `1.0.2`            | `7.5.0`     | `1.0.0` |
-| `1.0.1`            | `7.5.0`     | `1.0.0` |
-| `1.0.0`            | `7.5.0`     | `1.0.0` |
+| `1.0.x`            | `7.5.0`     | `1.0.0` |
 
 
 __Pull Helm Chart__
@@ -17,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.3
+VERSION=1.0.4
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -98,3 +95,22 @@ kubectl create namespace $NAMESPACE
 # Install Charts
 helm install airflow osdu-airflow -n $NAMESPACE -f osdu_airflow_custom_values.yaml
 ```
+
+
+> Managing airflow users can be from within the Airflow UI or performed using the airflow command found in the running airflow web container.
+
+  ```bash
+  # Add a User
+  USER_FIRST=<your_firstname>
+  USER_LAST=<your_last>
+  EMAIL=<your_email>
+  PASSWORD=<your_password>
+
+  airflow create_user \
+    --role Admin \
+    --username $USER_FIRST \
+    --firstname $USER_FIRST \
+    --lastname $USER_LAST \
+    --email $EMAIL \
+    --password $PASSWORD
+  ```
