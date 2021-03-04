@@ -241,7 +241,7 @@ configuration:
     - name: spring_application_name
       value: file
     - name: server.servlet.contextPath
-      value: /api/file/v2/
+      value: /api/file/
     - name: server_port
       value: 80
     - name: ACCEPT_HTTP
@@ -570,8 +570,12 @@ configuration:
       value: http://register/api/register/v1
     - name: maxCacheSize
       value:  "20"
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: LOG_PREFIX
+      value: "notification"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
