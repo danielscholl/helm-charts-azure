@@ -9,8 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.3] - 2021-02-23
 
+- WebServer RBAC Enabled
+- WebServer Logs DEBUG
+
+
+## [1.0.3] - 2021-02-23
+
 - Added Ingest Manifest DAG Variables
 - Default Admin UI to Enabled
+
 
 ## [1.0.2] - 2021-02-9
 
