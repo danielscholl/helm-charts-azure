@@ -18,7 +18,7 @@ __Charts__
 | ------------- | ----------------------------------- | ----- |
 | osdu-base     | msosdu.azurecr.io/helm/osdu-base    | 1.0.0 |
 | osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.1 |
-| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.4 |
+| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.5 |
 | osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.5.0 |
 
 
