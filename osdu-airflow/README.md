@@ -39,6 +39,9 @@ az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $A
 GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
+# This needs to be set to where OSDU is installed.
+OSDU_NAMESPACE=osdu-azure
+
 # Translate Values File
 cat > osdu_airflow_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
@@ -76,6 +79,19 @@ airflow:
     user:  osdu_admin@$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-pg
   externalRedis:
     host: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-cache.redis.cache.windows.net
+
+  # The namespace needs to be set to where Airflow has been installed.
+  extraEnv::
+    - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
+      value:  "http://schema-service.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
+    - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
+      value: "http://search-service.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2"
+    - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
+      value:  "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2/records"
+    - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
+      value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
+    - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
+      value: "http://ingestion-workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
 EOF
 ```
 
