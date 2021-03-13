@@ -14,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.4
+VERSION=1.0.5
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -81,17 +81,18 @@ airflow:
     host: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-cache.redis.cache.windows.net
 
   # The namespace needs to be set to where Airflow has been installed.
-  extraEnv::
-    - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
-      value:  "http://schema-service.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
-    - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
-      value: "http://search-service.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2"
-    - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
-      value:  "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2/records"
-    - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
-      value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
-    - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
-      value: "http://ingestion-workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
+  airflow:
+    extraEnv:
+      - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
+        value:  "http://schema.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
+      - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
+        value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2"
+      - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
+        value:  "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2/records"
+      - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
+        value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
+      - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
+        value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
 EOF
 ```
 
