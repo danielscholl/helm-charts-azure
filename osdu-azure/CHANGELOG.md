@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.1] - 2021-03-11
 
-- Bug Fix File Swagger
+- Bug Fix File Service Swagger
 
 
 ## [1.7.0] - 2021-03-11
