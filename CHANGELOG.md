@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## App Version 0.7 (2021-3-11)
+## [1.7.1] App Version 0.7 (2021-3-11)
 
 
 __Infrastructure Version:__ [tag/azure-0.7/0](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.7)
@@ -71,7 +71,7 @@ __Community Images__
 
 
 
-## App Version 0.6-rc1 (2021-2-12)
+## [0.6.0-rc1] App Version 0.6-rc1 (2021-2-12)
 
 __Infrastructure Version:__ [tag/azure-0.6.0-rc1](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/azure-0.6.0-rc1)
 
@@ -135,7 +135,7 @@ __Community Images__
 
 
 
-## App Version 0.5 (2021-2-12)
+## [1.3.1] App Version 0.5 (2021-2-12)
 
 __Infrastructure Version:__ [release/0.5](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.5)
 
@@ -198,7 +198,7 @@ __Community Images__
 
 
 
-## App Version 0.4.3 (2021-1-25)
+## [1.2.0] App Version 0.4.3 (2021-1-25)
 
 __Infrastructure Version:__ [tag/azure-0.4.3](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tags/azure-0.4.3)
 
@@ -259,7 +259,7 @@ __Community Images__
 
 
 
-## App Version 0.4.2 (2020-12-30)
+## [1.1.0] App Version 0.4.2 (2020-12-30)
 
 __Infrastructure Version:__ [tag/azure-0.4.2](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tags/azure-0.4.2)
 
@@ -354,7 +354,7 @@ __Community Images__
 
 
 
-## App Version 0.4.0 (2020-11-12)
+## [1.0.0] App Version 0.4.0 (2020-11-12)
 
 __Infrastructure Version:__  [release/0.4](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.4)
 
