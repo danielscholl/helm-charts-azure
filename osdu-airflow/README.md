@@ -83,6 +83,10 @@ airflow:
   # The namespace needs to be set to where Airflow has been installed.
   airflow:
     extraEnv:
+      - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
+        value: "entitlements_client"
+      - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
+        value: "/opt/airflow/dags/configs/dataload.ini"
       - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
         value:  "http://schema.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
       - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
