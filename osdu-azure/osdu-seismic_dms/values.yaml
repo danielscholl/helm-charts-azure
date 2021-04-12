@@ -85,7 +85,6 @@ configuration:
         - "*/configuration/security"
         - "/seistore-svc/api/v3/swagger-resources/*"  # CAN"T FIND SWAGGER
         - "/seistore-svc/api/v3/webjars/*"
-        # - "/seistore-svc/api/v3/*"   ## WHY THIS??
     env:
     - name: KEYVAULT_URL
       config:
