@@ -21,7 +21,7 @@ spec:
   {{- if not .Values.ingress.enableKeyvaultCert }}
   tls:
     - hosts:
-        - {{ .Values.ingress.dns }}
+      - {{ .Values.ingress.dns }}
       secretName: osdu-certificate
   {{- end }}
   rules:
