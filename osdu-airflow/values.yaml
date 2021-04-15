@@ -18,6 +18,7 @@ azure:
 ingress:
   dns: <dns_hostname>
   issuer: letsencrypt-prod-dns
+  enableKeyvaultCert: false
 
 
 ################################################################################
