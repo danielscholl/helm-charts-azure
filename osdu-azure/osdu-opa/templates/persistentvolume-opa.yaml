@@ -1,0 +1,17 @@
+{{- $namespace := .Release.namespace }}
+{{- $serviceName := .Values.serviceName }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    app: policy-service
+  namespace: osdu
+  name: {{ $serviceName }}-policy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}

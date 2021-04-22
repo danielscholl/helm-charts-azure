@@ -1,0 +1,18 @@
+{{- $namespace := .Release.namespace }}
+{{- $serviceName := .Values.serviceName }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ $serviceName }}
+  labels:
+    app: {{ $serviceName }}
+  namespace: {{ $namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8181
+      targetPort: 8181
+      name: http
+  selector:
+    app: {{ $serviceName }}
