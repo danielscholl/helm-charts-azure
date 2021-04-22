@@ -1,0 +1,38 @@
+{{- $namespace := .Release.namespace }}
+{{- $serviceName := .Values.serviceName}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $serviceName }}
+  labels:
+    app: {{ $serviceName }}
+  namespace: {{ $namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $serviceName }}
+  template:
+    metadata:
+      labels:
+        app: {{ $serviceName }}
+      name: {{ $serviceName }}
+    spec:
+      containers:
+      - name: {{ $serviceName }}
+        image: openpolicyagent/opa:latest
+        ports:
+        - name: http
+          containerPort: 8181
+        args:
+        - "run"
+        - "--ignore=.*"  # exclude hidden dirs created by Kubernetes
+        - "--server"
+        - "/policies"
+        volumeMounts:
+        - mountPath: /policies
+          name: {{ $serviceName }}-policy
+      volumes:
+      - name: {{ $serviceName }}-policy
+        persistentVolumeClaim:
+            claimName: {{ $serviceName }}-policy
