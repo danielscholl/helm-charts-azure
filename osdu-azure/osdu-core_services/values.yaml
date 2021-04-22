@@ -96,7 +96,7 @@ configuration:
     - name: servicebus_topic_name
       value: recordstopic
     - name: entitlements_service_endpoint
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: entitlements_service_api_key
       value: "OBSOLETE"
     - name: legal_service_endpoint
@@ -105,6 +105,10 @@ configuration:
       value: southcentralus
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
+    - name: policy_enabled
+      value: "false"
+    - name: policy_service_endpoint
+      value: http://policy/api/policy/v1
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_activedirectory_AppIdUri
@@ -168,7 +172,7 @@ configuration:
     - name: LOG_PREFIX
       value: schema
     - name: entitlements_service_endpoint
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: entitlements_service_api_key
       value: "OBSOLETE"
     - name: partition_service_endpoint
@@ -241,7 +245,7 @@ configuration:
     - name: LOG_PREFIX
       value: file
     - name: osdu_entitlements_url
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: osdu_entitlements_app_key
       value: OBSOLETE
     - name: APPLICATION_PORT
@@ -323,8 +327,10 @@ configuration:
       value: osdu-db
     - name: servicebus_topic_name
       value: indexing-progress
+    - name: reindex_topic_name
+      value: recordstopic
     - name: entitlements_service_endpoint
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: entitlements_service_api_key
       value: OBSOLETE
     - name: schema_service_url
@@ -396,7 +402,7 @@ configuration:
     - name: cosmosdb_database
       value: osdu-db
     - name: entitlements_service_endpoint
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: entitlements_service_api_key
       value: OBSOLETE
     - name: ENVIRONMENT
@@ -411,6 +417,10 @@ configuration:
       value: debug
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
+    - name: policy_enabled
+      value: "false"
+    - name: policy_service_endpoint
+      value: http://policy/api/policy/v1
     - name: azure_istioauth_enabled
       value: true
     - name: azure_activedirectory_AppIdUri
@@ -465,13 +475,11 @@ configuration:
     - name: cosmosdb_database
       value: osdu-db
     - name: ENTITLEMENTS_API
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
-    - name: RECORDS_CHANGE_PUBSUB_ENDPOINT
-      value: http://notification/api/notification/v1/push-handlers/records-changed
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -484,6 +492,10 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    # These are env variables that will prepend https://{{ DNS }} to the value.
+    env_with_dns:
+      - name: RECORDS_CHANGE_PUBSUB_ENDPOINT
+        value: /api/notification/v1/push-handlers/records-changed
 
   ########################
   ##  NOTIFICATION SERVICE
@@ -515,13 +527,17 @@ configuration:
     - name: cosmosdb_database
       value: osdu-db
     - name: entitlements_service_endpoint
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: registeration_service_endpoint
       value: http://register/api/register/v1
     - name: maxCacheSize
       value:  "20"
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
+    - name: policy_enabled
+      value: "false"
+    - name: policy_service_endpoint
+      value: http://policy/api/policy/v1
     - name: azure_istioauth_enabled
       value: "true"
     - name: LOG_PREFIX

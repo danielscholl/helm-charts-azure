@@ -96,7 +96,7 @@ configuration:
     - name: ACCEPT_HTTP
       value: true
     - name: ENTITLEMENT_URL
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: azure_istioauth_enabled
       value: "true"
     - name: KEYVAULT_URI
@@ -149,7 +149,7 @@ configuration:
     - name: ACCEPT_HTTP
       value: true
     - name: ENTITLEMENT_URL
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: azure_istioauth_enabled
       value: "true"
     - name: KEYVAULT_URI
@@ -204,7 +204,7 @@ configuration:
     - name: cosmosdb_database
       value: osdu-db
     - name: ENTITLEMENT_URL
-      value: http://entitlements/entitlements/v1
+      value: http://entitlements/api/entitlements/v2
     - name: ESRI_DATA_PATH
       value: /crs-conversion-service
     - name: service_domain_name

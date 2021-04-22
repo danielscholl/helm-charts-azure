@@ -4,6 +4,7 @@ __Version Tracking__
 
 | Helm Chart Version | istio-base   | istio-operator  |
 | ------------------ | ------------ | --------------- |
+| `1.1.2`            | `1.1.0`      | `1.7.0`         |
 | `1.1.1`            | `1.1.0`      | `1.7.0`         |
 | `1.1.0`            | `1.1.0`      | `1.7.0`         |
 | `1.0.0`            | `1.1.0`      | `1.7.0`         |
@@ -16,7 +17,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-istio
-VERSION=1.1.1
+VERSION=1.1.2
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
