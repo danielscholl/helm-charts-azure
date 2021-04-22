@@ -1,6 +1,7 @@
 {{- $namespace := .Release.namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $servicePort := .Values.service.port -}}
+{{- $hostName := .Values.ingress.dns -}}
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
@@ -89,7 +90,14 @@ spec:
                   key: {{ .secret.key | quote }}
               {{- end }}
             {{- end }}
+            {{- if .env_with_dns }}
+            {{- range .env_with_dns }}
+            - name: {{ .name }}
+              {{- if .value }}
+              value: "https://{{ $hostName }}{{ .value }}"
+              {{- end }}
+            {{- end }}
+            {{- end }}
           {{- end }}
-
 ---
 {{- end }}

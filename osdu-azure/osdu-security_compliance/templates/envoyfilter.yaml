@@ -1,9 +1,10 @@
-{{- $tenant := .Values.global.azure.tenant -}}
+{{- $tenant := .Values.azure.tenant -}}
+{{- $namespace := .Release.Namespace }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: header-remove-user-appid-from-default
-  namespace: {{ .Release.namespace}}
+  name: header-1-remove-user-appid-from-default
+  namespace: {{ $namespace }}
 spec:
   configPatches:
   - applyTo: HTTP_FILTER
@@ -30,8 +31,8 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: header-add-user-from-msft-aad-token
-  namespace: {{ .Release.namespace}}
+  name: header-2-add-user-from-msft-aad-token
+  namespace: {{ $namespace }}
 spec:
   configPatches:
   - applyTo: HTTP_FILTER
@@ -70,8 +71,8 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: header-add-user-from-msftonline-token
-  namespace: {{ .Release.namespace}}
+  name: header-3-add-user-from-msftonline-token
+  namespace: {{ $namespace }}
 spec:
   configPatches:
   - applyTo: HTTP_FILTER
