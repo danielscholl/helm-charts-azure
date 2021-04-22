@@ -73,7 +73,12 @@ airflow:
     web:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        # Please uncomment below two lines and comment above line to use your own certificate from keyvault
+        #cert-manager.io/cluster-issuer: null
+        #appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
       host: $DNS_HOST
+      tls: 
+        enabled: true    #<-- Set this to false to enable keyvault certificate
   externalDatabase:
     host: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-pg.postgres.database.azure.com
     user:  osdu_admin@$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-pg

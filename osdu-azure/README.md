@@ -66,6 +66,7 @@ azure:
 ingress:
   issuer: letsencrypt-prod-dns
   dns: $DNS_HOST
+  enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
 EOF
 ```
 
