@@ -38,11 +38,6 @@ azure:
 ingress:
   dns: <fqdn>
   issuer: letsencrypt-prod-dns
-  enabled: false
-  hosts:
-    host: # leave it empty for our dev cluster
-    pathPrefix: /api/os-wellbore-ddms
-  tlsSecret: osdu-certificate
 
 
 ################################################################################
@@ -51,78 +46,47 @@ ingress:
 identity:
   name: osdu-identity
 
-authorizationPolicy:
-  name: wellbore-jwt-authz
+
 ################################################################################
 # Specify the Service Settings
 #
 service:
   type: ClusterIP
   port: 80
-  targetPort: 8080
+  target: 8080
+
 
 ################################################################################
 # Specify the Config Map
 #
-configMap:
-  data:
-    storageEndpoint: http://storage.osdu/api/storage
-    searchEndpoint: http://search-service.osdu/api/search
-    partitionEndpoint: http://partition.osdu/api/partition
-    usePartitionService: 'enabled'
-    loggerLevel: 'INFO'
-  name: os-wellbore-ddms-envs
+configMap: wellbore-svc-config
 
-################################################################################
-# Specify Deployment Settings
-#
-namespace: osdu
-deployment:
-  instrumentationKey:
-    secretName: central-logging
-  osduSvcProperties: osdu-svc-properties
-  keyvaultUrlPropertyName: ENV_KEYVAULT
-  name: os-wellbore-ddms
-
-tempDeployment:
-  enabled: false
-  name: prxxxx
-
-annotations:
-  buildNumber: []
-  buildOrigin: AzureDevops build/#{Build.DefinitionName}#
-  commitBranch: []
-  commitId: []
-
-labels:
-  aadpodidbinding: osdu-identity
-  env: gitlab
-
-image:
-  repository: community.opengroup.org:5555/osdu/platform/domain-data-mgmt-services/wellbore/wellbore-domain-services/wellbore-domain-services-master
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: latest
 ################################################################################
 # Specify the OSDU Services to Load
 #
 configuration:
 
   ########################
-  ##  WELLBORE DOMAIN SERVICES
+  ##  WELLBORE SERVICE
   #
-  - service: os-wellbore-ddms
-    repository: msosdu.azurecr.io/sdms
+  - service: wellbore-ddms
+    repository: msosdu.azurecr.io/wellbore-ddms
     path: /api/os-wellbore-ddms/*
     probe: /api/os-wellbore-ddms/healthz
     auth:
       disable:
-        - /api/os-wellbore-ddms/
-        - /api/os-wellbore-ddms/ddms/v2/about
-        - /api/os-wellbore-ddms/docs
-        - /api/os-wellbore-ddms/openapi.json
+        - "/api/os-wellbore-ddms/"
+        - "/api/os-wellbore-ddms/ddms/v2/about"
+        - "/api/os-wellbore-ddms/docs"
+        - "/api/os-wellbore-ddms/openapi.json"
     env:
+    - name: SERVICE_NAME
+      value: os-wellbore-ddms
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-
+    - name: AZ_AI_INSTRUMENTATION_KEY
+      secret:
+        name: central-logging
+        key: appinsights

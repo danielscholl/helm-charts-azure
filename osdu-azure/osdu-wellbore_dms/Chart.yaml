@@ -13,7 +13,8 @@
 # limitations under the License.
 
 apiVersion: v2
-name: wdms 
-description: OSDU Wellbore DDMS Service
+name: osdu-wellbore_dms
+type: application
+description: Installs the OSDU on Azure Wellbore DDMS Services
 version: 1.8.0
 appVersion: 0.8.0

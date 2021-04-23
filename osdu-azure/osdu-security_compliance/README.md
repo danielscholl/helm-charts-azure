@@ -11,4 +11,4 @@ __Supported OSDU Services__
 
 - [Entitlements Service](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements-azure)
 - [Legal Service](https://community.opengroup.org/osdu/platform/security-and-compliance/legal)
-- [Policy Service](https://community.opengroup.org/osdu/platform/security-and-compliance/policy)
+

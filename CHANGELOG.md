@@ -42,30 +42,32 @@ __Microsoft Images__
 | Notification     | msosdu.azurecr.io/notification    | 0.8.0 |
 | WKS              | msosdu.azurecr.io/wks             | 0.8.0 |
 | Workflow         | msosdu.azurecr.io/workflow        | 0.8.0 |
-| SDMS             | msosdu.azurecr.io/sdms            | 0.8.0 |
+| Seismic DDMS     | msosdu.azurecr.io/sdms            | 0.8.0 |
+| Wellbore DDMS    | msosdu.azurecr.io/wellbore-ddms   | 0.8.0 |
 
 
 __Community Images__
 
 | Service | Image | SHA/Tag |
 | ------- | ----- | ------- |
-| Partition     | community.opengroup.org:5555/osdu/platform/system/partition/partition-v0-8-0 | [6c4c9fa6ea17662067148a9b37f3ab586b14a825](https://community.opengroup.org/osdu/platform/system/partition/-/tree/release/0.8) |
-| Entitlements  | community.opengroup.org:5555/osdu/platform/security-and-compliance/entitlements/entitlements-release-v0-8-0 | [bf6c77608eb6b273e62a1891f33a91c8502e46f9](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/tree/release/0.8) |
-| Legal         | community.opengroup.org:5555/osdu/platform/security-and-compliance/legal/legal-v0-8-0 | [7195c137f65c45eb598bd511744e9de083d2cab0](https://community.opengroup.org/osdu/platform/security-and-compliance/legal/-/tree/release/0.8) |
-| Storage       | community.opengroup.org:5555/osdu/platform/system/storage/storage-v0-8-0 | [a03e69165bfa17faae906d03f95b473541088ac6](https://community.opengroup.org/osdu/platform/system/storage/-/tree/release/0.8) |
-| Schema       | community.opengroup.org:5555/osdu/platform/system/schema-service/schema-service-v0-8-0 | [a31f5fa085bfd23cd62f18cca1fe0c28483c52fd](https://community.opengroup.org/osdu/platform/system/schema-service/-/tree/release/0.8) |
-| Indexer-Queue | community.opengroup.org:5555/osdu/platform/system/indexer-queue/indexer-queue-v0-8-0 | [6ba8b5ae1a5318bae607aeefaabb43ac76fdf2e6](https://community.opengroup.org/osdu/platform/system/indexer-queue/-/tree/release/0.8) |
-| Indexer       | community.opengroup.org:5555/osdu/platform/system/indexer-service/indexer-service-v0-8-0 | [c0a0c58f712ba6350697c0a84172d62914d92b10](https://community.opengroup.org/osdu/platform/system/indexer-service/-/tree/release/0.8) |
-| Search        | community.opengroup.org:5555/osdu/platform/system/search-service/search-service-v0-8-0 | [TODO](https://community.opengroup.org/osdu/platform/system/search-service/-/tree/release/0.8) |
-| File          | community.opengroup.org:5555/osdu/platform/system/file/file-v0-8-0 | [0b7d52fb1a2ba758da6b67d13dbb7e785d1fc4de](https://community.opengroup.org/osdu/platform/system/file/-/tree/release/0.8) |
-| Unit          | community.opengroup.org:5555/osdu/platform/system/reference/unit-service/unit-service-v0-8-0 | [cbfe2296b5c6670f0e23074a9fd0ceae5885d01b](https://community.opengroup.org/osdu/platform/system/reference/unit-service/-/tree/release/0.8) |
-| CRS-Catalog   | community.opengroup.org:5555/osdu/platform/system/reference/crs-catalog-service/crs-catalog-service-v0-8-0 | [245bdf70b12a7b307999c26b8ddc5c4d3f6c7d9b](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/tree/release/0.8) |
-| CRS-Conversion  | community.opengroup.org:5555/osdu/platform/system/reference/crs-conversion-service/crs-conversion-service-v0-8-0 | [c4e76f8c05a86ee5b2139e4e3c976fa673cb7f5c](https://community.opengroup.org/osdu/platform/system/reference/crs-conversion-service/-/tree/release/0.8) |
-| Register      | community.opengroup.org:5555/osdu/platform/system/register/register-v0-8-0 | [c2435ed2dcec2a0e3ea087ca578087c8df1aaa72](https://community.opengroup.org/osdu/platform/system/register/-/tree/release/0.8) |
-| Notification  | community.opengroup.org:5555/osdu/platform/system/notification/notification-v0-8-0 | [cdba7cf5db79fd597c5dd34896796266830f953f](https://community.opengroup.org/osdu/platform/system/notification/-/tree/release/0.8) |
-| WKS           | community.opengroup.org:5555/osdu/platform/data-flow/enrichment/wks/wks-v0-8-0 | [53d59332ae50c9218dbeaccc8179036d68b61e32](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks/-/tree/release/0.8) |
-| Workflow           | community.opengroup.org:5555/osdu/platform/data-flow/ingestion/ingestion-workflow/ingestion-workflow-v0-8-0 | [ea17e2c0bac9fb503309718b7c9be67d79a2be18](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow/-/tree/release/0.8) |
-| SDMS           | community.opengroup.org:5555/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/seismic-store-service-v0-8-0 | [15045b0b2fa7abf6a73a6750fe24402ea1da1f82](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/-/tree/release/0.8) |
+| Partition     | community.opengroup.org:5555/osdu/platform/system/partition/partition-v0-8-0 | [6c4c9fa6ea17662067148a9b37f3ab586b14a825](https://community.opengroup.org/osdu/platform/system/partition/-/tree/v0.8.0) |
+| Entitlements  | community.opengroup.org:5555/osdu/platform/security-and-compliance/entitlements/entitlements-release-v0-8-0 | [bf6c77608eb6b273e62a1891f33a91c8502e46f9](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/tree/v0.8.0) |
+| Legal         | community.opengroup.org:5555/osdu/platform/security-and-compliance/legal/legal-v0-8-0 | [7195c137f65c45eb598bd511744e9de083d2cab0](https://community.opengroup.org/osdu/platform/security-and-compliance/legal/-/tree/v0.8.0) |
+| Storage       | community.opengroup.org:5555/osdu/platform/system/storage/storage-v0-8-0 | [a03e69165bfa17faae906d03f95b473541088ac6](https://community.opengroup.org/osdu/platform/system/storage/-/tree/v0.8.00) |
+| Schema       | community.opengroup.org:5555/osdu/platform/system/schema-service/schema-service-v0-8-0 | [a31f5fa085bfd23cd62f18cca1fe0c28483c52fd](https://community.opengroup.org/osdu/platform/system/schema-service/-/tree/v0.8.0) |
+| Indexer-Queue | community.opengroup.org:5555/osdu/platform/system/indexer-queue/indexer-queue-v0-8-0 | [6ba8b5ae1a5318bae607aeefaabb43ac76fdf2e6](https://community.opengroup.org/osdu/platform/system/indexer-queue/-/tree/v0.8.0) |
+| Indexer       | community.opengroup.org:5555/osdu/platform/system/indexer-service/indexer-service-v0-8-0 | [c0a0c58f712ba6350697c0a84172d62914d92b10](https://community.opengroup.org/osdu/platform/system/indexer-service/-/tree/v0.8.0) |
+| Search        | community.opengroup.org:5555/osdu/platform/system/search-service/search-service-v0-8-0 | [TODO](https://community.opengroup.org/osdu/platform/system/search-service/-/tree/v0.8.0) |
+| File          | community.opengroup.org:5555/osdu/platform/system/file/file-v0-8-0 | [0b7d52fb1a2ba758da6b67d13dbb7e785d1fc4de](https://community.opengroup.org/osdu/platform/system/file/-/tree/v0.8.0) |
+| Unit          | community.opengroup.org:5555/osdu/platform/system/reference/unit-service/unit-service-v0-8-0 | [cbfe2296b5c6670f0e23074a9fd0ceae5885d01b](https://community.opengroup.org/osdu/platform/system/reference/unit-service/-/tree/v0.8.0) |
+| CRS-Catalog   | community.opengroup.org:5555/osdu/platform/system/reference/crs-catalog-service/crs-catalog-service-v0-8-0 | [245bdf70b12a7b307999c26b8ddc5c4d3f6c7d9b](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/tree/v0.8.0) |
+| CRS-Conversion  | community.opengroup.org:5555/osdu/platform/system/reference/crs-conversion-service/crs-conversion-service-v0-8-0 | [c4e76f8c05a86ee5b2139e4e3c976fa673cb7f5c](https://community.opengroup.org/osdu/platform/system/reference/crs-conversion-service/-/tree/v0.8.0) |
+| Register      | community.opengroup.org:5555/osdu/platform/system/register/register-v0-8-0 | [c2435ed2dcec2a0e3ea087ca578087c8df1aaa72](https://community.opengroup.org/osdu/platform/system/register/-/tree/v0.8.0) |
+| Notification  | community.opengroup.org:5555/osdu/platform/system/notification/notification-v0-8-0 | [cdba7cf5db79fd597c5dd34896796266830f953f](https://community.opengroup.org/osdu/platform/system/notification/-/tree/v0.8.0) |
+| WKS           | community.opengroup.org:5555/osdu/platform/data-flow/enrichment/wks/wks-v0-8-0 | [53d59332ae50c9218dbeaccc8179036d68b61e32](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks/-/tree/v0.8.0) |
+| Workflow           | community.opengroup.org:5555/osdu/platform/data-flow/ingestion/ingestion-workflow/ingestion-workflow-v0-8-0 | [ea17e2c0bac9fb503309718b7c9be67d79a2be18](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow/-/tree/v0.8.0) |
+| Seismic DDMS   | community.opengroup.org:5555/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/seismic-store-service-v0-8-0 | [15045b0b2fa7abf6a73a6750fe24402ea1da1f82](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/-/tree/v0.8.0) |
+| Wellbore DDMS  | community.opengroup.org:5555/osdu/platform/domain-data-mgmt-services/wellbore/wellbore-domain-services/wellbore-domain-services-v0-8-0 | [885bef1a1ffafb5ada2cdb491db61cc3f26db83a](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/wellbore/wellbore-domain-services/-/tree/v0.8.0) |
 
 
 ## App Version 0.7 (2021-3-11)

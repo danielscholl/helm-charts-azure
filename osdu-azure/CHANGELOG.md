@@ -9,12 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.8.0] - 2021-04-12
 
-- OSDU Milestone 6 AppVersion (0.8)
+- OSDU Minor Release Upgrade - 0.8
 - Added Envoy Filters
+- Added Support for custom HTTPS Certificates
 - Added Services
   - Entitlements v2
+  - Wellbore DDMS
+- Integrated Entitlements v2
 - Deprecated Services
   - Entitlements v1
+- Preview Services
+  - OPA
 
 
 ## [1.7.1] - 2021-03-11

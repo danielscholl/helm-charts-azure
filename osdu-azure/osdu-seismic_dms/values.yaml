@@ -68,7 +68,7 @@ configuration:
   ########################
   ##  SEISMIC STORE SERVICE
   #
-  - service: sdms
+  - service: seismic-ddms
     repository: msosdu.azurecr.io/sdms
     path: /seistore-svc/api/v3/*
     probe: /seistore-svc/api/v3/svcstatus
