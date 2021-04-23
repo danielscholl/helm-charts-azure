@@ -1,5 +1,5 @@
 # Helm Chart for OSDU on Azure Open Policy Agent
 
-| osdu-opa  | app-version  |
+| osdu-opa  | app-version   |
 | ------------------------- | ----------   |
 | 1.0.0                     | 0.8.0        |

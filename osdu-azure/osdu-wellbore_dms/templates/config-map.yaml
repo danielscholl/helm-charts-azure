@@ -1,0 +1,14 @@
+{{- $namespace := .Release.namespace }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap }}
+  namespace: {{ $namespace }}
+data:
+  CLOUD_PROVIDER: az
+  OPENAPI_PREFIX: /api/os-wellbore-ddms
+  SERVICE_HOST_STORAGE: http://storage.osdu/api/storage
+  SERVICE_HOST_SEARCH: http://search-service.osdu/api/search
+  SERVICE_HOST_PARTITION: http://partition.osdu/api/partition
+  USE_PARTITION_SERVICE: enabled
+  AZ_LOGGER_LEVEL: INFO
