@@ -85,6 +85,48 @@ airflow:
   # The namespace needs to be set to where Airflow has been installed.
   airflow:
     extraEnv:
+      - name: CLOUD_PROVIDER
+        value: "azure"
+      - name: AIRFLOW_VAR_KEYVAULT_URI
+        valueFrom:
+          configMapKeyRef:
+            name: osdu-svc-config
+            key: ENV_KEYVAULT
+      - name: AIRFLOW__CORE__FERNET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: airflow
+            key: fernet-key
+      - name: AIRFLOW_CONN_AZ_LOG
+        valueFrom:
+          secretKeyRef:
+            name: airflow
+            key: remote-log-connection
+      - name: AIRFLOW_VAR_AZURE_TENANT_ID
+        valueFrom:
+          secretKeyRef:
+            name: active-directory
+            key: tenantid
+      - name: AIRFLOW_VAR_AZURE_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: active-directory
+            key: principal-clientid
+      - name: AIRFLOW_VAR_AZURE_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: active-directory
+            key: principal-clientpassword
+      - name: AIRFLOW_VAR_AAD_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: active-directory
+            key: application-appid
+      - name: AIRFLOW_VAR_APPINSIGHTS_KEY
+        valueFrom:
+          secretKeyRef:
+            name: central-logging
+            key: appinsights
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
       - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
