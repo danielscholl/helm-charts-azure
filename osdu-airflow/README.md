@@ -31,7 +31,7 @@ _The following commands can help generate a prepopulated custom_values file._
 ```bash
 # Setup Variables
 UNIQUE="<your_osdu_unique>"               # ie: demo
-DNS_HOST="<your_osdu_fqdn>"   # ie: osdu-$UNIQUE.contoso.com
+DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -123,11 +123,16 @@ helm install airflow osdu-airflow -n $NAMESPACE -f osdu_airflow_custom_values.ya
 > Managing airflow users can be from within the Airflow UI or performed using the airflow command found in the running airflow web container.
 
   ```bash
+  # Get Airflow web container
+  # AIRFLOW_WEB_CONTAINER=$(kubectl get pod -n airflow | grep "web" | cut -f 1 -d " ")
+  # Login to airflow web container.
+  # kubectl exec --stdin --tty $AIRFLOW_WEB_CONTAINER -n airflow -- /bin/bash
+
   # Add a User
-  USER_FIRST=<your_firstname>
-  USER_LAST=<your_last>
-  EMAIL=<your_email>
-  PASSWORD=<your_password>
+  USER_FIRST=<your_firstname>               # ie: admin
+  USER_LAST=<your_last>                     # ie: admin
+  EMAIL=<your_email>                        # ie: admin@email.com
+  PASSWORD=<your_password>                  # ie: admin
 
   airflow create_user \
     --role Admin \
