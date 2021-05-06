@@ -39,6 +39,9 @@ az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $A
 GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
+# This needs to be set to where OSDU is installed.
+OSDU_NAMESPACE=osdu-azure
+
 # Translate Values File
 cat > osdu_airflow_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
