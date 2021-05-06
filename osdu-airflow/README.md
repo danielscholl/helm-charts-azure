@@ -137,7 +137,7 @@ airflow:
       - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
         value:  "http://schema.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
       - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
-        value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2"
+        value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query"
       - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
         value:  "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2/records"
       - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
