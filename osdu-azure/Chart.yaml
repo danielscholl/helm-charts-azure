@@ -16,5 +16,5 @@ apiVersion: v2
 name: osdu-azure
 type: application
 description: Installs OSDU on Azure
-version: 1.8.0
+version: 1.8.1
 appVersion: 0.8.0  # This isn't used just for documentation.
