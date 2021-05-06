@@ -186,6 +186,8 @@ helm install airflow osdu-airflow -n $NAMESPACE -f osdu_airflow_custom_values.ya
     --lastname $USER_LAST \
     --email $EMAIL \
     --password $PASSWORD
+
+    > Airflow RBAC guide link [here](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/blob/master/docs/airflow-rbac-guide.md).
   ```
-  > Airflow RBAC guide link [here](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/blob/master/docs/airflow-rbac-guide.md).
+  
 
