@@ -210,7 +210,7 @@ configuration:
     - name: service_domain_name
       value: contoso.com
     - name: SIS_DATA
-      value: /mnt/crs_conversion/apachesis/data
+      value: /mnt/crs_conversion/apachesis_setup/SIS_DATA
     - name: azure_istioauth_enabled
       value: "true"
     - name: KEYVAULT_URI
