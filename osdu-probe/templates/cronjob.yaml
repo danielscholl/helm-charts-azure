@@ -5,16 +5,20 @@ metadata:
   name: "osdu-probe-cronjob"
   namespace: {{ $namespace }}
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/30 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
   jobTemplate:
     spec:
+      backoffLimit: 0
+      parallelism: 1
       template:
         metadata:
           labels:
             app: {{ .Chart.Name }}
-            aadpodidbinding: osdu-identity
         spec:
-          restartPolicy: OnFailure
+          restartPolicy: Never
           volumes:
           - name: azure-keyvault
             csi:
@@ -61,4 +65,4 @@ spec:
                   name: central-logging
                   key: appinsights
             - name: VERSION
-              value: {{ .Chart.Version }}
+              value: {{ .Values.image.tag }}
