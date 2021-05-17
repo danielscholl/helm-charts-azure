@@ -15,7 +15,7 @@ GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
 # Translate Values File
-cat > osdu_probe_custom_values.yaml << EOF
+cat > ./local/osdu_probe_custom_values.yaml << EOF
 # This file contains the essential configs for the Azure osdu probe
 
 ################################################################################
@@ -32,7 +32,7 @@ azure:
   dns: $DNS_HOST
 
 image:
-  repository: msosdu.azurecr.io
+  repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io/health-probes
   tag: ${VERSION}
 EOF
 ```
