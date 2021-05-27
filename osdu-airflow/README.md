@@ -144,6 +144,8 @@ airflow:
         value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
       - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
         value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
+       - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
+        value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query_with_cursor"
 EOF
 ```
 
