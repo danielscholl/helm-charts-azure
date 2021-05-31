@@ -53,41 +53,4 @@ service:
   type: ClusterIP
   port: 80
 
-
-################################################################################
-# Specify the OSDU Services to Load
-#
-configuration:
-
-  ########################
-  ##  Policy SERVICE
-  ##  Note: Not a swagger implementation - Will add in later release.
-  #
-  - service: policy-service
-    repository: community.opengroup.org:5555/osdu/platform/security-and-compliance/policy/shared-osdu/v0-8-0
-    tag: 68b798a53f93e24b668c77390e7f4768b9107e0a
-    path: /api/policy/v1/*
-    probe: /api/policy/v1/health
-    keyvault: true
-    auth:
-      disable:
-        - "/"
-        - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "*/swagger"
-        - "*/health"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/legal/v1/swagger-resources/*"
-        - "/api/legal/v1/webjars/*"
-        - "*/actuator/health"
-        - "*/_ah/**"
-    env:
-      - name: OPA_URL
-        value: "http://opa:8181"
-      - name: ENTITLEMENTS_BASE_URL
-        value: "http://entitlements"
-      - name: LEGAL_BASE_URL
-        value: "http://legal"
+serviceName: opa
