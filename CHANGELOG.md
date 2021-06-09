@@ -51,7 +51,6 @@ __Community Images__
 | ------- | ----- | ------- |
 | Partition     | community.opengroup.org:5555/osdu/platform/system/partition/partition-v0-9-0 | [643d075b14809cd393e4e1916d54c01904f108c2](https://community.opengroup.org/osdu/platform/system/partition/-/tree/v0.9.0) |
 | Entitlements  | community.opengroup.org:5555/osdu/platform/security-and-compliance/entitlements/entitlements-v0-9-0 | [7701dcfb87db3a50c439964a21d5bfcbbcd2052e](https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/tree/v0.9.0) |
-
 | Legal           | community.opengroup.org:5555/osdu/platform/security-and-compliance/legal/legal-v0-9-0 | [78f859c04883966305cb2b07c68b2b41e831a20d](https://community.opengroup.org/osdu/platform/security-and-compliance/legal/-/tree/v0.9.0) |
 | Policy          | community.opengroup.org:5555/osdu/platform/security-and-compliance/policy/policy-v0-9-0 | [b834d2173689ad3fab39678a846e0a533e27dcb4](https://community.opengroup.org/osdu/platform/security-and-compliance/policy/-/tree/v0.9.0) |
 | Storage         | community.opengroup.org:5555/osdu/platform/system/storage/storage-v0-9-0 | [6686033ddeb5ec13b61184b58d025ab3b155d684](https://community.opengroup.org/osdu/platform/system/storage/-/tree/v0.9.0) |
