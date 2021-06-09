@@ -5,8 +5,8 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    app: policy-service
-  namespace: osdu
+    app: policy
+  namespace: {{ $namespace }}
   name: {{ $serviceName }}-policy
 spec:
   accessModes:
