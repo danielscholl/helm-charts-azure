@@ -87,9 +87,9 @@ configuration:
     - name: storage_service_endpoint
       value: "http://storage/api/storage/v2"
     - name: schema_service_endpoint
-      value: "http://schema-service/api/schema-service/v1"
+      value: "http://schema/api/schema-service/v1"
     - name: search_service_endpoint
-      value: "http://search-service/api/search/v2"
+      value: "http://search/api/search/v2"
     - name: default_tenant
       value:
     - name: max_concurrent_calls
