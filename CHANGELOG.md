@@ -32,7 +32,7 @@ __Microsoft Images__
 | Schema           | msosdu.azurecr.io/schema          | 0.9.0 |
 | Indexer-Queue    | msosdu.azurecr.io/indexer-queue   | 0.9.0 |
 | Indexer          | msosdu.azurecr.io/indexer         | 0.9.0 |
-| Search           | msosdu.azurecr.io/search          | 0.9.1 |
+| Search           | msosdu.azurecr.io/search          | 0.9.0 |
 | File             | msosdu.azurecr.io/file            | 0.9.0 |
 | Unit             | msosdu.azurecr.io/unit            | 0.9.0 |
 | CRS-Catalog      | msosdu.azurecr.io/crs-catalog     | 0.9.0 |
