@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2021-06-07
+
+- Policy service enablement
+- Airflow fix for Manifest Ingestion DAGs
+
+## [1.0.6] - 2021-04-09
+
+- Policy service added
 
 ## [1.0.5] - 2021-03-12
 
