@@ -155,6 +155,8 @@ configuration:
       value: contoso.com
     - name: root_data_group_quota
       value: "5000"
+    - name: redis_ttl_seconds
+      value: "1"
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled

@@ -182,6 +182,10 @@ configuration:
       value: opendes    # Make this configurable
     - name: azure_istioauth_enabled
       value: "true"
+    - name: event_grid_enabled
+      value: "false"
+    - name: event_grid_topic
+      value: "schemachangedtopic"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: KEYVAULT_URI
