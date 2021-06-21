@@ -16,4 +16,4 @@ name: osdu-probe-test
 description: A probe-test tool for OSDU on Azure that emits metrics to ApplicationInsights
 type: application
 version: 0.1.4
-appVersion: 0.1.4
+appVersion: 1.9.0
