@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- $serviceName := .Values.serviceName }}
 apiVersion: v1
 kind: PersistentVolumeClaim
