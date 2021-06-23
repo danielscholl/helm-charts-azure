@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- $serviceName := .Values.serviceName }}
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
