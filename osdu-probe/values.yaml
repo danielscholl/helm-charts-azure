@@ -1,0 +1,19 @@
+# This file contains the essential configs for the Azure osdu probe
+
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <tenant_id>
+  subscription: <subscription_id>
+  resourcegroup: <central_resource_group>
+  identity: <identity_name>
+  identity_id: <identity_id>
+  keyvault: <keyvault_name>
+  dns: <fqdn>
+  partition: opendes
+
+
+image:
+  repository: msosdu.azurecr.io
+  tag: <version>

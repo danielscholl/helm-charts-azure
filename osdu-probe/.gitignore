@@ -1,0 +1,4 @@
+.envrc
+*.env
+osdu_probe_custom_values.yaml
+local/*
