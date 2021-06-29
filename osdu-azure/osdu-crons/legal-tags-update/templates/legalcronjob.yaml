@@ -1,0 +1,68 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "legal-tags-update-cronjob"
+  namespace: {{ $namespace }}
+spec:
+  schedule: "0 0 0 * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      parallelism: 1
+      template:
+        metadata:
+          labels:
+            app: {{ .Chart.Name }}
+        spec:
+          restartPolicy: Never
+          volumes:
+            - name: azure-keyvault
+              csi:
+                driver: secrets-store.csi.k8s.io
+                readOnly: true
+                volumeAttributes:
+                  secretProviderClass: azure-keyvault
+          containers:
+            - image: {{ .Values.image.repository }}/legaltags-update-status:{{ .Values.image.tag | default .Chart.Version }}
+              imagePullPolicy: Always
+              name: "legal-tags-update-cron"
+              volumeMounts:
+                - name: azure-keyvault
+                  mountPath: "/mnt/azure-keyvault"
+                  readOnly: true
+              env:
+                - name: OSDU_HOST
+                  value: {{ .Values.azure.dns }}
+                - name: DATA_PARTITION
+                  value: {{ .Values.azure.partition }}
+                - name: TENANT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: active-directory
+                      key: tenantid
+                - name: PRINCIPAL_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: active-directory
+                      key: principal-clientid
+                - name: PRINCIPAL_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: active-directory
+                      key: principal-clientpassword
+                - name: CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: active-directory
+                      key: application-appid
+                - name: APPINSIGHTS_INSTRUMENTATIONKEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: central-logging
+                      key: appinsights
+                - name: VERSION
+                  value: {{ .Values.image.tag }}
