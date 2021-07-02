@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:

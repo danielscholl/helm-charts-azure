@@ -1,5 +1,5 @@
 
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- $serviceType := .Values.service.type }}
 {{- $servicePort := .Values.service.port }}
 {{- $release := .Release.Name }}

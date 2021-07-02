@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- range .Values.configuration }}
 {{- if .pvc }}
 {{- range .pvc }}

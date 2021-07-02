@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $hostName := .Values.ingress.dns -}}
