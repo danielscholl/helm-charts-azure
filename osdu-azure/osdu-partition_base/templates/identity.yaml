@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentity
 metadata:

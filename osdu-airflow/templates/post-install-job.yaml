@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 apiVersion: batch/v1
 kind: Job
 metadata:

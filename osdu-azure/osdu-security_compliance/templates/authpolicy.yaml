@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
 {{- if .auth }}

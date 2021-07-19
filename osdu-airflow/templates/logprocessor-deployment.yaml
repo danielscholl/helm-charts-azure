@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

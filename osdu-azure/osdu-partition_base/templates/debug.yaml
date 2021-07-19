@@ -1,4 +1,4 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 {{- if .Values.global.debug }}
 apiVersion: v1
 kind: Pod

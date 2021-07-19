@@ -1,7 +1,7 @@
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
-  namespace: {{ .Release.namespace }}
+  namespace: {{ .Release.Namespace }}
   name: istio-osdu
 spec:
   profile: default
