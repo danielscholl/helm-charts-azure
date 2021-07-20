@@ -93,6 +93,8 @@ helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install seismic-services osdu-azure/osdu-seismic_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install wellbore-services osdu-azure/osdu-wellbore_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install wellbore-services osdu-azure/osdu-wellbore_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install well-delivery-services osdu-azure/osdu-well-delivery_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```
 
 
