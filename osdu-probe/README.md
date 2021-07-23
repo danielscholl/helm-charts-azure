@@ -46,6 +46,8 @@ Create a Namespace and install the helm chart for OSDU on Azure.
 NAMESPACE=health-probes
 kubectl create namespace $NAMESPACE
 
+# Make sure current location is /helm-charts-azure/osdu-probe/
+
 # Install Charts
-helm install probes osdu-probe -n $NAMESPACE -f osdu_probe_custom_values.yaml
+helm install probes . -n $NAMESPACE -f ./local/osdu_probe_custom_values.yaml
 ```
