@@ -1,0 +1,17 @@
+appgw:
+  subscriptionId: <appgw_subscriptionId>
+  resourceGroup:  <appgw_resourceGroup>
+  applicationGatewayID: <appgw_applicationGatewayID>
+  name: <appgw_name>
+  shared: false
+  usePrivateIP: false
+
+armAuth:
+  identityResourceID: <armAuth_identityResourceID>
+  identityClientID: <armAuth_identityClientID>
+  type: aadPodIdentity
+
+rbac:
+  enabled: true
+
+verbosityLevel: 5
