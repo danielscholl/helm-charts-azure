@@ -4,16 +4,16 @@
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  dns: <fqdn>
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  dns: <azure_dns>
   partition: opendes
 
 
 image:
   repository: msosdu.azurecr.io
-  tag: <version>
+  tag: <image_version>
