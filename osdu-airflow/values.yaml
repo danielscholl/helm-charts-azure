@@ -49,7 +49,6 @@ airflow:
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
         cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
         cert-manager.io/acme-challenge-type: http01
-        appgw.ingress.kubernetes.io/appgw-ssl-certificate: <airflow_ingress_web_annotations_appgw.ingress.kubernetes.io/appgw-ssl-certificate>
       path: "/airflow"
       host: <airflow_ingress_web_host>
       livenessPath: "/airflow/health"
