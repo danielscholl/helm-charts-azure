@@ -12,18 +12,18 @@ __Infrastructure Version:__ [tag/v0.10.0](https://community.opengroup.org/osdu/p
 
 __Charts__
 
-| Chart         | OCI Package                         | Tag   |
-| ------------- | ----------------------------------- | ----- |
-| osdu-base     | msosdu.azurecr.io/helm/osdu-base    | 1.0.0 |
-| osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.3 |
-| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.8 |
+| Chart         | OCI Package                         | Tag    |
+| ------------- | ----------------------------------- | ------ |
+| osdu-base     | msosdu.azurecr.io/helm/osdu-base    | 1.0.0  |
+| osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.3  |
+| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.8  |
 | osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.10.0 |
 
 
 __Microsoft Images__
 
-| Service          | Image                             | Tag   |
-| ---------------- | --------------------------------- | ----- |
+| Service          | Image                             | Tag    |
+| ---------------- | --------------------------------- | ------ |
 | Partition        | msosdu.azurecr.io/partition       | 0.10.0 |
 | Entitlements     | msosdu.azurecr.io/entitlements    | 0.10.0 |
 | Legal            | msosdu.azurecr.io/legal           | 0.10.0 |
