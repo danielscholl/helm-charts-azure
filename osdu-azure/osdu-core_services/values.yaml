@@ -559,49 +559,60 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-
-
-################################################################################
-# Specify the OSDU Functions to Load
-#
-serverless:
-
-  ########################
-  ##  INDEXER_QUEUE FUNCTION
-  #
-  - function: indexer-queue
+    #
+    ##
+    ######################## OSDU Worker Service ############################
+    ##  Indexer Queue
+    #
+  - service: indexer-queue
     repository: msosdu.azurecr.io/indexer-queue
-    minReplicaCount: 1
-    maxReplicaCount: 10
-    servicebusSubscription: recordstopicsubscription
-    servicebusTopic: recordstopic
-
+    keyvault: true
     env:
-    - name: AzureWebJobsStorage
-      value: DefaultEndpointsProtocol=https;AccountName=$(storage_account);AccountKey=$(storage_account_key);EndpointSuffix=core.windows.net
-    - name: INDEXER_WORKER_URL
-      value: http://indexer/api/indexer/v2/_dps/task-handlers/index-worker
-    - name: AzureFunctionsJobHost__functions__0
-      value: enqueue
-    - name: FUNCTIONS_WORKER_RUNTIME
-      value: java
-    - name: TOPIC_NAME
+    - name: spring_application_name
+      value: indexer-queue
+    - name: server_port
+      value: 80
+    - name: azure_servicebus_topic_name
       value: recordstopic
-    - name: SUBSCRIPTION_NAME
+    - name: azure_servicebus_topic_subscription
       value: recordstopicsubscription
-    - name: SERVICE_BUS
+    - name: indexer_worker_url
+      value: http://indexer-service/api/indexer/v2/_dps/task-handlers/index-worker
+    - name: PARTITION_API
+      value: http://partition/api/partition/v1
+    - name: max_concurrent_calls
+      value: "32"
+    - name: executor_n_threads
+      value: "32"
+    - name: max_lock_renew_duration_seconds
+      value: "600"
+    - name: max_delivery_count
+        value: "5"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: AZURE_CLIENT_ID
       secret:
-        name: servicebus
-        key: servicebus-connection
-    - name: storage_account
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
       secret:
-        name: airflow
-        key: storage-account
-    - name: storage_account_key
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
       secret:
-        name: airflow
-        key: storage-key
-    - name: appinsights_key
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: AZURE_APP_RESOURCE_ID
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: azure_application_insights_instrumentation_key
       secret:
         name: central-logging
         key: appinsights
