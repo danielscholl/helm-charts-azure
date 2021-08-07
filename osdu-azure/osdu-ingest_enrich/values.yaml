@@ -213,3 +213,7 @@ configuration:
       secret:
         name: airflow
         key: azurestorageaccountkey
+    - name: dp_airflow_for_system_dag
+      value: "false"
+    - name: ignore_dagContent
+      value: "false"
