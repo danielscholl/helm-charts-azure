@@ -96,6 +96,10 @@ configuration:
       value: osdu-db
     - name: servicebus_topic_name
       value: recordstopic
+    - name: legal_servicebus_topic_name
+      value: legaltagschangedtopiceg
+    - name: legal_servicebus_topic_subscription
+      value: eg_sb_legaltagchangedsubscription
     - name: entitlements_service_endpoint
       value: http://entitlements/api/entitlements/v2
     - name: entitlements_service_api_key

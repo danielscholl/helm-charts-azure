@@ -217,3 +217,9 @@ configuration:
       value: "false"
     - name: ignore_dagContent
       value: "false"
+    - name: cosmosdb_system_database
+      value: osdu-system-db
+    - name: authorizeAPI
+      value: http://entitlements/api/entitlements/v2
+    - name: authorizeAPIKey
+      value: "OBSOLETE"
