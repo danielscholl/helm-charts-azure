@@ -39,6 +39,8 @@ spec:
               value: {{ .Values.azure.dns }}
             - name: DATA_PARTITION
               value: {{ .Values.azure.partition }}
+            - name: SUBSCRIPTION_ID
+              value: {{ .Values.azure.subscription }}
             - name: TENANT_ID
               valueFrom:
                 secretKeyRef:
