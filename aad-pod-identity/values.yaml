@@ -1,0 +1,10 @@
+azureIdentities:
+        podidentity:
+          enabled: true
+          namespace: podidentity
+          type: 0
+          resourceID: <azureIdentities_podidentity_resourceID>
+          clientID: <azureIdentities_podidentity_clientID>
+          binding:
+            selector: "podidentity"
+            name:     "podidentitybinding"

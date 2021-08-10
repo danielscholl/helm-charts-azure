@@ -1,0 +1,3 @@
+secrets-store-csi-driver:
+    linux:
+      metricsAddr: ":8081"
