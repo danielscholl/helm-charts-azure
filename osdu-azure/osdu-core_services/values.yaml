@@ -20,6 +20,13 @@ global:
   replicaCount: 1
 
 ################################################################################
+# Specify KEDA configuration
+#
+keda:
+  version_2_enabled: false
+
+
+################################################################################
 # Specify the azure environment specific values
 #
 azure:
