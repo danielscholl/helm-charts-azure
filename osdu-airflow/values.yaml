@@ -11,6 +11,12 @@ azure:
   keyvault: <keyvault_name>
   appid: <client_id>
 
+################################################################################
+# Specify KEDA configuration
+#
+keda:
+  version_2_enabled: false
+
 
 ################################################################################
 # Specify the Ingress Settings
