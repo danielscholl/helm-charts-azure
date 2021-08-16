@@ -18,6 +18,8 @@
 
 global:
   debug: false
+  nodepool: services
+  isAutoscalingEnabled: false  
 
 ################################################################################
 # Specify the azure environment specific values
