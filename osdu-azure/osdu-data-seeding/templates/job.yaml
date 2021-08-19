@@ -1,0 +1,57 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "data-seeding-job"
+  namespace: {{ $namespace }}
+spec:
+  parallelism: 1
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: azure-keyvault
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: azure-keyvault
+      containers:
+      - image: {{ .Values.image.repository }}/data-seeding-agent:{{ .Values.image.tag | default .Chart.Version }}
+        imagePullPolicy: Always
+        name: "data-seeding-agent"
+        volumeMounts:
+        - name: azure-keyvault
+          mountPath: "/mnt/azure-keyvault"
+          readOnly: true
+        env:
+        - name: ARM_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: active-directory
+              key: tenantid
+        - name: ARM_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: active-directory
+              key: principal-clientid
+        - name: ARM_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: active-directory
+              key: principal-clientpassword
+        - name: PRINCIPAL_OBJECT_ID
+          valueFrom:
+            secretKeyRef:
+              name: active-directory
+              key: principal-objectid
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.storage.partitions }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.azure.resourcegroup }}
+        - name: VERSION
+          value: {{ .Values.image.tag }}
