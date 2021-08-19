@@ -2,3 +2,5 @@ install
 config.yaml
 *_custom_values.yaml
 environments
+.envrc
+*.env
