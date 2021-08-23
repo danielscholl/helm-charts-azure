@@ -14,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.7
+VERSION=1.0.8
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -130,6 +130,9 @@ airflow:
           secretKeyRef:
             name: central-logging
             key: appinsights
+      # Needed for installing python osdu python sdk. In future this will be changed
+      - name: CI_COMMIT_TAG
+        value: "v0.10.0"
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
       - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
@@ -146,6 +149,47 @@ airflow:
         value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
       - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
         value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query_with_cursor"
+    extraConfigmapMounts:
+        - name: remote-log-config
+          mountPath: /opt/airflow/config
+          configMap: airflow-remote-log-config
+          readOnly: true
+    extraPipPackages: [
+        "flask-bcrypt==0.7.1",
+        "apache-airflow[statsd]",
+        "apache-airflow[kubernetes]",
+        "apache-airflow-backport-providers-microsoft-azure==2021.2.5",
+        "dataclasses==0.8",
+        "google-cloud-storage",
+        "python-keycloak==0.24.0",
+        "msal==1.9.0",
+        "azure-identity==1.5.0",
+        "azure-keyvault-secrets==4.2.0",
+        "azure-storage-blob",
+        "azure-servicebus==7.0.1",
+        "toposort==1.6",
+        "strict-rfc3339==0.7",
+        "jsonschema==3.2.0",
+        "pyyaml==5.4.1",
+        "requests==2.25.1",
+        "tenacity==8.0.1",
+        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.10.0.tar.gz"
+    ]
+    extraVolumeMounts:
+        - name: azure-keyvault
+          mountPath: "/mnt/azure-keyvault"
+          readOnly: true
+        - name: dags-data
+          mountPath: /opt/airflow/plugins
+          subPath: plugins
+    extraVolumes:
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+
 EOF
 ```
 

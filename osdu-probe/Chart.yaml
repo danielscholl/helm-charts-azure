@@ -12,7 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 apiVersion: v2
-name: probe-test
+name: osdu-probe
 description: A probe-test tool for OSDU on Azure that emits metrics to ApplicationInsights
 type: application
 version: 0.9.0

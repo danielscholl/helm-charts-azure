@@ -1,0 +1,18 @@
+# This file contains the essential configs for the Azure Data Seeding Agent
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <tenant>
+  subscription: <subscription>
+  resourcegroup: <resourcegroupp>
+  identity: <identity>
+  identity_id: <identity_id>
+  keyvault: <keyvault>
+
+storage:
+  partitions: <partitions> #A comma separated(no space) list of partition names
+
+image:
+  repository: msosdu.azurecr.io
+  tag: <version>
