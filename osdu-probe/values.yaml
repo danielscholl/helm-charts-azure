@@ -15,5 +15,5 @@ azure:
 
 
 image:
-  repository: msosdu.azurecr.io/probe-test
+  repository: msosdu.azurecr.io/osdu-probe
   tag: <image_version>
