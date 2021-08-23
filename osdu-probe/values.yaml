@@ -15,5 +15,5 @@ azure:
 
 
 image:
-  repository: msosdu.azurecr.io/osdu-probe
+  repository: msosdu.azurecr.io/helm
   tag: <image_version>
