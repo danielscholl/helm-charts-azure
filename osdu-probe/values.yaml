@@ -15,5 +15,5 @@ azure:
 
 
 image:
-  repository: msosdu.azurecr.io/helm
+  repository: msosdu.azurecr.io
   tag: <image_version>
