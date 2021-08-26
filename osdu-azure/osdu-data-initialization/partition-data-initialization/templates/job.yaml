@@ -1,0 +1,27 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "partition-data-initialization-job"
+  namespace: {{ $namespace }}
+spec:
+  parallelism: 1
+  backoffLimit: 5
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.image.repository }}/partition-data-init:{{ .Values.image.tag | default .Chart.Version }}
+        imagePullPolicy: Always
+        name: "partition-data-init"
+        env:
+        - name: OSDU_HOST
+          value: {{ .Values.ingress.dns }}
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.storage.partitions }}
+        - name: VERSION
+          value: {{ .Values.image.tag }}
