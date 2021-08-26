@@ -134,6 +134,8 @@ configuration:
       value: "400"
     - name: "SERVER_TOMCAT_MINSPARETHREADS"
       value: "200"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -150,8 +152,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  SCHEMA SERVICE
@@ -204,6 +204,8 @@ configuration:
       value: "schemachangedtopic"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -228,8 +230,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  FILE SERVICE
@@ -287,6 +287,8 @@ configuration:
       value: "100"
     - name: SEARCH_QUERY_LIMIT
       value: "1000"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
@@ -311,8 +313,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  INDEXER SERVICE
@@ -374,6 +374,8 @@ configuration:
       value: true
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -390,8 +392,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  SEARCH SERVICE
@@ -452,6 +452,8 @@ configuration:
       value: true
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -468,8 +470,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  REGISTER SERVICE
@@ -509,6 +509,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -521,8 +523,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
     # These are env variables that will prepend https://{{ DNS }} to the value.
     env_with_dns:
       - name: RECORDS_CHANGE_PUBSUB_ENDPOINT
@@ -573,6 +573,8 @@ configuration:
       value: "true"
     - name: LOG_PREFIX
       value: "notification"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -585,8 +587,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
 
 
 ################################################################################
@@ -617,6 +617,8 @@ serverless:
       value: recordstopic
     - name: SUBSCRIPTION_NAME
       value: recordstopicsubscription
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: SERVICE_BUS
       secret:
         name: servicebus
@@ -633,5 +635,3 @@ serverless:
       secret:
         name: central-logging
         key: appinsights
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}

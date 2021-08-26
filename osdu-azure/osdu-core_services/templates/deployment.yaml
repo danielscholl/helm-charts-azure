@@ -75,7 +75,8 @@ spec:
             {{- range .env }}
             - name: {{ .name }}
               {{- if .value }}
-              value: {{ .value | quote }}
+              {{- $v := .value }}
+              value: {{ tpl ($v | quote) $ }}
               {{- end }}
               {{- if .config }}
               valueFrom:

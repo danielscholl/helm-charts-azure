@@ -30,7 +30,7 @@ azure:
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
-  v2authnenabled: <azure_v2authnenabled>
+  v2authnenabled: true
 
 
 ################################################################################
@@ -55,8 +55,7 @@ identity:
 service:
   type: ClusterIP
   port: 80
-
-
+  
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -111,6 +110,8 @@ configuration:
       value: "api://$(aad_client_id)"
     - name: azure_activedirectory_session_stateless
       value: "true"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.v2authnenabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -139,5 +140,3 @@ configuration:
       secret:
         name: active-directory
         key: application-appid
-    - name: azure_paas_podIdentity_isEnabled
-      value: {{ .Values.azure.v2authnenabled }}
