@@ -1,6 +1,6 @@
 {{- $tenant := .Values.global.azure.tenant -}}
 {{- $ad_application := .Values.global.azure.appid -}}
-{{- if .Values.azure.v2authnenabled }}
+{{- if .Values.global.azure.v2authnenabled }}
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
 metadata:
