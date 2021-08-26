@@ -52,6 +52,7 @@ global:
   azure:
     tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
     appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
+	v2authnenabled: false
 EOF
 ```
 

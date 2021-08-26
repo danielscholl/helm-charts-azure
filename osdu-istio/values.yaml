@@ -26,6 +26,7 @@ global:
   azure:
     tenant: <azure_tenant>
     appid: <azure_appid>
+    v2authnenabled: <azure_v2authnenabled>
 
   ################################################################################
   # Specify the istio specific values
