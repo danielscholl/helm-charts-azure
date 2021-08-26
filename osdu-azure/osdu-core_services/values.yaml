@@ -37,6 +37,7 @@ azure:
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
+  v2authnenabled: <azure_v2authnenabled>
 
 
 ################################################################################
@@ -149,6 +150,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  SCHEMA SERVICE
@@ -225,6 +228,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  FILE SERVICE
@@ -306,6 +311,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  INDEXER SERVICE
@@ -383,6 +390,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  SEARCH SERVICE
@@ -459,6 +468,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  REGISTER SERVICE
@@ -510,6 +521,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
     # These are env variables that will prepend https://{{ DNS }} to the value.
     env_with_dns:
       - name: RECORDS_CHANGE_PUBSUB_ENDPOINT
@@ -572,6 +585,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
 
 ################################################################################
@@ -618,3 +633,5 @@ serverless:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}

@@ -37,6 +37,7 @@ azure:
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
+  v2authnenabled: <azure_v2authnenabled>
 
 
 ################################################################################
@@ -133,6 +134,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
 
   ########################
@@ -230,3 +233,5 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: authorizeAPIKey
       value: "OBSOLETE"
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}

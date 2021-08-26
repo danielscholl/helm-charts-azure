@@ -30,6 +30,7 @@ azure:
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
+  v2authnenabled: <azure_v2authnenabled>
 
 
 ################################################################################
@@ -124,6 +125,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
 
   ########################
@@ -175,6 +178,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
 
   ########################
   ##  LEGAL SERVICE
@@ -257,6 +262,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: azure_paas_podIdentity_isEnabled
+      value: {{ .Values.azure.v2authnenabled }}
   ########################
   ##  Policy SERVICE
   # Note: Not a swagger implementation - Will add in later release.
@@ -289,3 +296,5 @@ configuration:
         value: "http://legal"
       - name: ENTITLEMENTS_BASE_PATH
         value: "/api/entitlements/v2/groups"
+      - name: azure_paas_podIdentity_isEnabled
+        value: {{ .Values.azure.v2authnenabled }}

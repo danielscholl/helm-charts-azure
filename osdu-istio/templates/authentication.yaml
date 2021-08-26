@@ -1,5 +1,35 @@
 {{- $tenant := .Values.global.azure.tenant -}}
 {{- $ad_application := .Values.global.azure.appid -}}
+{{- if .Values.azure.v2authnenabled }}
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: osdu-jwt-auth
+  namespace: {{ .Release.Namespace}}
+spec:
+  jwtRules:
+    {{- range .Values.jwt }}
+    - issuer: "{{ .issuer }}"
+      jwksUri: "{{ .jwksUri }}"
+      {{- if .audiences }}
+      {{- with .audiences }}
+      audiences:
+        {{- toYaml . | nindent 8 }}
+          {{- end }}
+      {{- end }}
+      forwardOriginalToken: TRUE
+      outputPayloadToHeader: "x-payload"
+    {{- end }}
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: osdu-peer-auth
+  namespace: {{ .Release.Namespace }}
+spec:
+  mtls:
+    mode: PERMISSIVE
+{{- else }}
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
 metadata:
@@ -29,3 +59,4 @@ metadata:
 spec:
   mtls:
     mode: PERMISSIVE
+{{- end }}
