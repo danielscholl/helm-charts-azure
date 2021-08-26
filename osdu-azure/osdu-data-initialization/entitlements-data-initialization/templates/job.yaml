@@ -1,0 +1,31 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "entitlements-data-initialization-job"
+  namespace: {{ $namespace }}
+spec:
+  parallelism: 1
+  backoffLimit: 5
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.image.repository }}/entitlements-data-init:{{ .Values.image.tag | default .Chart.Version }}
+        imagePullPolicy: Always
+        name: "entitlements-data-init"
+        env:
+        - name: ADMIN_ID
+          value: {{ .Values.credentials.admin_id }}
+        - name: SERVICE_DOMAIN
+          value: {{ .Values.credentials.service_domain }}
+        - name: OSDU_HOST
+          value: {{ .Values.ingress.dns }}
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.storage.partitions }}
+        - name: VERSION
+          value: {{ .Values.image.tag }}
