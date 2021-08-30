@@ -24,13 +24,14 @@ global:
 #
 azure:
   tenant: <azure_tenant>
+  mstenant: <azure_mstenant>
   subscription: <azure_subscription>
   resourcegroup: <azure_resourcegroup>
   identity: <azure_identity>
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
-  v2authnenabled: <azure_v2authnenabled>
+  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
 
 ################################################################################
@@ -98,7 +99,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -167,7 +168,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -235,7 +236,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -297,4 +298,4 @@ configuration:
       - name: ENTITLEMENTS_BASE_PATH
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
-        value: "{{ .Values.azure.v2authnenabled }}"
+        value: "{{ .Values.azure.podIdentityAuthEnabled }}"

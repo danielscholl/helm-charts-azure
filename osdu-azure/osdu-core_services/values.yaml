@@ -37,7 +37,7 @@ azure:
   identity_id: <azure_identity_id>
   keyvault: <azure_keyvault>
   appid: <azure_appid>
-  v2authnenabled: <azure_v2authnenabled>
+  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
 
 ################################################################################
@@ -135,7 +135,7 @@ configuration:
     - name: "SERVER_TOMCAT_MINSPARETHREADS"
       value: "200"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -205,7 +205,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -288,7 +288,7 @@ configuration:
     - name: SEARCH_QUERY_LIMIT
       value: "1000"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
@@ -375,7 +375,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -453,7 +453,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -510,7 +510,7 @@ configuration:
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -574,7 +574,7 @@ configuration:
     - name: LOG_PREFIX
       value: "notification"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -618,7 +618,7 @@ serverless:
     - name: SUBSCRIPTION_NAME
       value: recordstopicsubscription
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.v2authnenabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: SERVICE_BUS
       secret:
         name: servicebus

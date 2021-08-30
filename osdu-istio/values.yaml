@@ -26,7 +26,7 @@ global:
   azure:
     tenant: <azure_tenant>
     appid: <azure_appid>
-    v2authnenabled: <azure_v2authnenabled>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
   ################################################################################
   # Specify the istio specific values
