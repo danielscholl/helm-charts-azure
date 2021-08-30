@@ -1,4 +1,4 @@
-{{- if .Values.azure.podIdentityAuthEnabled }}
+{{- if eq .Values.azure.podIdentityAuthEnabled "true" }}
 {{- $mstenant := .Values.azure.mstenant -}}
 {{- $namespace := .Release.Namespace }}
 apiVersion: networking.istio.io/v1alpha3
