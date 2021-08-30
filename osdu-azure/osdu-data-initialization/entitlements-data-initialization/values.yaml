@@ -2,9 +2,11 @@
 ################################################################################
 # Specify the azure environment specific values
 #
-credentials:
-  admin_id: <admin_id> # can be an AAD App OID or a user email
-  service_domain: <service_domain>
+azure:
+  appid: <aad client/app id> # can be an AAD App OID or a user email
+
+service:
+  domain: <service_domain> # eg: contoso.com
 
 ingress:
   dns: <dns>

@@ -20,9 +20,9 @@ spec:
         name: "entitlements-data-init"
         env:
         - name: ADMIN_ID
-          value: {{ .Values.credentials.admin_id }}
+          value: {{ .Values.azure.appid }}
         - name: SERVICE_DOMAIN
-          value: {{ .Values.credentials.service_domain }}
+          value: {{ .Values.service.domain }}
         - name: OSDU_HOST
           value: {{ .Values.ingress.dns }}
         - name: PARTITIONS # comma separated list of partitions
