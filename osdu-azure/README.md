@@ -63,6 +63,7 @@ azure:
   keyvault: $ENV_VAULT
   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
   podIdentityAuthEnabled: false
+  oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
 
 ################################################################################
 # Specify the Ingress Settings

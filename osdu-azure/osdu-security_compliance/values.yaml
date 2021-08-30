@@ -32,6 +32,7 @@ azure:
   keyvault: <azure_keyvault>
   appid: <azure_appid>
   podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  oidAuthEnabled: <azure_oidAuthEnabled>
 
 
 ################################################################################
