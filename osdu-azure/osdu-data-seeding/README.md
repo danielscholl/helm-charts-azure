@@ -28,10 +28,14 @@ azure:
   identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
   identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
   keyvault: $ENV_VAULT
+  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/app-dev-sp-username --query value -otsv)
 
 storage:
   partitions: $PARTITIONS
 
+config:
+  configmapname: 
+  
 image:
   repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io
   tag: ${IMAGE_VERSION}

@@ -3,6 +3,7 @@
 # Specify the azure environment specific values
 #
 azure:
+  resourcegroup: <resourcegroupp>
   appid: <aad client/app id> # can be an AAD App OID or a user email
 
 service:
@@ -13,6 +14,9 @@ ingress:
 
 storage:
   partitions: <partitions> #A comma separated(no space) list of partition names
+
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io
