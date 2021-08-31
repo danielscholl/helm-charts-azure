@@ -2,11 +2,17 @@
 ################################################################################
 # Specify the azure environment specific values
 #
+azure:
+  resourcegroup: <resourcegroupp>
+
 ingress:
   dns: <dns>
 
 storage:
   partitions: <partitions> #A comma separated(no space) list of partition names
+
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io

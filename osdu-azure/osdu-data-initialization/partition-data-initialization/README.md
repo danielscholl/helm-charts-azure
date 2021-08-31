@@ -21,11 +21,17 @@ cat > ./local/partition_data_init_custom_values.yaml << EOF
 ################################################################################
 # Specify the azure environment specific values
 #
+azure:
+  resourcegroup: $GROUP
+
 ingress:
   dns: $OSDU_HOST
 
 storage:
   partitions: $PARTITIONS
+
+config:
+  configmapname: 
 
 image:
   repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io
