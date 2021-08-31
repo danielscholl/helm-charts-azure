@@ -27,7 +27,7 @@ spec:
               request_handle:headers():remove("x-user-id")
               request_handle:headers():remove("x-app-id")
             end
-{{- if eq .Values.azure.oidAuthEnabled "true" }}
+{{- if .Values.azure.oidAuthEnabled }}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
