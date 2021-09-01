@@ -136,7 +136,6 @@ configuration:
   #
   - service: entitlements
     repository: msosdu.azurecr.io/entitlements
-    tag: test
     path: /api/entitlements/v2/*
     probe: /api/entitlements/v2/_ah/readiness_check
     keyvault: true
@@ -189,7 +188,6 @@ configuration:
   #
   - service: legal
     repository: msosdu.azurecr.io/legal
-    tag: test
     path: /api/legal/v1/*
     probe: /api/legal/v1/swagger-ui.html
     keyvault: true

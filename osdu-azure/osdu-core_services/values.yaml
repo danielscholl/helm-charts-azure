@@ -74,7 +74,6 @@ configuration:
   #
   - service: storage
     repository: msosdu.azurecr.io/storage
-    tag: test
     path: /api/storage/v2/*
     probe: /api/storage/v2/swagger-ui.html
     keyvault: true
