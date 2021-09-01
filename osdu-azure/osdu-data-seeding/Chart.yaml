@@ -11,10 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
 apiVersion: v2
-name: osdu-azure
+name: data-seeding-agent
+description: A data seeding for OSDU on Azure that uploads/ingests data required for OSDU to function
 type: application
-description: Installs OSDU on Azure
-version: 1.10.0
-appVersion: 0.10.0  # This isn't used just for documentation.
+version: 0.10.0
+appVersion: 1.10.0

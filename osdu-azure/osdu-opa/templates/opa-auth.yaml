@@ -13,4 +13,4 @@ spec:
   rules:
     - from:
         - source:
-            namespaces: [{{ $namespace }}]
+            namespaces: []

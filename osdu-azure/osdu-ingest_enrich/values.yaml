@@ -20,6 +20,13 @@ global:
   replicaCount: 1
 
 ################################################################################
+# Specify KEDA configuration
+#
+keda:
+  version_2_enabled: false
+
+
+################################################################################
 # Specify the azure environment specific values
 #
 azure:
@@ -213,3 +220,13 @@ configuration:
       secret:
         name: airflow
         key: azurestorageaccountkey
+    - name: dp_airflow_for_system_dag
+      value: "false"
+    - name: ignore_dagContent
+      value: "false"
+    - name: cosmosdb_system_database
+      value: osdu-system-db
+    - name: authorizeAPI
+      value: http://entitlements/api/entitlements/v2
+    - name: authorizeAPIKey
+      value: "OBSOLETE"

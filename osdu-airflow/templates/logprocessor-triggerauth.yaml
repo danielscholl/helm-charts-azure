@@ -1,9 +1,0 @@
-{{- $namespace := .Release.Namespace }}
-apiVersion: keda.k8s.io/v1alpha1
-kind: TriggerAuthentication
-metadata:
-  name: azure-queue-auth
-  namespace: {{ $namespace }}
-spec:
-  podIdentity:
-    provider: azure
