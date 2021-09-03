@@ -598,7 +598,7 @@ configuration:
     - name: max_lock_renew_duration_seconds
       value: "600"
     - name: max_delivery_count
-        value: "5"
+      value: "5"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
