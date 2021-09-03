@@ -138,3 +138,5 @@ configuration:
       secret:
         name: active-directory
         key: application-appid
+    - name: azure_istioauth_enabled
+      value: "true"
