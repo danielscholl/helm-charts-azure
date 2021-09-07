@@ -18,7 +18,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       volumes:
-      - name: azure-keyvault
+      - name: seeder-azure-keyvault
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: Always
         name: "data-seeding-agent"
         volumeMounts:
-        - name: azure-keyvault
+        - name: seeder-azure-keyvault
           mountPath: "/mnt/azure-keyvault"
           readOnly: true
         env:
@@ -55,6 +55,8 @@ spec:
             secretKeyRef:
               name: active-directory
               key: principal-objectid
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
         - name: ARM_SUBSCRIPTION_ID
           value: {{ .Values.azure.subscription }}
         - name: PARTITIONS # comma separated list of partitions

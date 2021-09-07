@@ -24,6 +24,8 @@ spec:
         env:
         - name: ADMIN_ID
           value: {{ .Values.azure.appid }}
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
         - name: SERVICE_DOMAIN
           value: {{ .Values.service.domain }}
         - name: OSDU_HOST

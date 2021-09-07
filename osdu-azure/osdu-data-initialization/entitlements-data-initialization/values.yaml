@@ -3,21 +3,22 @@
 # Specify the azure environment specific values
 #
 azure:
-  resourcegroup: <resourcegroupp>
-  appid: <aad client/app id> # can be an AAD App OID or a user email
+  resourcegroup: <azure_resourcegroup>
+  identity_id: <azure_identity_id>
+  appid: <azure_appid> # can be an AAD App OID or a user email
 
 service:
   domain: <service_domain> # eg: contoso.com
 
 ingress:
-  dns: <dns>
+  dns: <ingress_dns>
 
 storage:
-  partitions: <partitions> #A comma separated(no space) list of partition names
+  partitions: <storage_partitions> #A comma separated(no space) list of partition names
 
 config:
   configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io
-  tag: <version>
+  tag: <image_tag>

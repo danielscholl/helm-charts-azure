@@ -3,17 +3,18 @@
 # Specify the azure environment specific values
 #
 azure:
-  resourcegroup: <resourcegroupp>
+  resourcegroup: <azure_resourcegroup>
+  identity_id: <azure_identity_id>
 
 ingress:
-  dns: <dns>
+  dns: <ingress_dns>
 
 storage:
-  partitions: <partitions> #A comma separated(no space) list of partition names
+  partitions: <storage_partitions> #A comma separated(no space) list of partition names
 
 config:
   configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io
-  tag: <version>
+  tag: <image_tag>
