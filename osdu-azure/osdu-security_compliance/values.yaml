@@ -136,6 +136,7 @@ configuration:
   #
   - service: entitlements
     repository: msosdu.azurecr.io/entitlements
+    tag: test
     path: /api/entitlements/v2/*
     probe: /api/entitlements/v2/_ah/readiness_check
     keyvault: true
@@ -188,6 +189,7 @@ configuration:
   #
   - service: legal
     repository: msosdu.azurecr.io/legal
+    tag: test
     path: /api/legal/v1/*
     probe: /api/legal/v1/swagger-ui.html
     keyvault: true
@@ -246,18 +248,6 @@ configuration:
       config:
         name: osdu-svc-config
         key: REDIS_DB_LEGAL
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory
