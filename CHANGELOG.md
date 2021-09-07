@@ -57,7 +57,7 @@ __Charts__
 | osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.1 |
 | osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.7 |
 | osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.9.0 |
-
+| ddms-seismic  | msosdu.azurecr.io/helm/ddms-seismic    | 1.9.0 |
 
 __Microsoft Images__
 
