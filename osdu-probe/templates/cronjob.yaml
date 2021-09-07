@@ -17,6 +17,7 @@ spec:
         metadata:
           labels:
             app: {{ .Chart.Name }}
+            aadpodidbinding: osdu-identity
         spec:
           restartPolicy: Never
           volumes:

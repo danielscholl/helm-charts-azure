@@ -4,17 +4,21 @@ kind: Job
 metadata:
   name: "data-seeding-job"
   namespace: {{ $namespace }}
+  labels:
+    app: "data-seeding-job"
 spec:
+  completions: 1
   parallelism: 1
   backoffLimit: 4
   template:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
     spec:
       restartPolicy: OnFailure
       volumes:
-      - name: azure-keyvault
+      - name: seeder-azure-keyvault
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
@@ -25,10 +29,12 @@ spec:
         imagePullPolicy: Always
         name: "data-seeding-agent"
         volumeMounts:
-        - name: azure-keyvault
+        - name: seeder-azure-keyvault
           mountPath: "/mnt/azure-keyvault"
           readOnly: true
         env:
+        - name: ADMIN_ID
+          value: {{ .Values.azure.appid }}
         - name: ARM_TENANT_ID
           valueFrom:
             secretKeyRef:
@@ -49,9 +55,15 @@ spec:
             secretKeyRef:
               name: active-directory
               key: principal-objectid
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
+        - name: ARM_SUBSCRIPTION_ID
+          value: {{ .Values.azure.subscription }}
         - name: PARTITIONS # comma separated list of partitions
           value: {{ .Values.storage.partitions }}
         - name: RESOURCE_GROUP_NAME
           value: {{ .Values.azure.resourcegroup }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
         - name: VERSION
           value: {{ .Values.image.tag }}
