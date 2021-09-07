@@ -23,6 +23,7 @@ cat > ./local/partition_data_init_custom_values.yaml << EOF
 #
 azure:
   resourcegroup: $GROUP
+  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
 
 ingress:
   dns: $OSDU_HOST

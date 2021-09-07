@@ -3,20 +3,20 @@
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant>
-  subscription: <subscription>
-  resourcegroup: <resourcegroupp>
-  identity: <identity>
-  identity_id: <identity_id>
-  keyvault: <keyvault>
-  appid: <aad client/app id> # can be an AAD App OID or a user email
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid> # can be an AAD App OID or a user email
 
 storage:
-  partitions: <partitions> #A comma separated(no space) list of partition names
+  partitions: <storage_partitions> #A comma separated(no space) list of partition names
 
 config:
   configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io
-  tag: <version>
+  tag: <image_tag>

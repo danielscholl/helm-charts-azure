@@ -26,6 +26,8 @@ spec:
           value: {{ .Values.ingress.dns }}
         - name: RESOURCE_GROUP_NAME
           value: {{ .Values.azure.resourcegroup }}
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
         - name: PARTITIONS # comma separated list of partitions
           value: {{ .Values.storage.partitions }}
         - name: CONFIG_MAP_NAME

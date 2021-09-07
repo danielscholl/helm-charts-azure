@@ -23,7 +23,8 @@ cat > ./local/entitlements_data_init_custom_values.yaml << EOF
 #
 azure:
   resourcegroup: $GROUP
-  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/app-dev-sp-username --query value -otsv)-
+  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/app-dev-sp-username --query value -otsv)-rg
+  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
 
 ingress:
   dns: $OSDU_HOST
