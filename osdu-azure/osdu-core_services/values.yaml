@@ -603,8 +603,6 @@ serverless:
       value: recordstopic
     - name: SUBSCRIPTION_NAME
       value: recordstopicsubscription
-    - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: SERVICE_BUS
       secret:
         name: servicebus
