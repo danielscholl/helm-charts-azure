@@ -111,6 +111,8 @@ configuration:
       value: "api://$(aad_client_id)"
     - name: azure_activedirectory_session_stateless
       value: "false"
+    - name: azure_istioauth_enabled
+      value: "true"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
