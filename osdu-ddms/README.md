@@ -1,6 +1,6 @@
 # Helm Chart for OSDU DDMS on Azure
 
-| `osdu-*-*`          | app-version  |
+| `ddms-*-*`          | app-version  |
 | ------------------- | ----------   |
 | 1.9.0               | 0.9.0        |
 
@@ -79,12 +79,18 @@ Install the helm chart.
 
 # DDMS Namespace
 SDMS_NAMESPACE=ddms-seismic
+WDMS_NAMESPACE=ddms-wellbore
+NAMESPACE=osdu-azure
+
 kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESPACE istio-injection=enabled
+kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml
+helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 
-WDMS_NAMESPACE=osdu-azure #to be moved in next MR
-helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml
+
+# Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces for now its in osdu-azure
+helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 ```
 

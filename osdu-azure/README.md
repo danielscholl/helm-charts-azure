@@ -92,11 +92,6 @@ helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE
 helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
-
-# Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces
-helm install seismic-services osdu-azure/osdu-seismic_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install wellbore-services osdu-azure/osdu-wellbore_dms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 ```
 
 

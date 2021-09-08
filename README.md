@@ -27,3 +27,5 @@ Charts should be installed in the following order.
 2. [osdu-istio](osdu-istio/README.md)
 3. [osdu-airflow](osdu-airflow/README.md)
 4. [osdu-azure](osdu-azure/README.md)
+4. [ddms-*](osdu-ddms/README.md)
+

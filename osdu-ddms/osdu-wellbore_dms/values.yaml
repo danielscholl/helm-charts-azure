@@ -73,6 +73,7 @@ configuration:
     repository: msosdu.azurecr.io/wellbore-ddms
     path: /api/os-wellbore-ddms/*
     probe: /api/os-wellbore-ddms/healthz
+    keyvault: true
     auth:
       disable:
         - "/api/os-wellbore-ddms/"
