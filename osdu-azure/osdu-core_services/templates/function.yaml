@@ -1,0 +1,49 @@
+{{- $namespace := .Release.Namespace }}
+{{- $pullPolicy := .Values.pullPolicy -}}
+{{- $replicaCount := .Values.global.replicaCount -}}
+{{- $version := .Chart.AppVersion -}}
+{{- $release := .Release.Name }}
+{{- range .Values.serverless }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .function }}
+  namespace: {{ $namespace }}
+spec:
+  replicas: {{ .replicaCount | default $replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .function }}
+  template:
+    metadata:
+      labels:
+        app: {{ .function }}
+        aadpodidbinding: osdu-identity
+    spec:
+      containers:
+        - name: indexer-queue
+          image: {{ .repository }}:{{ .tag | default $version }}
+          imagePullPolicy: {{ $pullPolicy | default "Always" }}
+          {{- if .env }}
+          env:
+            {{- range .env }}
+            - name: {{ .name }}
+              {{- if .value }}
+              value: {{ .value | quote }}
+              {{- end }}
+              {{- if .config }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .config.name }}
+                  key: {{ .config.key | quote }}
+              {{- end }}
+              {{- if .secret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret.name | quote }}
+                  key: {{ .secret.key | quote }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+---
+{{- end }}

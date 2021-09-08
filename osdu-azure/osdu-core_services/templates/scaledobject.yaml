@@ -1,0 +1,47 @@
+{{- $namespace := .Release.Namespace }}
+{{- $serviceType := .Values.service.type }}
+{{- $servicePort := .Values.service.port }}
+{{- $release := .Release.Name }}
+{{- $isKedaV2Enabled := .Values.keda.version_2_enabled | default false -}}
+{{- range .Values.serverless }}
+
+{{- if $isKedaV2Enabled }}
+apiVersion: keda.sh/v1alpha1
+  {{- else }}
+apiVersion: keda.k8s.io/v1alpha1
+  {{- end }}
+kind: ScaledObject
+metadata:
+  name: {{ .function }}
+  namespace: {{ $namespace }}
+  {{- if $isKedaV2Enabled }}
+  {{- else }}
+  labels:
+    deploymentName: {{ .function }}
+  {{- end}}
+spec:
+  scaleTargetRef:
+    {{- if $isKedaV2Enabled }}
+    name: {{ .function }}
+    {{- else }}
+    deploymentName: {{ .function }}
+    {{- end }}
+  pollingInterval: 30  # Optional. Default: 30 seconds
+  cooldownPeriod:  60  # Optional. Default: 300 seconds
+  minReplicaCount: {{ .minReplicaCount }}
+  maxReplicaCount: {{ .maxReplicaCount }}
+  triggers:
+    - type: azure-servicebus
+      metadata:
+        subscriptionName: {{ .servicebusSubscription }}
+        topicName: {{ .servicebusTopic }}
+        {{- if $isKedaV2Enabled }}
+        connectionFromEnv: SERVICE_BUS # This must be a connection string for a queue itself, and not a namespace level (e.g. RootAccessPolicy) connection string [#215](https://github.com/kedacore/keda/issues/215)
+        {{- else }}
+        type: serviceBusTrigger
+        direction: in
+        name: message
+        connection: SERVICE_BUS
+        {{- end }}
+---
+{{- end }}
