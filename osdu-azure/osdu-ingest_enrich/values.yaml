@@ -74,6 +74,7 @@ configuration:
   - service: wks
     scaledObject: true
     repository: msosdu.azurecr.io/wks
+    tag: test
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true
