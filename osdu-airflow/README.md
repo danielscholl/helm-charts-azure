@@ -32,6 +32,7 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
+AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -130,6 +131,10 @@ airflow:
           secretKeyRef:
             name: central-logging
             key: appinsights
+      - name: AIRFLOW_VAR_AZURE_DNS_HOST
+        value: $DNS_HOST
+      - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
+        value: $AZURE_ENABLE_MSI             
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
         value: "v0.11.0"
