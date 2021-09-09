@@ -207,7 +207,11 @@ airflow:
          secretKeyRef:
           name: central-logging
           key: appinsights
-    # Needed for installing python osdu python sdk. In future this will be changed
+    - name: AIRFLOW_VAR_AZURE_DNS_HOST
+      value: <dns_host>
+    - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
+      value: <azure_enable_msi>
+      # Needed for installing python osdu python sdk. In future this will be changed
     - name: CI_COMMIT_TAG
       value: "v0.11.0"
     ## Begin -- Ingest Manifest DAG variables
