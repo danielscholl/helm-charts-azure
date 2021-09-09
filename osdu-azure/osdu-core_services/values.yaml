@@ -18,6 +18,9 @@
 
 global:
   replicaCount: 1
+  nodepool: services
+  isAutoscalingEnabled: false
+
 
 ################################################################################
 # Specify KEDA configuration

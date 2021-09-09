@@ -22,6 +22,10 @@ spec:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
     spec:
+{{- if .Values.global.isAutoscalingEnabled }}
+      nodeSelector:
+        nodepool: {{ .Values.global.nodepool }} 
+{{- end }}      
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault
