@@ -21,3 +21,4 @@ __Supported OSDU Services__
 - [Search Service](https://community.opengroup.org/osdu/platform/system/search-service)
 - [Register Service](https://community.opengroup.org/osdu/platform/system/register)
 - [Notification Service](https://community.opengroup.org/osdu/platform/system/notification)
+- [Dataset Service](https://community.opengroup.org/osdu/platform/system/dataset)
