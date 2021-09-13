@@ -573,6 +573,84 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+
+      ########################
+      ##  DATASET SERVICE
+      #
+  - service: dataset
+    repository: msosdu.azurecr.io/dataset
+    path: /api/dataset/*
+    probe: /api/dataset/v1/readiness_check
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/index.html"
+        - "*/api-docs"
+        - "*/configuration/ui"
+        - "*/configuration/security"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "/api/dataset/swagger-resources/*"
+        - "/api/dataset/webjars/*"
+        - "*/actuator/health"
+        - "*/readiness_check"
+        - "*/_ah/**"
+    env:
+    - name: spring.application.name
+      value: dataset
+    - name: server.servlet.contextPath
+      value: /api/dataset/v1
+    - name: server_port
+      value: "80"
+    - name: ACCEPT_HTTP  # TEMPORARY UNTIL HTTPS
+      value: "true"
+    - name: KEYVAULT_URI
+      valueFrom:
+        configMapKeyRef:
+          name: osdu-svc-properties
+          key: ENV_KEYVAULT
+    - name: AZURE_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: active-directory
+          key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: active-directory
+          key: principal-clientpassword
+    - name: AZURE_AD_APP_RESOURCE_ID
+      valueFrom:
+        secretKeyRef:
+          name: active-directory
+          key: application-appid
+    - name: AZURE_TENANT_ID
+      valueFrom:
+        secretKeyRef:
+          name: active-directory
+          key: tenantid
+    - name: appinsights_key
+      valueFrom:
+        secretKeyRef:
+          name: central-logging
+          key: appinsights
+    - name: entitlements_service_endpoint
+      value: http://entitlements/api/entitlements/v2
+    - name: entitlements_app_key
+      value: "OBSOLETE"
+    - name: storage_service_endpoint
+      value: http://storage/api/storage/v2
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: schema_service_endpoint
+      value: http://schema/api/schema-service/v1
+    - name: file_service_endpoint
+      value: http://file/api/file/v2/files
+
     #
     ##
     ######################## OSDU Worker Service ############################
