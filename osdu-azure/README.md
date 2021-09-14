@@ -2,6 +2,7 @@
 
 | `osdu-*-*`          | app-version  |
 | ------------------- | ----------   |
+| 1.11.0               | 0.11.0        |
 | 1.10.0               | 0.10.0        |
 | 1.9.0               | 0.9.0        |
 | 1.8.1               | 0.8.0        |
@@ -17,7 +18,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.10.0
+VERSION=1.11.0
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -94,6 +95,15 @@ helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -
 helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```
 
+__DDMS Moved__
+
+The following services have been moved to new namespaces:
+1. Seismic Store Service 
+2. Wellbore DDMS 
+
+Well Delivery DDMS is still in 'osdu' namespace
+
+Click [here](osdu-ddms/README.md) for more information. 
 
 __Optional Preview Features Helm Chart__
 

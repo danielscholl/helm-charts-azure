@@ -2,6 +2,8 @@
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $replicaCount := .Values.replicaCount -}}
+{{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
+{{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
@@ -21,9 +23,9 @@ spec:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
     spec:
-{{- if .Values.global.isAutoscalingEnabled }}
+{{- if $isAutoscalingEnabled }}
       nodeSelector:
-        nodepool: {{ .Values.global.nodepool }} 
+        nodepool: {{ $nodepool }}
 {{- end }}      
       volumes:
       {{- if .keyvault }}

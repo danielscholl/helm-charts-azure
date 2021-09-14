@@ -4,16 +4,12 @@
 
 az login
 
-#declare -a src_img=("crs-catalog-service" "crs-conversion-service" "entitlements" "file" "indexer-service" "ingestion-workflow" "legal" "notification" "partition" "policy" "register" "schema-service" "search-service" "unit-service")
+declare -a src_img=("crs-catalog-service" "crs-conversion-service" "entitlements" "file" "indexer-service" "ingestion-workflow" "legal" "notification" "partition" "policy" "register" "schema-service" "search-service" "unit-service" "wks" "indexer-queue" "storage")
 
-#declare -a dest_img=("crs-catalog" "crs-conversion" "entitlements" "file" "indexer" "workflow" "legal" "notification" "partition" "policy" "register" "schema" "search" "unit")
+declare -a dest_img=("crs-catalog" "crs-conversion" "entitlements" "file" "indexer" "workflow" "legal" "notification" "partition" "policy" "register" "schema" "search" "unit" "wks" "indexer-queue" "storage")
 
-declare -a src_img=("storage")
-
-declare -a dest_img=("storage")
-
-declare src_version="-v0.10.1"
-declare dest_version="0.10.0"
+declare src_version="-v0.11.0"
+declare dest_version="0.11.0"
 
 # get length of an array
 len=${#src_img[@]}

@@ -14,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.8
+VERSION=1.0.9
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -134,7 +134,7 @@ airflow:
       - name: AIRFLOW_VAR_AZURE_DNS_HOST
         value: $DNS_HOST
       - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
-        value: $AZURE_ENABLE_MSI             
+        value: "$AZURE_ENABLE_MSI"             
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
         value: "v0.11.0"

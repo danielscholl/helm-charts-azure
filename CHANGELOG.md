@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## App Version 0.11 (2021-9-13)
+
+__Infrastructure Version:__ [tag/v0.10.0](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.10)
+
+__Charts__
+
+| Chart         | OCI Package                         | Tag    |
+| ------------- | ----------------------------------- | ------ |
+| osdu-base     | msosdu.azurecr.io/helm/osdu-base    | 1.0.0  |
+| osdu-istio    | msosdu.azurecr.io/helm/osdu-istio   | 1.1.3  |
+| osdu-airflow  | msosdu.azurecr.io/helm/osdu-airflow | 1.0.9  |
+| osdu-azure    | msosdu.azurecr.io/helm/osdu-azure   | 1.11.0 |
+| osdu-ddms     | msosdu.azurecr.io/helm/osdu-ddms    | 1.11.0 |
+
 ## App Version 0.10 (2021-8-6)
 
 __Infrastructure Version:__ [tag/v0.10.0](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.10)
