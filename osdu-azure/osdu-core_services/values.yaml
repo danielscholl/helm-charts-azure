@@ -112,6 +112,8 @@ configuration:
       value: eg_sb_legaltagchangedsubscription
     - name: entitlements_service_endpoint
       value: http://entitlements/api/entitlements/v2
+    - name: crs_conversion_service_endpoint
+      value: http://crs-conversion-service/api/crs/converter/v2
     - name: entitlements_service_api_key
       value: "OBSOLETE"
     - name: legal_service_endpoint
@@ -499,6 +501,10 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_serviceBus_enabled
+      value: "false"
+    - name: azure_eventGrid_enabled
+      value: "true"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -561,6 +567,22 @@ configuration:
       value: "true"
     - name: LOG_PREFIX
       value: "notification"
+    - name: service_bus_enabled
+      value: "false"
+    - name: event_grid_to_service_bus_enabled
+      value: "false"
+    - name: event_grid_enabled
+      value: "true"
+    - name: initial_subscription_manager_delay_seconds
+      value: "0"
+    - name: consecutive_subscription_manager_delay_seconds
+      value: "1800"
+    - name: max_concurrent_calls
+      value: "3"
+    - name: executor_n_threads
+      value: "32"
+    - name: max_lock_renew_duration_seconds
+      value: "2000"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -580,7 +602,7 @@ configuration:
   - service: dataset
     repository: msosdu.azurecr.io/dataset
     path: /api/dataset/*
-    probe: /api/dataset/v1/readiness_check
+    probe: /api/dataset/v1/info
     keyvault: true
     auth:
       disable:
@@ -607,35 +629,33 @@ configuration:
     - name: ACCEPT_HTTP  # TEMPORARY UNTIL HTTPS
       value: "true"
     - name: KEYVAULT_URI
-      valueFrom:
-        configMapKeyRef:
-          name: osdu-svc-properties
-          key: ENV_KEYVAULT
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
     - name: AZURE_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: principal-clientid
+      secret:
+        name: active-directory
+        key: principal-clientid
     - name: AZURE_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: principal-clientpassword
-    - name: AZURE_AD_APP_RESOURCE_ID
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: application-appid
+      secret:
+        name: active-directory
+        key: principal-clientpassword
     - name: AZURE_TENANT_ID
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: tenantid
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: AZURE_APP_RESOURCE_ID
+      secret:
+        name: active-directory
+        key: application-appid
     - name: appinsights_key
-      valueFrom:
-        secretKeyRef:
-          name: central-logging
-          key: appinsights
+      secret:
+        name: central-logging
+        key: appinsights
     - name: entitlements_service_endpoint
       value: http://entitlements/api/entitlements/v2
     - name: entitlements_app_key

@@ -2,6 +2,7 @@
 
 | `ddms-*-*`          | app-version  |
 | ------------------- | ----------   |
+| 1.11.0               | 0.11.0        |
 | 1.9.0               | 0.9.0        |
 
 
@@ -12,7 +13,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-seismic_dms
-VERSION=1.9.0
+VERSION=1.11.0
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -67,7 +68,22 @@ ingress:
   enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
 EOF
 ```
+__Moving Previously Installed Version__
 
+Uninstall previously installed versions
+
+```bash
+# Seismic
+helm uninstall seismic-store-service
+
+# Wellbore 
+helm uninstall os-wellbore-ddms
+
+```
+
+The folder structure has been updated. Please take the latest pull from gitlab 
+Make sure the new folder is present at root: osdu-ddms
+The following folder should not be present: osdu-azure > osdu-seismic_dms or osdu-wellbore_dms. If present please delete
 
 __Install Helm Chart__
 
@@ -86,9 +102,8 @@ kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESP
 kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-
+helm install seismic-services osdu-seismic_dms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install wellbore-services osdu-seismic_dms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 
 # Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces for now its in osdu-azure
 helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE

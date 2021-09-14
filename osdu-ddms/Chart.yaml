@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 apiVersion: v2
-name: osdu-ingest_enrich
+name: osdu-seismic_dms
 type: application
-description: Installs the OSDU Dataflow Ingestion and Enrichment Services
+description: Installs OSDU on Azure
 version: 1.11.0
-appVersion: 0.11.0
+appVersion: 0.11.0  # This isn't used just for documentation.

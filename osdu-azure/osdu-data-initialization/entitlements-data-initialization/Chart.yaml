@@ -15,5 +15,5 @@ apiVersion: v2
 name: entitlements-data-init
 description: A data initialization agent for entitlements service for OSDU on Azure.
 type: application
-version: 0.10.0
-appVersion: 1.10.0
+version: 1.11.0
+appVersion: 0.11.0
