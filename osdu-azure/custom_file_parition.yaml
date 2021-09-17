@@ -18,28 +18,26 @@
 
 global:
   debug: false
-  nodepool: services
-  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-authmem3-hmmxpf
+  identity: osduManagedIdentitytx7rngafxehya
+  identity_id: 016c776c-acda-475d-b681-b8d88058a63a
+  keyvault: kvtx7rngafxehya
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: true
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: authmem3.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -57,8 +55,7 @@ identity:
 service:
   type: ClusterIP
   port: 80
-
-
+  
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -113,9 +110,11 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_activedirectory_session_stateless
-      value: "false"
+      value: "true"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+    - name: azure_istioauth_enabled
+      value: "true"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -124,6 +123,18 @@ configuration:
       config:
         name: osdu-svc-config
         key: REDIS_DB_PARTITION
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
     - name: appinsights_key
       secret:
         name: central-logging
@@ -132,5 +143,3 @@ configuration:
       secret:
         name: active-directory
         key: application-appid
-    - name: azure_istioauth_enabled
-      value: "true"

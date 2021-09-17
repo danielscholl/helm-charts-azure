@@ -18,28 +18,26 @@
 
 global:
   debug: false
-  nodepool: services
-  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-e2eauthmem9-sfkrdm
+  identity: osduManagedIdentityqijvkna44viro
+  identity_id: 1ac31484-deab-46aa-b591-ef98f45c547e
+  keyvault: kvqijvkna44viro
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: true
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: e2eauthmem9.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -57,8 +55,7 @@ identity:
 service:
   type: ClusterIP
   port: 80
-
-
+  
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -114,6 +111,8 @@ configuration:
       value: "api://$(aad_client_id)"
     - name: azure_activedirectory_session_stateless
       value: "false"
+    - name: azure_istioauth_enabled
+      value: "true"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
@@ -132,5 +131,4 @@ configuration:
       secret:
         name: active-directory
         key: application-appid
-    - name: azure_istioauth_enabled
-      value: "true"
+

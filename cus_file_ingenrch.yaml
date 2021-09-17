@@ -18,8 +18,6 @@
 
 global:
   replicaCount: 1
-  nodepool: services
-  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify KEDA configuration
@@ -32,21 +30,21 @@ keda:
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-e2eauthmem9-sfkrdm
+  identity: osduManagedIdentityqijvkna44viro
+  identity_id: 1ac31484-deab-46aa-b591-ef98f45c547e
+  keyvault: kvqijvkna44viro
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: true
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: e2eauthmem9.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 

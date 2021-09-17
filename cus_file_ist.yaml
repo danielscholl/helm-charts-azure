@@ -1,0 +1,56 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+
+  namespace: osdu
+
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+    appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+    podIdentityAuthEnabled: true
+
+  ################################################################################
+  # Specify the istio specific values
+  # based64 encoded username and password
+  #
+  istio:
+    username: <istio_username>
+    password: <istio_password>
+
+jwt:
+- issuer: https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/v2.0
+  jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  audiences:
+  - 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+- issuer: https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/
+  jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  audiences:
+  - 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+- issuer: https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/v2.0
+  jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  audiences:
+  - https://management.azure.com/
+- issuer: https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/
+  jwksUri: https://login.microsoftonline.com/common/discovery/v2.0/keys
+  audiences:
+  - https://management.azure.com/
+

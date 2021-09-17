@@ -1,7 +1,9 @@
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
-{{- $servicePort := .Values.service.port -}}
+{{- $servicePort := .Values.service.target -}}
 {{- $replicaCount := .Values.replicaCount -}}
+{{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
+{{- $nodepool := .Values.global.nodepool}}
 {{- $configMap := .Values.configMap -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
@@ -22,6 +24,10 @@ spec:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
     spec:
+{{- if $isAutoscalingEnabled }}
+      nodeSelector:
+        nodepool: {{ $nodepool }}
+{{- end }}      
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault
@@ -36,6 +42,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .name }}-pvc
       {{- end }}
+      terminationGracePeriodSeconds: 45
       containers:
         - name: {{ .service }}
           image: {{ .repository }}:{{ .tag | default $version }}
@@ -44,12 +51,25 @@ spec:
             - name: http
               containerPort: {{ $servicePort }}
               protocol: TCP
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "15"]
           {{- if .probe }}
+          livenessProbe:
+            httpGet:
+              path: {{ .probe }}
+              port: {{ $servicePort }}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 1
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: {{ .probe }}
-              port: http
+              port: {{ $servicePort }}
             initialDelaySeconds: 20
+            timeoutSeconds: 5
           {{- end }}
           resources:
           {{- if .request }}
@@ -96,7 +116,6 @@ spec:
               {{- end }}
             {{- end }}
           {{- end }}
-
 
 ---
 {{- end }}

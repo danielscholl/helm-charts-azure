@@ -14,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow
-VERSION=1.0.8
+VERSION=1.0.9
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -32,6 +32,7 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
+AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -130,9 +131,13 @@ airflow:
           secretKeyRef:
             name: central-logging
             key: appinsights
+      - name: AIRFLOW_VAR_AZURE_DNS_HOST
+        value: $DNS_HOST
+      - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
+        value: "$AZURE_ENABLE_MSI"             
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
-        value: "v0.10.0"
+        value: "v0.11.0"
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
       - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
@@ -173,7 +178,8 @@ airflow:
         "pyyaml==5.4.1",
         "requests==2.25.1",
         "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.10.0.tar.gz"
+        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.11.0.tar.gz",
+        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.0.1.tar.gz"
     ]
     extraVolumeMounts:
         - name: azure-keyvault

@@ -1,0 +1,687 @@
+---
+# Source: osdu-security_compliance/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: entitlements-azure
+  namespace: default
+  labels:
+    app: entitlements-azure
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: entitlements-azure
+---
+# Source: osdu-security_compliance/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: entitlements
+  namespace: default
+  labels:
+    app: entitlements
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: entitlements
+---
+# Source: osdu-security_compliance/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: legal
+  namespace: default
+  labels:
+    app: legal
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: legal
+---
+# Source: osdu-security_compliance/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: policy
+  namespace: default
+  labels:
+    app: policy
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: policy
+---
+# Source: osdu-security_compliance/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entitlements-azure
+  namespace: default
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      app: entitlements-azure
+  template:
+    metadata:
+      labels:
+        app: entitlements-azure
+        aadpodidbinding: osdu-identity
+    spec:
+      volumes:
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+      containers:
+        - name: entitlements-azure
+          image: msosdu.azurecr.io/entitlements:0.7.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /entitlements/v1/swagger-ui.html
+              port: http
+            initialDelaySeconds: 20
+          resources:
+          volumeMounts:
+          - name: azure-keyvault
+            mountPath: "/mnt/azure-keyvault"
+            readOnly: true
+          env:
+            - name: spring_application_name
+              value: "entitlements-azure"
+            - name: server.servlet.contextPath
+              value: "/entitlements/v1/"
+            - name: server_port
+              value: "80"
+            - name: cosmosdb_database
+              value: "osdu-db"
+            - name: service_domain_name
+              value: "contoso.com"
+            - name: partition_service_endpoint
+              value: "http://partition/api/partition/v1"
+            - name: azure_istioauth_enabled
+              value: "true"
+            - name: azure_activedirectory_AppIdUri
+              value: "api://$(aad_client_id)"
+            - name: azure_paas_podIdentity_isEnabled
+              value: "false"
+            - name: KEYVAULT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: osdu-svc-config
+                  key: "ENV_KEYVAULT"
+            - name: REDIS_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: osdu-svc-config
+                  key: "REDIS_DB_ENTITLEMENTS"
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "principal-clientid"
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "principal-clientpassword"
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "tenantid"
+            - name: aad_client_id
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "application-appid"
+            - name: appinsights_key
+              valueFrom:
+                secretKeyRef:
+                  name: "central-logging"
+                  key: "appinsights"
+---
+# Source: osdu-security_compliance/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entitlements
+  namespace: default
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      app: entitlements
+  template:
+    metadata:
+      labels:
+        app: entitlements
+        aadpodidbinding: osdu-identity
+    spec:
+      volumes:
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+      containers:
+        - name: entitlements
+          image: msosdu.azurecr.io/entitlements:0.10.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/entitlements/v2/_ah/readiness_check
+              port: http
+            initialDelaySeconds: 20
+          resources:
+          volumeMounts:
+          - name: azure-keyvault
+            mountPath: "/mnt/azure-keyvault"
+            readOnly: true
+          env:
+            - name: spring_application_name
+              value: "entitlements"
+            - name: server.servlet.contextPath
+              value: "/api/entitlements/v2/"
+            - name: server_port
+              value: "80"
+            - name: service_domain_name
+              value: "contoso.com"
+            - name: root_data_group_quota
+              value: "5000"
+            - name: redis_ttl_seconds
+              value: "1"
+            - name: partition_service_endpoint
+              value: "http://partition/api/partition/v1"
+            - name: azure_istioauth_enabled
+              value: "true"
+            - name: azure_activedirectory_AppIdUri
+              value: "api://$(aad_client_id)"
+            - name: azure_paas_podIdentity_isEnabled
+              value: "false"
+            - name: KEYVAULT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: osdu-svc-config
+                  key: "ENV_KEYVAULT"
+            - name: aad_client_id
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "application-appid"
+            - name: appinsights_key
+              valueFrom:
+                secretKeyRef:
+                  name: "central-logging"
+                  key: "appinsights"
+---
+# Source: osdu-security_compliance/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legal
+  namespace: default
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      app: legal
+  template:
+    metadata:
+      labels:
+        app: legal
+        aadpodidbinding: osdu-identity
+    spec:
+      volumes:
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+      containers:
+        - name: legal
+          image: msosdu.azurecr.io/legal:0.10.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/legal/v1/swagger-ui.html
+              port: http
+            initialDelaySeconds: 20
+          resources:
+          volumeMounts:
+          - name: azure-keyvault
+            mountPath: "/mnt/azure-keyvault"
+            readOnly: true
+          env:
+            - name: spring_application_name
+              value: "legal"
+            - name: server.servlet.contextPath
+              value: "/api/legal/v1/"
+            - name: server_port
+              value: "80"
+            - name: ACCEPT_HTTP
+              value: "true"
+            - name: cosmosdb_database
+              value: "osdu-db"
+            - name: LOG_PREFIX
+              value: "legal"
+            - name: azure_storage_container_name
+              value: "legal-service-azure-configuration"
+            - name: azure_storage_enable_https
+              value: "true"
+            - name: legal_service_region
+              value: "us"
+            - name: servicebus_topic_name
+              value: "legaltags"
+            - name: entitlements_service_endpoint
+              value: "http://entitlements/api/entitlements/v2"
+            - name: entitlements_service_api_key
+              value: "OBSOLETE"
+            - name: partition_service_endpoint
+              value: "http://partition/api/partition/v1"
+            - name: azure_istioauth_enabled
+              value: "true"
+            - name: azure_activedirectory_AppIdUri
+              value: "api://$(aad_client_id)"
+            - name: azure_paas_podIdentity_isEnabled
+              value: "false"
+            - name: KEYVAULT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: osdu-svc-config
+                  key: "ENV_KEYVAULT"
+            - name: REDIS_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: osdu-svc-config
+                  key: "REDIS_DB_LEGAL"
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "principal-clientid"
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "principal-clientpassword"
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "tenantid"
+            - name: aad_client_id
+              valueFrom:
+                secretKeyRef:
+                  name: "active-directory"
+                  key: "application-appid"
+            - name: appinsights_key
+              valueFrom:
+                secretKeyRef:
+                  name: "central-logging"
+                  key: "appinsights"
+---
+# Source: osdu-security_compliance/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy
+  namespace: default
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      app: policy
+  template:
+    metadata:
+      labels:
+        app: policy
+        aadpodidbinding: osdu-identity
+    spec:
+      volumes:
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+      containers:
+        - name: policy
+          image: msosdu.azurecr.io/policy:0.10.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/policy/v1/health
+              port: http
+            initialDelaySeconds: 20
+          resources:
+          volumeMounts:
+          - name: azure-keyvault
+            mountPath: "/mnt/azure-keyvault"
+            readOnly: true
+          env:
+            - name: OPA_URL
+              value: "http://opa:8181"
+            - name: ENTITLEMENTS_BASE_URL
+              value: "http://entitlements"
+            - name: LEGAL_BASE_URL
+              value: "http://legal"
+            - name: ENTITLEMENTS_BASE_PATH
+              value: "/api/entitlements/v2/groups"
+            - name: azure_paas_podIdentity_isEnabled
+              value: "false"
+---
+# Source: osdu-security_compliance/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: osdu-osdu-security_compliance-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/request-timeout: "300"
+    appgw.ingress.kubernetes.io/connection-draining: "true"
+    appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+    cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+    cert-manager.io/acme-challenge-type: http01
+spec:
+  tls:
+  - hosts:
+    - augmem9.oep.ppe.azure-int.net
+    secretName: osdu-certificate
+  rules:
+    - host: augmem9.oep.ppe.azure-int.net
+      http:
+        paths:
+        - path: /entitlements/v1/*
+          backend:
+            serviceName: entitlements-azure
+            servicePort: 80
+        - path: /api/entitlements/v2/*
+          backend:
+            serviceName: entitlements
+            servicePort: 80
+        - path: /api/legal/v1/*
+          backend:
+            serviceName: legal
+            servicePort: 80
+        - path: /api/policy/v1/*
+          backend:
+            serviceName: policy
+            servicePort: 80
+---
+# Source: osdu-security_compliance/templates/pvc.yaml
+---
+---
+# Source: osdu-security_compliance/templates/pvc.yaml
+---
+---
+# Source: osdu-security_compliance/templates/authpolicy.yaml
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: entitlements-azure-jwt-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: entitlements-azure
+  action: DENY
+  rules:
+    - from:
+        - source:
+            notRequestPrincipals: ["*"]
+      to:
+        - operation:
+            notPaths: [
+              "/",
+              "*/v2/api-docs",
+              "*/swagger-resources",
+              "*/swagger-ui.html",
+              "*/actuator/health",
+              "/entitlements/v1/swagger-resources/*",
+              "/entitlements/v1/webjars/*",
+            ]
+---
+# Source: osdu-security_compliance/templates/authpolicy.yaml
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: entitlements-jwt-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: entitlements
+  action: DENY
+  rules:
+    - from:
+        - source:
+            notRequestPrincipals: ["*"]
+      to:
+        - operation:
+            notPaths: [
+              "/",
+              "*/v2/api-docs",
+              "*/swagger-resources",
+              "*/swagger-ui.html",
+              "*/actuator/health",
+              "*/health",
+              "/api/entitlements/v2/swagger-resources/*",
+              "/api/entitlements/v2/webjars/*",
+            ]
+---
+# Source: osdu-security_compliance/templates/authpolicy.yaml
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: legal-jwt-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: legal
+  action: DENY
+  rules:
+    - from:
+        - source:
+            notRequestPrincipals: ["*"]
+      to:
+        - operation:
+            notPaths: [
+              "/",
+              "*/index.html",
+              "*/v2/api-docs",
+              "*/configuration/ui",
+              "*/configuration/security",
+              "*/swagger",
+              "*/swagger-ui.html",
+              "*/swagger-resources",
+              "/api/legal/v1/swagger-resources/*",
+              "/api/legal/v1/webjars/*",
+              "*/actuator/health",
+              "*/_ah/**",
+            ]
+---
+# Source: osdu-security_compliance/templates/authpolicy.yaml
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: policy-jwt-authz
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: policy
+  action: DENY
+  rules:
+    - from:
+        - source:
+            notRequestPrincipals: ["*"]
+      to:
+        - operation:
+            notPaths: [
+              "/",
+              "*/index.html",
+              "*/v2/api-docs",
+              "*/configuration/ui",
+              "*/configuration/security",
+              "*/swagger",
+              "*/health",
+              "*/swagger-ui.html",
+              "*/swagger-resources",
+              "/api/legal/v1/swagger-resources/*",
+              "/api/legal/v1/webjars/*",
+              "*/actuator/health",
+              "*/_ah/**",
+            ]
+---
+# Source: osdu-security_compliance/templates/envoyfilter.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: header-1-remove-user-appid-from-default
+  namespace: default
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.http_connection_manager
+            subFilter:
+              name: envoy.router
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.lua.remove-user-appid-header
+        typed_config:
+          "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+          inlineCode: |
+            function envoy_on_request(request_handle)
+              request_handle:headers():remove("x-user-id")
+              request_handle:headers():remove("x-app-id")
+            end
+---
+# Source: osdu-security_compliance/templates/envoyfilter.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: header-2-add-user-from-msft-aad-token
+  namespace: default
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: envoy.http_connection_manager
+              subFilter:
+                name: envoy.lua.remove-user-appid-header
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.lua.user-from-msft-aad-token
+          typed_config:
+            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            inlineCode: |
+              msft_issuer = "https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/"
+              function envoy_on_request(request_handle)
+                local jwt_authn = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
+                if jwt_authn then
+                  if jwt_authn[msft_issuer] then
+                    request_handle:headers():add("x-app-id", jwt_authn[msft_issuer]["aud"])
+                    if jwt_authn[msft_issuer]["upn"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["upn"])
+                    elseif jwt_authn[msft_issuer]["unique_name"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["unique_name"])
+                    elseif jwt_authn[msft_issuer]["appid"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["appid"])
+                    end
+                  end
+                end
+              end
+---
+# Source: osdu-security_compliance/templates/envoyfilter.yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: header-3-add-user-from-msftonline-token
+  namespace: default
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: envoy.http_connection_manager
+              subFilter:
+                name: envoy.lua.remove-user-appid-header
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.lua.user-from-msftonline-token
+          typed_config:
+            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            inlineCode: |
+              msft_issuer = "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/v2.0"
+              function envoy_on_request(request_handle)
+                local jwt_authn = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
+                if jwt_authn then
+                  if jwt_authn[msft_issuer] then
+                    request_handle:headers():add("x-app-id", jwt_authn[msft_issuer]["aud"])
+                    if jwt_authn[msft_issuer]["oid"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["oid"])
+                    elseif jwt_authn[msft_issuer]["azp"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["azp"])
+                    end
+                  end
+                end
+              end

@@ -3,13 +3,13 @@
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-e2eauthmem9-sfkrdm
+  identity: osduManagedIdentityqijvkna44viro
+  identity_id: 1ac31484-deab-46aa-b591-ef98f45c547e
+  keyvault: kvqijvkna44viro
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
 
 ################################################################################
 # Specify KEDA configuration
@@ -22,7 +22,7 @@ keda:
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: e2eauthmem9.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -34,7 +34,7 @@ image:
   repository: msosdu.azurecr.io
 
 airflowLogin:
-  name: <airflowLogin_name>                                   #<-- Default Airflow Web UI username
+  name: admin                                   #<-- Default Airflow Web UI username
 
 
 ################################################################################
@@ -46,20 +46,20 @@ airflow:
   # Kubernetes - Ingress Configs
   ###################################
   ingress:
-    enabled: <airflow_ingress_enabled>
+    enabled: true
     web:
       annotations:
         kubernetes.io/ingress.class: azure/application-gateway
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
         cert-manager.io/acme-challenge-type: http01
       path: "/airflow"
-      host: <airflow_ingress_web_host>
+      host: e2eauthmem9.oep.ppe.azure-int.net
       livenessPath: "/airflow/health"
       tls:
-        enabled: <airflow_ingress_web_tls_enabled>
+        enabled: true
         secretName: osdu-certificate
       precedingPaths:
         - path: "/airflow/*"
@@ -73,8 +73,8 @@ airflow:
     enabled: false
   externalDatabase:
     type: postgres
-    host: <airflow_externalDatabase_host>                                #<-- Azure PostgreSQL Database host
-    user:  <airflow_externalDatabase_user>                           #<-- Azure PostgreSQL Database username, formatted as {username}@{hostname}
+    host: oepPostgresqijvkna44viro.postgres.database.azure.com                                #<-- Azure PostgreSQL Database host
+    user:  pgUserqijvkna44viro@oepPostgresqijvkna44viro                           #<-- Azure PostgreSQL Database username, formatted as {username}@{hostname}
     passwordSecret: "postgres"
     passwordSecretKey: "postgres-password"
     port: 5432
@@ -87,7 +87,7 @@ airflow:
   redis:
     enabled: false
   externalRedis:
-    host: <airflow_externalRedis_host>                                   #<-- Azure Redis Cache host
+    host: cacheqijvkna44viro.redis.cache.windows.net                                   #<-- Azure Redis Cache host
     passwordSecret: "redis"
     passwordSecretKey: "redis-password"
     port: 6380
@@ -188,15 +188,9 @@ airflow:
           name: active-directory
           key: tenantid
     - name: AIRFLOW_VAR_AZURE_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: principal-clientid
+      value: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
     - name: AIRFLOW_VAR_AZURE_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: active-directory
-          key: principal-clientpassword
+      value: WzMkat5~KyDepSvU~geN7Vvhs7GMgPWoG5
     - name: AIRFLOW_VAR_AAD_CLIENT_ID
       valueFrom:
         secretKeyRef:
@@ -207,30 +201,26 @@ airflow:
          secretKeyRef:
           name: central-logging
           key: appinsights
-    - name: AIRFLOW_VAR_AZURE_DNS_HOST
-      value: <dns_host>
-    - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
-      value: <azure_enable_msi>
-      # Needed for installing python osdu python sdk. In future this will be changed
+    # Needed for installing python osdu python sdk. In future this will be changed
     - name: CI_COMMIT_TAG
-      value: "v0.11.0"
+      value: "v0.10.0"
     ## Begin -- Ingest Manifest DAG variables
     - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
       value: "entitlements_client"
     - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
       value: "/opt/airflow/dags/configs/dataload.ini"
     - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
-      value: "http://schema.<namespace>.svc.cluster.local/api/schema-service/v1/schema"
+      value: "http://schema.osdu-azure.svc.cluster.local/api/schema-service/v1/schema"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
-      value: "http://search.<namespace>.svc.cluster.local/api/search/v2/query"
+      value: "http://search.osdu-azure.svc.cluster.local/api/search/v2/query"
     - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
-      value: "http://storage.<namespace>.svc.cluster.local/api/storage/v2/records"
+      value: "http://storage.osdu-azure.svc.cluster.local/api/storage/v2/records"
     - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
-      value: "http://file.<namespace>.svc.cluster.local/api/file/v2"
+      value: "http://file.osdu-azure.svc.cluster.local/api/file/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
-      value: "http://workflow.<namespace>.svc.cluster.local/api/workflow"
+      value: "http://workflow.osdu-azure.svc.cluster.local/api/workflow"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
-      value: "http://search.<namespace>.svc.cluster.local/api/search/v2/query_with_cursor"
+      value: "http://search.osdu-azure.svc.cluster.local/api/search/v2/query_with_cursor"
 
     ## End -- Ingest Manifest DAG variables
     extraConfigmapMounts:
@@ -257,8 +247,7 @@ airflow:
         "pyyaml==5.4.1",
         "requests==2.25.1",
         "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.11.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.0.1.tar.gz"
+        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.10.0.tar.gz"
     ]
     extraVolumeMounts:
         - name: azure-keyvault
@@ -274,3 +263,4 @@ airflow:
             readOnly: true
             volumeAttributes:
               secretProviderClass: azure-keyvault
+

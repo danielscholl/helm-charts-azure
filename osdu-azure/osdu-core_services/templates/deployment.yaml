@@ -3,6 +3,8 @@
 {{- $servicePort := .Values.service.port -}}
 {{- $hostName := .Values.ingress.dns -}}
 {{- $replicaCount := .Values.replicaCount -}}
+{{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
+{{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
@@ -22,6 +24,10 @@ spec:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
     spec:
+{{- if $isAutoscalingEnabled }}
+      nodeSelector:
+        nodepool: {{ $nodepool }}
+{{- end }}        
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault

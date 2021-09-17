@@ -18,30 +18,28 @@
 
 global:
   replicaCount: 1
-  nodepool: services
-  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  mstenant: <azure_mstenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
-  oidAuthEnabled: <azure_oidAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  mstenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-augmem9-bpypfr
+  identity: osduManagedIdentityh3ol2yiq6fmbc
+  identity_id: e443790f-ace6-42c6-8ae9-ddad7fe65d87
+  keyvault: kvh3ol2yiq6fmbc
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: false
+  oidAuthEnabled: false
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: augmem9.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -138,7 +136,6 @@ configuration:
   #
   - service: entitlements
     repository: msosdu.azurecr.io/entitlements
-    tag: test
     path: /api/entitlements/v2/*
     probe: /api/entitlements/v2/_ah/readiness_check
     keyvault: true
@@ -191,7 +188,6 @@ configuration:
   #
   - service: legal
     repository: msosdu.azurecr.io/legal
-    tag: test
     path: /api/legal/v1/*
     probe: /api/legal/v1/swagger-ui.html
     keyvault: true
@@ -250,6 +246,18 @@ configuration:
       config:
         name: osdu-svc-config
         key: REDIS_DB_LEGAL
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory
@@ -292,3 +300,4 @@ configuration:
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+

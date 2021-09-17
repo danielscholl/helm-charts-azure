@@ -18,6 +18,8 @@
 
 global:
   replicaCount: 1
+  nodepool: services
+  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values
@@ -38,7 +40,6 @@ azure:
 ingress:
   dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
-  enableKeyvaultCert: false
 
 
 ################################################################################
@@ -54,11 +55,13 @@ identity:
 service:
   type: ClusterIP
   port: 80
+  target: 8080
+
 
 ################################################################################
 # Specify the Config Map
 #
-configMap: seistore-svc-config
+configMap: wellbore-svc-config
 
 ################################################################################
 # Specify the OSDU Services to Load
@@ -66,29 +69,27 @@ configMap: seistore-svc-config
 configuration:
 
   ########################
-  ##  SEISMIC STORE SERVICE
+  ##  WELLBORE SERVICE
   #
-  - service: seismic-ddms
-    repository: msosdu.azurecr.io/sdms
-    path: /seistore-svc/api/v3/*
-    probe: /seistore-svc/api/v3/svcstatus
+  - service: wellbore-ddms
+    repository: msosdu.azurecr.io/wellbore-ddms
+    path: /api/os-wellbore-ddms/*
+    probe: /api/os-wellbore-ddms/healthz
+    keyvault: true
     auth:
       disable:
-        - "/"
-        - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "*/actuator/health"
-        - "*/health"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "/seistore-svc/api/v3/swagger-resources/*"  # CAN"T FIND SWAGGER
-        - "/seistore-svc/api/v3/webjars/*"
+        - "/api/os-wellbore-ddms/"
+        - "/api/os-wellbore-ddms/ddms/v2/about"
+        - "/api/os-wellbore-ddms/docs"
+        - "/api/os-wellbore-ddms/openapi.json"
     env:
+    - name: SERVICE_NAME
+      value: os-wellbore-ddms
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-
+    - name: AZ_AI_INSTRUMENTATION_KEY
+      secret:
+        name: central-logging
+        key: appinsights

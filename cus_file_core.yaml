@@ -18,9 +18,6 @@
 
 global:
   replicaCount: 1
-  nodepool: services
-  isAutoscalingEnabled: false
-
 
 ################################################################################
 # Specify KEDA configuration
@@ -33,21 +30,21 @@ keda:
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-e2eauthmem9-sfkrdm
+  identity: osduManagedIdentityqijvkna44viro
+  identity_id: 1ac31484-deab-46aa-b591-ef98f45c547e
+  keyvault: kvqijvkna44viro
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: true
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: e2eauthmem9.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -114,8 +111,6 @@ configuration:
       value: eg_sb_legaltagchangedsubscription
     - name: entitlements_service_endpoint
       value: http://entitlements/api/entitlements/v2
-    - name: crs_conversion_service_endpoint
-      value: http://crs-conversion-service/api/crs/converter/v2
     - name: entitlements_service_api_key
       value: "OBSOLETE"
     - name: legal_service_endpoint
@@ -124,6 +119,8 @@ configuration:
       value: southcentralus
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
+    - name: crs_conversion_service_endpoint
+      value: http://crs-conversion-service/api/crs/converter/v2
     - name: policy_enabled
       value: "false"
     - name: policy_service_endpoint
@@ -132,8 +129,10 @@ configuration:
       value: "true"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
+    - name: azure_publishToEventGrid
+      value: "false"
     - name: JAVA_OPTS
-      value: "-XX:InitialRAMPercentage=25.0 -XX:MaxRAMPercentage=50.0"
+      value: "-XX:InitialRAMPercentage=25.0 -XX:MaxRAMPercentage=50.0"  
     - name: "SERVER_TOMCAT_MAXTHREADS"
       value: "400"
     - name: "SERVER_TOMCAT_MINSPARETHREADS"
@@ -295,6 +294,8 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: authorizeAPI
+      value: http://entitlements/api/entitlements/v2
 
   ########################
   ##  INDEXER SERVICE
@@ -493,10 +494,6 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
-    - name: azure_serviceBus_enabled
-      value: "false"
-    - name: azure_eventGrid_enabled
-      value: "true"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
@@ -560,24 +557,10 @@ configuration:
       value: http://policy/api/policy/v1
     - name: azure_istioauth_enabled
       value: "true"
-    - name: LOG_PREFIX
-      value: "notification"
-    - name: service_bus_enabled
-      value: "false"
     - name: event_grid_to_service_bus_enabled
       value: "false"
-    - name: event_grid_enabled
-      value: "true"
-    - name: initial_subscription_manager_delay_seconds
-      value: "0"
-    - name: consecutive_subscription_manager_delay_seconds
-      value: "1800"
-    - name: max_concurrent_calls
-      value: "3"
-    - name: executor_n_threads
-      value: "32"
-    - name: max_lock_renew_duration_seconds
-      value: "2000"
+    - name: LOG_PREFIX
+      value: "notification"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
@@ -593,123 +576,50 @@ configuration:
         name: central-logging
         key: appinsights
 
-      ########################
-      ##  DATASET SERVICE
-      #
-  - service: dataset
-    repository: msosdu.azurecr.io/dataset
-    path: /api/dataset/*
-    probe: /api/dataset/v1/info
-    keyvault: true
-    auth:
-      disable:
-        - "/"
-        - "*/index.html"
-        - "*/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/dataset/swagger-resources/*"
-        - "/api/dataset/webjars/*"
-        - "*/actuator/health"
-        - "*/readiness_check"
-        - "*/_ah/**"
-    env:
-    - name: spring.application.name
-      value: dataset
-    - name: server.servlet.contextPath
-      value: /api/dataset/v1
-    - name: server_port
-      value: "80"
-    - name: ACCEPT_HTTP  # TEMPORARY UNTIL HTTPS
-      value: "true"
-    - name: KEYVAULT_URI
-      config:
-        name: osdu-svc-config
-        key: ENV_KEYVAULT
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
-    - name: aad_client_id
-      secret:
-        name: active-directory
-        key: application-appid
-    - name: AZURE_APP_RESOURCE_ID
-      secret:
-        name: active-directory
-        key: application-appid
-    - name: appinsights_key
-      secret:
-        name: central-logging
-        key: appinsights
-    - name: entitlements_service_endpoint
-      value: http://entitlements/api/entitlements/v2
-    - name: entitlements_app_key
-      value: "OBSOLETE"
-    - name: storage_service_endpoint
-      value: http://storage/api/storage/v2
-    - name: partition_service_endpoint
-      value: http://partition/api/partition/v1
-    - name: azure_istioauth_enabled
-      value: "true"
-    - name: schema_service_endpoint
-      value: http://schema/api/schema-service/v1
-    - name: file_service_endpoint
-      value: http://file/api/file/v2/files
 
-    #
-    ##
-    ######################## OSDU Worker Service ############################
-    ##  Indexer Queue
-    #
-  - service: indexer-queue
+################################################################################
+# Specify the OSDU Functions to Load
+#
+serverless:
+
+  ########################
+  ##  INDEXER_QUEUE FUNCTION
+  #
+  - function: indexer-queue
     repository: msosdu.azurecr.io/indexer-queue
-    keyvault: true
+    minReplicaCount: 1
+    maxReplicaCount: 10
+    servicebusSubscription: recordstopicsubscription
+    servicebusTopic: recordstopic
+
     env:
-    - name: spring_application_name
-      value: indexer-queue
-    - name: server_port
-      value: 80
-    - name: azure_servicebus_topic_name
+    - name: AzureWebJobsStorage
+      value: DefaultEndpointsProtocol=https;AccountName=$(storage_account);AccountKey=$(storage_account_key);EndpointSuffix=core.windows.net
+    - name: INDEXER_WORKER_URL
+      value: http://indexer/api/indexer/v2/_dps/task-handlers/index-worker
+    - name: AzureFunctionsJobHost__functions__0
+      value: enqueue
+    - name: FUNCTIONS_WORKER_RUNTIME
+      value: java
+    - name: TOPIC_NAME
       value: recordstopic
-    - name: azure_servicebus_topic_subscription
+    - name: SUBSCRIPTION_NAME
       value: recordstopicsubscription
-    - name: indexer_worker_url
-      value: http://indexer-service/api/indexer/v2/_dps/task-handlers/index-worker
-    - name: PARTITION_API
-      value: http://partition/api/partition/v1
-    - name: max_concurrent_calls
-      value: "32"
-    - name: executor_n_threads
-      value: "32"
-    - name: max_lock_renew_duration_seconds
-      value: "600"
-    - name: max_delivery_count
-      value: "5"
-    - name: KEYVAULT_URI
-      config:
-        name: osdu-svc-config
-        key: ENV_KEYVAULT
-    - name: aad_client_id
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+    - name: SERVICE_BUS
       secret:
-        name: active-directory
-        key: application-appid
-    - name: AZURE_APP_RESOURCE_ID
+        name: servicebus
+        key: servicebus-connection
+    - name: storage_account
       secret:
-        name: active-directory
-        key: application-appid
-    - name: azure_application_insights_instrumentation_key
+        name: airflow
+        key: storage-account
+    - name: storage_account_key
+      secret:
+        name: airflow
+        key: storage-key
+    - name: appinsights_key
       secret:
         name: central-logging
         key: appinsights

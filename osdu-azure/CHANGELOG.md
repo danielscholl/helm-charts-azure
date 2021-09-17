@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.11.0] - 2021-09-13
+- Onboarded dataset service
+- Added feature flag for keda v2 to be used provided infra is updated to keda v2.
+- The following services have been moved to new namespaces:
+  1. Seismic Store Service
+  2. Wellbore DDMS
+- Well Delivery DDMS is still in 'osdu' namespace
+
+## [1.10.0] - 2021-08-16
+- Added nodeSelector field to support dedicated to services `services` k8s nodepool
+
 ## [1.9.0] - 2021-04-12
 
 - OSDU Minor Release Upgrade - 0.9

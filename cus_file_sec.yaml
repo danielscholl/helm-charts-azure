@@ -18,30 +18,28 @@
 
 global:
   replicaCount: 1
-  nodepool: services
-  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <azure_tenant>
-  mstenant: <azure_mstenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
-  oidAuthEnabled: <azure_oidAuthEnabled>
+  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  mstenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
+  subscription: c99e2bf3-1777-412b-baba-d823676589c2
+  resourcegroup: Compute-rg-authmem8-livqcw
+  identity: osduManagedIdentityaxt5jojpcynhc
+  identity_id: 8f1adfdd-9d28-4f52-a9bd-b52b9b0eb3d4
+  keyvault: kvaxt5jojpcynhc
+  appid: 2f59abbc-7b40-4d0e-91b2-22ca3084bc84
+  podIdentityAuthEnabled: true
+  oidAuthEnabled: true
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <ingress_dns>
+  dns: authmem8.oep.ppe.azure-int.net
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -292,3 +290,4 @@ configuration:
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+

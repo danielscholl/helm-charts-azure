@@ -1,15 +1,10 @@
-# Helm Chart for OSDU on Azure
+# Helm Chart for OSDU DDMS on Azure
 
-| `osdu-*-*`          | app-version  |
+| `ddms-*-*`          | app-version  |
 | ------------------- | ----------   |
 | 1.11.0               | 0.11.0        |
-| 1.10.0               | 0.10.0        |
 | 1.9.0               | 0.9.0        |
-| 1.8.1               | 0.8.0        |
-| 1.8.0               | 0.8.0        |
-| 1.7.1               | 0.7.0        |
-| 1.4.0-rc1           | 0.6.0-rc1    |
-| 1.3.1               | 0.5.0        |
+
 
 __Pull Helm Chart__
 
@@ -17,7 +12,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 
 ```bash
 # Setup Variables
-CHART=osdu-azure
+CHART=osdu-seismic_dms
 VERSION=1.11.0
 
 # Pull Chart
@@ -44,7 +39,7 @@ GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
 # Translate Values File
-cat > osdu_azure_custom_values.yaml << EOF
+cat > osdu_ddms_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
 
 ################################################################################
@@ -63,8 +58,6 @@ azure:
   identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
   keyvault: $ENV_VAULT
   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-  podIdentityAuthEnabled: false
-  oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
 
 ################################################################################
 # Specify the Ingress Settings
@@ -75,7 +68,22 @@ ingress:
   enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
 EOF
 ```
+__Moving Previously Installed Version__
 
+Uninstall previously installed versions
+
+```bash
+# Seismic
+helm uninstall seismic-store-service
+
+# Wellbore 
+helm uninstall os-wellbore-ddms
+
+```
+
+The folder structure has been updated. Please take the latest pull from gitlab 
+Make sure the new folder is present at root: osdu-ddms
+The following folder should not be present: osdu-azure > osdu-seismic_dms or osdu-wellbore_dms. If present please delete
 
 __Install Helm Chart__
 
@@ -85,39 +93,19 @@ Install the helm chart.
 # Ensure your context is set.
 # az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
 
-# Create Namespace
-NAMESPACE=osdu-azure
-kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
-
-# Install Charts
-helm install partition-services osdu-azure/osdu-partition_base -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
-```
-
-__DDMS Moved__
-
-The following services have been moved to new namespaces:
-1. Seismic Store Service 
-2. Wellbore DDMS 
-
-Well Delivery DDMS is still in 'osdu' namespace
-
-Click [here](osdu-ddms/README.md) for more information. 
-
-__Optional Preview Features Helm Chart__
-
-The following charts are `preview only` features and will require additional backend systems to support.
-
-```bash
-# Ensure your context is set.
-# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
-
-# Create Namespace
+# DDMS Namespace
+SDMS_NAMESPACE=ddms-seismic
+WDMS_NAMESPACE=ddms-wellbore
 NAMESPACE=osdu-azure
 
+kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESPACE istio-injection=enabled
+kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
+
 # Install Charts
-helm install opa osdu-azure/osdu-opa -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm install seismic-services osdu-seismic_dms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install wellbore-services osdu-seismic_dms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+
+# Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces for now its in osdu-azure
+helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 ```
+
