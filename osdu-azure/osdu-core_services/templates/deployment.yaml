@@ -56,12 +56,6 @@ spec:
               path: {{ .probe }}
               port: http
             initialDelaySeconds: 20
-          livenessProbe:
-            httpGet:
-              path: {{ .probe }}
-              port: http
-            initialDelaySeconds: 250
-            periodSeconds: 10
           {{- end }}
           resources:
           {{- if .request }}
