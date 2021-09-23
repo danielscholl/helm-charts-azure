@@ -208,7 +208,7 @@ airflow:
           name: central-logging
           key: appinsights
     - name: AIRFLOW_VAR_AZURE_DNS_HOST
-      value: <dns_host>
+      value: <airflow_ingress_web_host>
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: <azure_enable_msi>
       # Needed for installing python osdu python sdk. In future this will be changed
