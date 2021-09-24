@@ -60,6 +60,13 @@ azure:
   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
 
 ################################################################################
+# Specify any custom configs/environment values
+#
+customConfig:
+  rbac:
+    createUser: "True"                                     #<-- Flag to Create a default User for RBAC
+
+################################################################################
 # Specify any optional override values
 #
 airflowLogin:
@@ -217,7 +224,9 @@ helm install airflow osdu-airflow -n $NAMESPACE -f osdu_airflow_custom_values.ya
 ```
 
 
-> Managing airflow users can be from within the Airflow UI or performed using the airflow command found in the running airflow web container.
+> Managing airflow users can be from within the Airflow UI or performed using the airflow command found in the running airflow web container. To create user via the Post Install Jobs we can set a flag "customConfig.rbac.createUser" to "True". The created username is admin and the password is picked from the keyvault secrets, make sure the secrets are already there in the keyvault.
+
+> If the flag is set to "False" the createuser will create a default user for airflow experimental api authentication and the user can be created by the following process.
 
   ```bash
   # Get Airflow web container

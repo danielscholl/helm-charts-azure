@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}-setup-default-user"
+  name: "{{ .Release.Name }}-setup-default-user-v2"
   namespace: {{ $namespace }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
@@ -26,11 +26,10 @@ spec:
       containers:
       - name: post-install-job
         image: python:3.6.12-slim-buster
-        command: ['sh','-c','pip install --user -r /scripts/requirements.txt && python /scripts/create_default_user.py']
-        # command: ['sh','-c','pip install --user -r /scripts/requirements.txt']
+        command: ['sh','-c','pip install --user -r /post-install-scripts/requirements.txt && python /post-install-scripts/create_default_user.py']
         volumeMounts:
         - name: config-volume
-          mountPath: /scripts
+          mountPath: /post-install-scripts
         - name: azure-keyvault
           mountPath: "/mnt/azure-keyvault"
           readOnly: true
@@ -44,8 +43,8 @@ spec:
         - name: DATABASE_USER_PASS
           valueFrom:
             secretKeyRef:
-              name: postgres
-              key: postgres-password
+              name: {{ .Values.airflow.externalDatabase.passwordSecret }}
+              key: {{ .Values.airflow.externalDatabase.passwordSecretKey }}
         - name: AIRFLOW_ADMIN
           value: {{ .Values.airflowLogin.name }}
         - name: AIRFLOW_ADMIN_PASS
@@ -53,6 +52,10 @@ spec:
             secretKeyRef:
               name: airflow
               key: admin-password
+        - name: AIRFLOW_RBAC_CREATE_USER
+          value: "{{ .Values.customConfig.rbac.createUser }}"
+        - name: AIRFLOW_RBAC_ENABLED
+          value: "{{ .Values.airflow.airflow.config.AIRFLOW__WEBSERVER__RBAC }}"
       volumes:
       - name: config-volume
         configMap:
