@@ -76,7 +76,7 @@ configuration:
   - service: wks
     scaledObject: true
     repository: msosdu.azurecr.io/wks
-    tag: test
+    tag: oak
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true
@@ -134,7 +134,7 @@ configuration:
   #
   - service: workflow
     repository: msosdu.azurecr.io/workflow
-    tag: test
+    tag: oak
     path: /api/workflow/*
     probe: /api/workflow/swagger-ui.html
     keyvault: true

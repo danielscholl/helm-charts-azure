@@ -77,7 +77,7 @@ configuration:
   #
   - service: storage
     repository: msosdu.azurecr.io/storage
-    tag: test
+    tag: oak
     path: /api/storage/v2/*
     probe: /api/storage/v2/swagger-ui.html
     keyvault: true
@@ -162,7 +162,7 @@ configuration:
   #
   - service: schema
     repository: msosdu.azurecr.io/schema
-    tag: test
+    tag: oak
     path: /api/schema-service/v1/*
     probe: /api/schema-service/v1/swagger-ui.html
     keyvault: true
@@ -229,7 +229,7 @@ configuration:
   #
   - service: file
     repository: msosdu.azurecr.io/file
-    tag: test
+    tag: oak
     path: /api/file/*
     probe: /api/file/v2/readiness_check
     keyvault: true
@@ -301,7 +301,7 @@ configuration:
   #
   - service: indexer
     repository: msosdu.azurecr.io/indexer
-    tag: test
+    tag: oak
     path: /api/indexer/v2/*
     probe: /api/indexer/v2/swagger-ui.html
     keyvault: true
@@ -381,7 +381,7 @@ configuration:
   #
   - service: search
     repository: msosdu.azurecr.io/search
-    tag: test
+    tag: oak
     path: /api/search/v2/*
     probe: /api/search/v2/swagger-ui.html
     keyvault: true
@@ -521,7 +521,7 @@ configuration:
   #
   - service: notification
     repository: msosdu.azurecr.io/notification
-    tag: test
+    tag: oak
     path: /api/notification/v1/*
     probe: /api/notification/v1/swagger-ui.html
     keyvault: true
@@ -629,18 +629,6 @@ configuration:
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory
