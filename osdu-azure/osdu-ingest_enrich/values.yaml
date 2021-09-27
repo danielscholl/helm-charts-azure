@@ -32,20 +32,21 @@ keda:
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  appid: <client_id>
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
+  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <fqdn>
+  dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -75,6 +76,7 @@ configuration:
   - service: wks
     scaledObject: true
     repository: msosdu.azurecr.io/wks
+    tag: oak
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true
@@ -107,22 +109,12 @@ configuration:
       value: "32"
     - name: max_lock_renew_duration_seconds
       value: "600"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory
@@ -142,6 +134,7 @@ configuration:
   #
   - service: workflow
     repository: msosdu.azurecr.io/workflow
+    tag: oak
     path: /api/workflow/*
     probe: /api/workflow/swagger-ui.html
     keyvault: true
@@ -186,22 +179,12 @@ configuration:
       value: "true"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory

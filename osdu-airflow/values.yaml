@@ -3,13 +3,13 @@
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  appid: <client_id>
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
 
 ################################################################################
 # Specify KEDA configuration
@@ -28,7 +28,7 @@ customConfig:
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <dns_hostname>
+  dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -40,7 +40,7 @@ image:
   repository: msosdu.azurecr.io
 
 airflowLogin:
-  name: <admin_username>                                   #<-- Default Airflow Web UI username
+  name: <airflowLogin_name>                                   #<-- Default Airflow Web UI username
 
 
 ################################################################################
@@ -52,20 +52,20 @@ airflow:
   # Kubernetes - Ingress Configs
   ###################################
   ingress:
-    enabled: false
+    enabled: <airflow_ingress_enabled>
     web:
       annotations:
         kubernetes.io/ingress.class: azure/application-gateway
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: <your_issuer>
+        cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
         cert-manager.io/acme-challenge-type: http01
       path: "/airflow"
-      host: <your_host>
+      host: <airflow_ingress_web_host>
       livenessPath: "/airflow/health"
       tls:
-        enabled: true
+        enabled: <airflow_ingress_web_tls_enabled>
         secretName: osdu-certificate
       precedingPaths:
         - path: "/airflow/*"
@@ -79,8 +79,8 @@ airflow:
     enabled: false
   externalDatabase:
     type: postgres
-    host: <postgres_host>                                #<-- Azure PostgreSQL Database host
-    user:  <postgres_username>                           #<-- Azure PostgreSQL Database username, formatted as {username}@{hostname}
+    host: <airflow_externalDatabase_host>                                #<-- Azure PostgreSQL Database host
+    user:  <airflow_externalDatabase_user>                           #<-- Azure PostgreSQL Database username, formatted as {username}@{hostname}
     passwordSecret: "postgres"
     passwordSecretKey: "postgres-password"
     port: 5432
@@ -93,7 +93,7 @@ airflow:
   redis:
     enabled: false
   externalRedis:
-    host: <redis_host>                                   #<-- Azure Redis Cache host
+    host: <airflow_externalRedis_host>                                   #<-- Azure Redis Cache host
     passwordSecret: "redis"
     passwordSecretKey: "redis-password"
     port: 6380
@@ -214,7 +214,7 @@ airflow:
           name: central-logging
           key: appinsights
     - name: AIRFLOW_VAR_AZURE_DNS_HOST
-      value: <dns_host>
+      value: <airflow_ingress_web_host>
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: <azure_enable_msi>
       # Needed for installing python osdu python sdk. In future this will be changed
@@ -226,17 +226,18 @@ airflow:
     - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
       value: "/opt/airflow/dags/configs/dataload.ini"
     - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
-      value:  "http://schema.osdu-azure.svc.cluster.local/api/schema-service/v1/schema"
+      value: "http://schema.<namespace>.svc.cluster.local/api/schema-service/v1/schema"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
-      value: "http://search.osdu-azure.svc.cluster.local/api/search/v2/query"
+      value: "http://search.<namespace>.svc.cluster.local/api/search/v2/query"
     - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
-      value:  "http://storage.osdu-azure.svc.cluster.local/api/storage/v2/records"
+      value: "http://storage.<namespace>.svc.cluster.local/api/storage/v2/records"
     - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
-      value: "http://file.osdu-azure.svc.cluster.local/api/file/v2"
+      value: "http://file.<namespace>.svc.cluster.local/api/file/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
-      value: "http://workflow.osdu-azure.svc.cluster.local/api/workflow"
+      value: "http://workflow.<namespace>.svc.cluster.local/api/workflow"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
-      value: "http://search.osdu-azure.svc.cluster.local/api/search/v2/query_with_cursor"
+      value: "http://search.<namespace>.svc.cluster.local/api/search/v2/query_with_cursor"
+
     ## End -- Ingest Manifest DAG variables
     extraConfigmapMounts:
         - name: remote-log-config

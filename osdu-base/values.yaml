@@ -23,4 +23,4 @@ global:
 # Lets Encrypt Settings
 #
 ingress:
-  admin: admin@email.com                                     # ie: admin@email.com
+  admin: <ingress_admin>                                     # ie: admin@email.com

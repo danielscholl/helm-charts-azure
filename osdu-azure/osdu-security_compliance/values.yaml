@@ -25,20 +25,23 @@ global:
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  appid: <client_id>
+  tenant: <azure_tenant>
+  mstenant: <azure_mstenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
+  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  oidAuthEnabled: <azure_oidAuthEnabled>
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <fqdn>
+  dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
@@ -98,6 +101,8 @@ configuration:
       value: "true"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -133,6 +138,7 @@ configuration:
   #
   - service: entitlements
     repository: msosdu.azurecr.io/entitlements
+    tag: oak
     path: /api/entitlements/v2/*
     probe: /api/entitlements/v2/_ah/readiness_check
     keyvault: true
@@ -165,6 +171,8 @@ configuration:
       value: "true"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -183,6 +191,7 @@ configuration:
   #
   - service: legal
     repository: msosdu.azurecr.io/legal
+    tag: oak
     path: /api/legal/v1/*
     probe: /api/legal/v1/swagger-ui.html
     keyvault: true
@@ -231,6 +240,8 @@ configuration:
       value: true
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -239,18 +250,6 @@ configuration:
       config:
         name: osdu-svc-config
         key: REDIS_DB_LEGAL
-    - name: AZURE_CLIENT_ID
-      secret:
-        name: active-directory
-        key: principal-clientid
-    - name: AZURE_CLIENT_SECRET
-      secret:
-        name: active-directory
-        key: principal-clientpassword
-    - name: AZURE_TENANT_ID
-      secret:
-        name: active-directory
-        key: tenantid
     - name: aad_client_id
       secret:
         name: active-directory
@@ -291,3 +290,5 @@ configuration:
         value: "http://legal"
       - name: ENTITLEMENTS_BASE_PATH
         value: "/api/entitlements/v2/groups"
+      - name: azure_paas_podIdentity_isEnabled
+        value: "{{ .Values.azure.podIdentityAuthEnabled }}"

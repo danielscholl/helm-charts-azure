@@ -25,20 +25,20 @@ global:
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  appid: <client_id>
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
 
 
 ################################################################################
 # Specify the Ingress Settings
 #
 ingress:
-  dns: <fqdn>
+  dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
 
 
@@ -116,3 +116,5 @@ configuration:
       value: "api://$(aad_client_id)"
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
