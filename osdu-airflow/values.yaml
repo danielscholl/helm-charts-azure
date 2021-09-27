@@ -17,6 +17,12 @@ azure:
 keda:
   version_2_enabled: false
 
+################################################################################
+# Specify any custom configs/environment values
+#
+customConfig:
+  rbac:
+    createUser: "True"                                     #<-- Flag to Create a default User for RBAC
 
 ################################################################################
 # Specify the Ingress Settings
