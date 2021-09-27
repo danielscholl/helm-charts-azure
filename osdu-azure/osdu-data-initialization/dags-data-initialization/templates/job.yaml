@@ -1,0 +1,42 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "dags-data-initialization-job"
+  namespace: {{ $namespace }}
+  labels:
+    app: "dags-data-initialization-job"
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 5
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.image.repository }}/dags-data-seed:{{ .Values.image.tag | default .Chart.Version }}
+        imagePullPolicy: Always
+        name: "dags-data-init"
+        env:
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
+        - name: AZURE_DNS_NAME
+          value: {{ .Values.ingress.dns }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.azure.resourcegroup }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
+        - name: AZURE_TENANT_ID
+          value: {{ .Values.azure.tenant_id }}
+        - name: AZURE_AD_APP_RESOURCE_ID
+          value: {{ .Values.azure.app_resource_id }}
+        - name: AZURE_CLIENT_ID
+          value: {{ .Values.azure.client_id }}
+        - name: AZURE_CLIENT_SECRET
+          value: {{ .Values.azure.client_secret }}
+        - name: AZURE_ENABLE_MSI
+          value: {{ .Values.azure.enable_msi | quote}}

@@ -1,0 +1,16 @@
+# This file contains the essential configs for the Azure Data Initialization Agent
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant_id: <azure_tenant_id>
+  resource_id: <azure_app_resource_id>
+  client_id: <azure_client_id>
+  client_secret: <azure_client_secret>
+
+ingress:
+  dns: <ingress_dns>
+
+image:
+  repository: msosdu.azurecr.io
+  tag: <image_tag>
