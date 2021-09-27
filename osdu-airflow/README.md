@@ -142,7 +142,7 @@ airflow:
         value: $DNS_HOST
       - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
         value: "$AZURE_ENABLE_MSI"      
-      - name: AIRFLOW_VAR_AZURE_CONTAINER_REGISTRY
+      - name: AIRFLOW_VAR_DAG_IMAGE_ACR
         value: "msosdu.azurecr.io"        
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
