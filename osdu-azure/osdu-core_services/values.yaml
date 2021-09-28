@@ -473,7 +473,7 @@ configuration:
         - "*/actuator/health"
         - "/api/register/v1/swagger-resources/*"
         - "/api/register/v1/webjars/*"
-        - "/api/register/test/challenge/*"
+        - "/api/register/v1/test/challenge/*"
     env:
     - name: spring_application_name
       value: register
