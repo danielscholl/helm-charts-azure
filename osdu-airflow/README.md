@@ -146,7 +146,7 @@ airflow:
         value: "msosdu.azurecr.io"        
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
-        value: "v0.11.0"
+        value: "v0.12.0"
       - name: BUILD_TAG
         value: "v0.12.0"          
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
