@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "schema-data-initialization-job"
+  name: {{ .Release.Name | quote }}
   namespace: {{ $namespace }}
   labels:
-    app: "schema-data-initialization-job"
+    app: {{ .Release.Name | quote }}
 spec:
   completions: 1
   parallelism: 1
@@ -22,8 +22,14 @@ spec:
         imagePullPolicy: Always
         name: "schema-data-init"
         env:
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.azure.identity_id }}
         - name: AZURE_DNS_NAME
           value: {{ .Values.ingress.dns }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.azure.resourcegroup }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
         - name: AZURE_TENANT_ID
           value: {{ .Values.azure.tenant_id }}
         - name: AZURE_AD_APP_RESOURCE_ID
@@ -32,3 +38,7 @@ spec:
           value: {{ .Values.azure.client_id }}
         - name: AZURE_CLIENT_SECRET
           value: {{ .Values.azure.client_secret }}
+        - name: AZURE_ENABLE_MSI
+          value: {{ .Values.azure.enable_msi | quote }}
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.storage.partitions }}

@@ -4,14 +4,14 @@
 # Specify the azure environment specific values
 #
 azure:
-  tenant: <tenant_id>
-  subscription: <subscription_id>
-  resourcegroup: <central_resource_group>
-  identity: <identity_name>
-  identity_id: <identity_id>
-  keyvault: <keyvault_name>
-  appid: <app_id>
-  dns: <fqdn>
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
+  dns: <azure_dns>
 
 
 image:

@@ -24,13 +24,14 @@ global:
   # Specify the azure environment specific values
   #
   azure:
-    tenant: <tenant_id>
-    appid: <application_id>
+    tenant: <azure_tenant>
+    appid: <azure_appid>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
   ################################################################################
   # Specify the istio specific values
   # based64 encoded username and password
   #
   istio:
-    username: <username>
-    password: <password>
+    username: <istio_username>
+    password: <istio_password>
