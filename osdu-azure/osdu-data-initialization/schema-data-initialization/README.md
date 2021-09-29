@@ -8,6 +8,7 @@ _The following commands can help generate a pre-populated custom_values file._
 UNIQUE="<your_osdu_unique>"         # e.g. demo
 OSDU_HOST="<your_osdu_fqdn>"         # e.g. osdu-$UNIQUE.contoso.com
 IMAGE_VERSION="<your-release-version>" # e.g. 0.12.0
+PARTITIONS="<partition_names_as_comma_separated_values>"  # ie: "opendes" OR "opendes,opendes1"
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -21,6 +22,9 @@ cat > ./schema_data_init_custom_values.yaml << EOF
 # Specify the azure environment specific values
 #
 azure:
+  resourcegroup: $GROUP
+  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+  enable_msi: $AZURE_ENABLE_MSI
   tenant_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
   resource_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
   client_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/app-dev-sp-username --query value -otsv)
@@ -28,6 +32,12 @@ azure:
 
 ingress:
   dns: $OSDU_HOST
+  
+storage:
+  partitions: $PARTITIONS
+  
+config:
+  configmapname: 
 
 image:
   repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io

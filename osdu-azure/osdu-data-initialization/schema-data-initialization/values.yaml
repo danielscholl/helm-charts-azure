@@ -3,6 +3,9 @@
 # Specify the azure environment specific values
 #
 azure:
+  resourcegroup: <azure_resourcegroup>
+  identity_id: <azure_identity_id>
+  enable_msi: <azure_enable_msi>
   tenant_id: <azure_tenant_id>
   resource_id: <azure_app_resource_id>
   client_id: <azure_client_id>
@@ -10,6 +13,12 @@ azure:
 
 ingress:
   dns: <ingress_dns>
+
+storage:
+  partitions: <storage_partitions> #A comma separated(no space) list of partition names
+
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
 
 image:
   repository: msosdu.azurecr.io
