@@ -1,5 +1,5 @@
 {{- $namespace := .Release.Namespace }}
-{{- $svcPort := .Values.service.port -}}
+{{- $svcPort := .Values.global.service.port -}}
 {{- $release := .Release.ame -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -11,21 +11,21 @@ metadata:
     appgw.ingress.kubernetes.io/request-timeout: "300"
     appgw.ingress.kubernetes.io/connection-draining: "true"
     appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-    {{- if .Values.ingress.enableKeyvaultCert }}
+    {{- if .Values.global.ingress.enableKeyvaultCert }}
     appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
     {{- else }}
-    cert-manager.io/cluster-issuer: {{ .Values.ingress.issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.global.ingress.issuer }}
     cert-manager.io/acme-challenge-type: http01
     {{- end }}
 spec:
-  {{- if not .Values.ingress.enableKeyvaultCert }}
+  {{- if not .Values.global.ingress.enableKeyvaultCert }}
   tls:
   - hosts:
-    - {{ .Values.ingress.dns }}
+    - {{ .Values.global.ingress.dns }}
     secretName: osdu-certificate
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.dns }}
+    - host: {{ .Values.global.ingress.dns }}
       http:
         paths:
         {{- range .Values.configuration }}

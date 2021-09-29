@@ -1,0 +1,147 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  replicaCount: 1
+  nodepool: services
+  isAutoscalingEnabled: false
+
+
+ ################################################################################
+ # Specify KEDA configuration
+ #
+ keda:
+   version_2_enabled: false
+
+
+ ################################################################################
+ # Specify the azure environment specific values
+ #
+ azure:
+   tenant: <azure_tenant>
+   subscription: <azure_subscription>
+   resourcegroup: <azure_resourcegroup>
+   identity: <azure_identity>
+   identity_id: <azure_identity_id>
+   keyvault: <azure_keyvault>
+   appid: <azure_appid>
+   podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+
+
+ ################################################################################
+ # Specify the Ingress Settings
+ #
+ ingress:
+   dns: <ingress_dns>
+   issuer: letsencrypt-prod-dns
+   enableKeyvaultCert: false
+
+
+ ################################################################################
+ # Specify the Pod Identity
+ #
+ identity:
+   name: osdu-identity
+
+
+ ################################################################################
+ # Specify the Service Settings
+ #
+ service:
+   type: ClusterIP
+   port: 80
+
+
+################################################################################
+# Specify the OSDU Services to Load
+#
+configuration:
+
+  - service: notification
+    repository: msosdu.azurecr.io/notification
+    tag: oak
+    path: /api/notification/v1/*
+    probe: /api/notification/v1/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/v2/api-docs"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "*/actuator/health"
+        - "/api/notification/v1/swagger-resources/*"
+        - "/api/notification/v1/webjars/*"
+    env:
+    - name: spring_application_name
+      value: notification-azure
+    - name: server.servlet.contextPath
+      value: /api/notification/v1/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: entitlements_service_endpoint
+      value: http://entitlements/api/entitlements/v2
+    - name: registeration_service_endpoint
+      value: http://register/api/register/v1
+    - name: maxCacheSize
+      value:  "20"
+    - name: partition_service_endpoint
+      value: http://partition/api/partition/v1
+    - name: policy_enabled
+      value: "false"
+    - name: policy_service_endpoint
+      value: http://policy/api/policy/v1
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: LOG_PREFIX
+      value: "notification"
+    - name: service_bus_enabled
+      value: "false"
+    - name: event_grid_to_service_bus_enabled
+      value: "false"
+    - name: event_grid_enabled
+      value: "true"
+    - name: initial_subscription_manager_delay_seconds
+      value: "0"
+    - name: consecutive_subscription_manager_delay_seconds
+      value: "1800"
+    - name: max_concurrent_calls
+      value: "3"
+    - name: executor_n_threads
+      value: "32"
+    - name: max_lock_renew_duration_seconds
+      value: "2000"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights

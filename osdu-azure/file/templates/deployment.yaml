@@ -1,8 +1,8 @@
 {{- $namespace := .Release.Namespace }}
-{{- $pullPolicy := .Values.pullPolicy -}}
-{{- $servicePort := .Values.service.port -}}
-{{- $hostName := .Values.ingress.dns -}}
-{{- $replicaCount := .Values.replicaCount -}}
+{{- $pullPolicy := .Values.global.pullPolicy -}}
+{{- $servicePort := .Values.global.service.port -}}
+{{- $hostName := .Values.global.ingress.dns -}}
+{{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
