@@ -1,0 +1,47 @@
+
+{{- $namespace := .Release.Namespace }}
+{{- $serviceType := .Values.global.service.type }}
+{{- $servicePort := .Values.global.service.port }}
+{{- $isKedaV2Enabled := .Values.global.keda.version_2_enabled | default false -}}
+{{- $release := .Release.Name }}
+{{- if .scaledObject }}
+{{- range .Values.configuration }}
+
+{{- if $isKedaV2Enabled }}
+apiVersion: keda.sh/v1alpha1
+{{- else }}
+apiVersion: keda.k8s.io/v1alpha1
+{{- end }}
+kind: ScaledObject
+metadata:
+  name: {{ .service }}
+  namespace: {{ $namespace }}
+  {{- if $isKedaV2Enabled }}
+  {{- else }}
+  labels:
+    deploymentName: {{ .service }}
+  {{- end }}
+spec:
+  scaleTargetRef:
+    {{- if $isKedaV2Enabled }}
+    name: {{ .service }}
+    {{- else }}
+    deploymentName: {{ .service }}
+    {{- end }}
+  triggers:
+  - type: azure-servicebus
+    metadata:
+      subscriptionName: {{ .servicebusSubscription }}
+      topicName: {{ .servicebusTopic }}
+      {{- if $isKedaV2Enabled }}
+      connectionFromEnv: SERVICE_BUS # This must be a connection string for a queue itself, and not a namespace level (e.g. RootAccessPolicy) connection string [#215](https://github.com/kedacore/keda/issues/215)
+      {{- else }}
+      type: serviceBusTrigger
+      direction: in
+      name: message
+      connection: SERVICE_BUS
+      {{- end }}
+
+{{- end }}
+---
+{{- end }}

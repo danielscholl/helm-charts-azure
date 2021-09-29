@@ -1,8 +1,8 @@
 
 {{- $namespace := .Release.Namespace }}
-{{- $serviceType := .Values.service.type }}
-{{- $servicePort := .Values.service.port }}
-{{- $isKedaV2Enabled := .Values.keda.version_2_enabled | default false -}}
+{{- $serviceType := .Values.global.service.type }}
+{{- $servicePort := .Values.global.service.port }}
+{{- $isKedaV2Enabled := .Values.global.keda.version_2_enabled | default false -}}
 {{- $release := .Release.Name }}
 {{- if .scaledObject }}
 {{- range .Values.configuration }}
