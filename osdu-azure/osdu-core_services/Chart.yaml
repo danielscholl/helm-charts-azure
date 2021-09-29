@@ -35,6 +35,10 @@ dependencies:
     repository: file://../indexer
     version: "1.11.0"
     enabled: true
+  - name: "search"
+    repository: file://../search
+    version: "1.11.0"
+    enabled: true
   - name: "register"
     repository: file://../register
     version: "1.11.0"
@@ -45,5 +49,9 @@ dependencies:
     enabled: true
   - name: "indexer-queue"
     repository: file://../indexer-queue
+    version: "1.11.0"
+    enabled: true
+  - name: "dataset"
+    repository: file://../dataset
     version: "1.11.0"
     enabled: true

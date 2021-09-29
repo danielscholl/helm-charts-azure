@@ -139,7 +139,7 @@ configuration:
     - name: "SERVER_TOMCAT_MINSPARETHREADS"
       value: "200"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config

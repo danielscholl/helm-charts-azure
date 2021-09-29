@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 apiVersion: v2
-name: file
+name: storage
 type: application
 description: Installs the OSDU on Azure Core System Services
 version: 1.11.0

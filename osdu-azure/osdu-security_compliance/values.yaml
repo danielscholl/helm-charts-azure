@@ -102,7 +102,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -172,7 +172,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -241,7 +241,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -291,4 +291,4 @@ configuration:
       - name: ENTITLEMENTS_BASE_PATH
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
-        value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+        value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"

@@ -127,7 +127,7 @@ configuration:
     - name: SEARCH_QUERY_LIMIT
       value: "1000"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config

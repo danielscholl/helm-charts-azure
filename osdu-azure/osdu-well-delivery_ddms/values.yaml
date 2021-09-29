@@ -117,4 +117,4 @@ configuration:
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"

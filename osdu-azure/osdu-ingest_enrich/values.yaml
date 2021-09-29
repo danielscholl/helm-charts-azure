@@ -110,7 +110,7 @@ configuration:
     - name: max_lock_renew_duration_seconds
       value: "600"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
@@ -180,7 +180,7 @@ configuration:
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
