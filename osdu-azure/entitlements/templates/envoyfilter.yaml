@@ -1,4 +1,4 @@
-{{- $tenant := .Values.azure.tenant -}}
+{{- $tenant := .Values.global.azure.tenant -}}
 {{- $namespace := .Release.Namespace }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
@@ -27,7 +27,7 @@ spec:
               request_handle:headers():remove("x-user-id")
               request_handle:headers():remove("x-app-id")
             end
-{{- if .Values.azure.oidAuthEnabled }}
+{{- if .Values.global.azure.oidAuthEnabled }}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter

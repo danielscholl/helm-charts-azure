@@ -1,5 +1,5 @@
 {{- if .Values.global.azure.podIdentityAuthEnabled }}
-{{- $mstenant := .Values.azure.mstenant -}}
+{{- $mstenant := .Values.global.azure.mstenant -}}
 {{- $namespace := .Release.Namespace }}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter

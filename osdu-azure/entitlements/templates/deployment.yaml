@@ -1,7 +1,7 @@
 {{- $namespace := .Release.Namespace }}
-{{- $pullPolicy := .Values.pullPolicy -}}
-{{- $servicePort := .Values.service.port -}}
-{{- $replicaCount := .Values.replicaCount -}}
+{{- $pullPolicy := .Values.global.pullPolicy -}}
+{{- $servicePort := .Values.global.service.port -}}
+{{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
