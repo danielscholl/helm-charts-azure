@@ -22,54 +22,54 @@ global:
   isAutoscalingEnabled: false
 
 
- ################################################################################
- # Specify KEDA configuration
- #
- keda:
-   version_2_enabled: false
+  ################################################################################
+  # Specify KEDA configuration
+  #
+  keda:
+    version_2_enabled: false
+
+
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: <azure_tenant>
+    subscription: <azure_subscription>
+    resourcegroup: <azure_resourcegroup>
+    identity: <azure_identity>
+    identity_id: <azure_identity_id>
+    keyvault: <azure_keyvault>
+    appid: <azure_appid>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+
+
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    dns: <ingress_dns>
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
+
+
+  ################################################################################
+  # Specify the Pod Identity
+  #
+  identity:
+    name: osdu-identity
+
+
+  ################################################################################
+  # Specify the Service Settings
+  #
+  service:
+    type: ClusterIP
+    port: 80
 
 
  ################################################################################
- # Specify the azure environment specific values
+ # Specify the OSDU Services to Load
  #
- azure:
-   tenant: <azure_tenant>
-   subscription: <azure_subscription>
-   resourcegroup: <azure_resourcegroup>
-   identity: <azure_identity>
-   identity_id: <azure_identity_id>
-   keyvault: <azure_keyvault>
-   appid: <azure_appid>
-   podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
-
-
- ################################################################################
- # Specify the Ingress Settings
- #
- ingress:
-   dns: <ingress_dns>
-   issuer: letsencrypt-prod-dns
-   enableKeyvaultCert: false
-
-
- ################################################################################
- # Specify the Pod Identity
- #
- identity:
-   name: osdu-identity
-
-
- ################################################################################
- # Specify the Service Settings
- #
- service:
-   type: ClusterIP
-   port: 80
-
-
-################################################################################
-# Specify the OSDU Services to Load
-#
 configuration:
 
   ########################
