@@ -61,3 +61,55 @@ global:
 #
 configuration:
 
+  #######################
+  #  CRS CATALOG SERVICE
+  - service: crs-catalog
+    repository: msosdu.azurecr.io/crs-catalog
+    path: /api/crs/catalog/*
+    probe: /api/crs/catalog/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/index.html"
+        - "*/v2/api-docs"
+        - "*/configuration/ui"
+        - "*/configuration/security"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "*/actuator/health"
+        - "*/_ah/**"
+        - "/api/crs/catalog/swagger-resources/*"
+        - "/api/crs/catalog/webjars/*"
+    pvc:
+      - name: crs
+        volume: shared-data
+    mount:
+      - name: shared-data
+        path: /mnt/crs_catalogs
+    env:
+    - name: spring_application_name
+      value: crs-catalog-service
+    - name: server.servlet.contextPath
+      value: /api/crs/catalog/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: ENTITLEMENT_URL
+      value: http://entitlements/api/entitlements/v2
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
