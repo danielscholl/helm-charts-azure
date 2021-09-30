@@ -6,8 +6,8 @@ metadata:
   namespace: {{ $namespace }}
 spec:
   type: 0
-  resourceID: "/subscriptions/{{ .Values.azure.subscription }}/resourcegroups/{{ .Values.azure.resourcegroup }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{{ .Values.azure.identity }}"
-  clientID: "{{ .Values.azure.identity_id }}"
+  resourceID: "/subscriptions/{{ .Values.global.azure.subscription }}/resourcegroups/{{ .Values.global.azure.resourcegroup }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{{ .Values.global.azure.identity }}"
+  clientID: "{{ .Values.global.azure.identity_id }}"
 ---
 apiVersion: aadpodidentity.k8s.io/v1
 kind: AzureIdentityBinding

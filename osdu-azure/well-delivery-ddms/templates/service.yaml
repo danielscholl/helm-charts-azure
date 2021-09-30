@@ -1,6 +1,6 @@
 {{- $namespace := .Release.namespace }}
-{{- $serviceType := .Values.service.type }}
-{{- $servicePort := .Values.service.port }}
+{{- $serviceType := .Values.global.service.type }}
+{{- $servicePort := .Values.global.service.port }}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
 apiVersion: v1

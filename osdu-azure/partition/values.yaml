@@ -64,20 +64,6 @@ global:
 #
 configuration:
 
-  ######################
-  ##  DEFAULT SERVICE
-  #
-  - service: default
-    repository: neilpeterson/aks-helloworld
-    tag: v1
-    path: /*
-    probe: /
-    replicaCount: 1
-    env:
-      - name: TITLE
-        value: "Azure OSDU Platform - (AKS)"
-
-
   ########################
   ##  PARTITION SERVICE
   #

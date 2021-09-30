@@ -17,13 +17,13 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 1
+  debug: false
   nodepool: services
   isAutoscalingEnabled: false
 
-  ################################################################################
-  # Specify the azure environment specific values
-  #
+################################################################################
+# Specify the azure environment specific values
+#
   azure:
     tenant: <azure_tenant>
     subscription: <azure_subscription>
@@ -32,6 +32,7 @@ global:
     identity_id: <azure_identity_id>
     keyvault: <azure_keyvault>
     appid: <azure_appid>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
 
   ################################################################################
@@ -40,6 +41,7 @@ global:
   ingress:
     dns: <ingress_dns>
     issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
 
 
   ################################################################################
@@ -55,9 +57,22 @@ global:
   service:
     type: ClusterIP
     port: 80
-    target: 8080
+
 
 ################################################################################
 # Specify the OSDU Services to Load
 #
 configuration:
+
+  ######################
+  ##  DEFAULT SERVICE
+  #
+  - service: default
+    repository: neilpeterson/aks-helloworld
+    tag: v1
+    path: /*
+    probe: /
+    replicaCount: 1
+    env:
+      - name: TITLE
+        value: "Azure OSDU Platform - (AKS)"

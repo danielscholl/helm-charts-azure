@@ -5,7 +5,7 @@ metadata:
   name: osdu-svc-config
   namespace: {{ $namespace }}
 data:
-  ENV_KEYVAULT: https://{{ .Values.azure.keyvault }}.vault.azure.net/
+  ENV_KEYVAULT: https://{{ .Values.global.azure.keyvault }}.vault.azure.net/
   REDIS_DB_AIRFLOW: "1"
   REDIS_DB_PARTITION: "2"
   REDIS_DB_ENTITLEMENTS: "3"

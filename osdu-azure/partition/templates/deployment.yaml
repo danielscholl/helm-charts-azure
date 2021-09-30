@@ -1,8 +1,7 @@
-{{- $namespace := .Release.namespace }}
-{{- $pullPolicy := .Values.pullPolicy -}}
-{{- $servicePort := .Values.service.port -}}
-{{- $hostName := .Values.ingress.dns -}}
-{{- $replicaCount := .Values.replicaCount -}}
+{{- $namespace := .Release.Namespace }}
+{{- $pullPolicy := .Values.global.pullPolicy -}}
+{{- $servicePort := .Values.global.service.port -}}
+{{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
@@ -81,7 +80,8 @@ spec:
             {{- range .env }}
             - name: {{ .name }}
               {{- if .value }}
-              value: {{ .value | quote }}
+              {{- $v := .value }}
+              value: {{ tpl ($v | quote) $ }}
               {{- end }}
               {{- if .config }}
               valueFrom:
@@ -96,14 +96,7 @@ spec:
                   key: {{ .secret.key | quote }}
               {{- end }}
             {{- end }}
-            {{- if .env_with_dns }}
-            {{- range .env_with_dns }}
-            - name: {{ .name }}
-              {{- if .value }}
-              value: "https://{{ $hostName }}{{ .value }}"
-              {{- end }}
-            {{- end }}
-            {{- end }}
           {{- end }}
+
 ---
 {{- end }}
