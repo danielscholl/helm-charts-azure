@@ -43,6 +43,14 @@ ingress:
   issuer: letsencrypt-prod-dns
   enableKeyvaultCert: false
 
+################################################################################
+# Specify the resource limits
+#
+resourceLimits:
+  defaultCpuRequests: "0.5"
+  defaultMemoryRequests: "4Gi"
+  defaultCpuLimits: "1"
+  defaultMemoryLimits: "4Gi"
 
 ################################################################################
 # Specify the Pod Identity
