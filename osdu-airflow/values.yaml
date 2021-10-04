@@ -164,8 +164,6 @@ airflow:
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-identity"
-    podAnnotations:
-      sidecar.istio.io/inject: "true"
     autoscale:
       enabled: false
       minReplicas: 2
