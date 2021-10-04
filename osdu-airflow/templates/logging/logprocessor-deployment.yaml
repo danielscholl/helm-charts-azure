@@ -14,6 +14,8 @@ spec:
       labels:
         app: airflow-log-processor
         aadpodidbinding: "osdu-identity"
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
       - name: airflow-log-processor

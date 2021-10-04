@@ -25,6 +25,8 @@ spec:
       labels:
         app: appinsights-statsd
         aadpodidbinding: "osdu-identity"
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
       - name: appinsights-statsd
