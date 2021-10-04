@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: basic-auth-for-airflow
-  namespace: osdu
 spec:
   workloadSelector:
     labels:
