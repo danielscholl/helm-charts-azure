@@ -1,25 +1,34 @@
-{{- $namespace := .Release.Namespace }}
+{{- $isEnabled := .Values.airflow.isDataPartitionDeployment | default false -}}
+{{- if $isEnabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: central-logging
+type: Opaque
+stringData:
+  appinsights: {{ .Values.appinsightstatsd.key }}
+---
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: statsd
-  namespace: {{ $namespace }}
+  name: appinsights-statsd
   labels:
-    app: statsd
+    app: appinsights-statsd          
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: statsd
+      app: appinsights-statsd
   template:
     metadata:
       labels:
-        app: statsd
+        app: appinsights-statsd
         aadpodidbinding: "osdu-identity"
     spec:
       containers:
-      - name: statsd
-        image: {{ .Values.image.repository }}/statsd:{{ .Values.image.tag | default .Chart.AppVersion }}
+      - name: appinsights-statsd
+        image: {{ .Values.image.repository }}/airflow-statsd:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: Always
         command: ["node"]
         args: ["/usr/src/app/statsd/stats.js", "/usr/src/app/statsd/backends/config/appinsightsconfig.js"]
@@ -44,5 +53,6 @@ spec:
             memory: 256Mi
       volumes:
         - name: config-volume
-          configMap:
-            name: statsd-configmap
+          configMap: 
+            name: airflow-appinsight-statsd-config
+        

@@ -1,23 +1,22 @@
-{{- $namespace := .Release.Namespace }}
+{{- $isEnabled := .Values.keda.version_2_enabled | default false -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-processor
-  namespace: {{ $namespace }}
+  name: airflow-log-processor
   labels:
-    app: log-processor
+    app: airflow-log-processor
 spec:
   selector:
     matchLabels:
-      app: log-processor
+      app: airflow-log-processor
   template:
     metadata:
       labels:
-        app: log-processor
+        app: airflow-log-processor
         aadpodidbinding: "osdu-identity"
     spec:
       containers:
-      - name: log-processor
+      - name: airflow-log-processor
         image: {{ .Values.image.repository }}/airflow-function:{{ .Values.image.tag | default .Chart.AppVersion }}
         imagePullPolicy: Always
         env:
@@ -30,13 +29,13 @@ spec:
           - name: AzureLogWorkspaceCustomerId
             valueFrom:
               secretKeyRef:
-                name: central-logging
-                key: workspace-id
+                name: {{ .Values.logAnalytics.workspaceId.secretName }}
+                key: {{ .Values.logAnalytics.workspaceId.secretKey }}
           - name: AzureLogWorkspaceSharedKey
             valueFrom:
               secretKeyRef:
-                name: central-logging
-                key: workspace-key
+                name: {{ .Values.logAnalytics.workspaceKey.secretName }}
+                key: {{ .Values.logAnalytics.workspaceKey.secretKey }}
           - name: AzureWebJobsStorage
             valueFrom:
               secretKeyRef:

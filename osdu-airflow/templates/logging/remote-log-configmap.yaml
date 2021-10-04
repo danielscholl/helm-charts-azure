@@ -1,9 +1,8 @@
-{{- $namespace := .Release.Namespace }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: airflow-remote-log-config
-  namespace: {{ $namespace }}
+#   namespace: ${airflow_namespace}
 data:
   __init__.py: ""
   log_config.py: |

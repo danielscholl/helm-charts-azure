@@ -1,13 +1,11 @@
-{{- $namespace := .Release.Namespace }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: statsd
-  namespace: {{ $namespace }}
+  name: appinsights-statsd
 spec:
   type: ClusterIP
   ports:
   - port: 8125
     protocol: UDP
   selector:
-    app: statsd
+    app: appinsights-statsd
