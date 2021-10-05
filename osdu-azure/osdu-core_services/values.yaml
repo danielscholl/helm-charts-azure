@@ -663,6 +663,7 @@ configuration:
     #
   - service: indexer-queue
     repository: msosdu.azurecr.io/indexer-queue
+    tag: oak
     keyvault: true
     env:
     - name: spring_application_name
