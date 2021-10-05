@@ -1,0 +1,52 @@
+{{- $list := split "," .Values.dataPartitions}}
+{{- range $index, $element := $list}}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{lower $element}}"
+  labels:
+    name: "{{lower $element}}"
+---
+{{- end}}
+
+{{- $nodePoolNamePrefix := .Values.nodePoolNamePrefix}}
+{{- $list := split "," .Values.dataPartitions}}
+{{- range $index, $element := $list}}
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: "{{lower $element}}"
+  namespace: "{{lower $element}}"
+spec:
+  version: 7.11.2
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+    service:
+      spec:
+        type: LoadBalancer
+  nodeSets:
+    - name: default
+      count: 1
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+            storageClassName: managed-premium
+      config:
+        node.master: true
+        node.data: true
+        node.ingest: true
+        node.store.allow_mmap: false
+      podTemplate:
+        spec:
+          nodeSelector:
+            agentpool: "{{ list $nodePoolNamePrefix $index | join "" }}"
+---
+{{- end}}
