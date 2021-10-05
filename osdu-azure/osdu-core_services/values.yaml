@@ -675,7 +675,7 @@ configuration:
     - name: azure_servicebus_topic_subscription
       value: recordstopicsubscription
     - name: indexer_worker_url
-      value: http://indexer-service/api/indexer/v2/_dps/task-handlers/index-worker
+      value: http://indexer/api/indexer/v2/_dps/task-handlers/index-worker
     - name: PARTITION_API
       value: http://partition/api/partition/v1
     - name: max_concurrent_calls
