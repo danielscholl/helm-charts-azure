@@ -47,9 +47,9 @@ spec:
             servicePort: 80
           path: /api/legal/v1/*
         - backend:
-            serviceName: storage
+            serviceName: partition
             servicePort: 80
-          path: /api/storage/v2/*
+          path: /api/partition/v1/*
         - backend:
             serviceName: indexer
             servicePort: 80
