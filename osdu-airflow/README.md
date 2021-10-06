@@ -33,6 +33,7 @@ _The following commands can help generate a prepopulated custom_values file._
 UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
+PIP_EXTRA_INDEX_URL="<pip_index_urls>"    # (Optional variable) List of (space separated) extra-index-url for pip repositories
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -148,7 +149,9 @@ airflow:
       - name: CI_COMMIT_TAG
         value: "v0.12.0"
       - name: BUILD_TAG
-        value: "v0.12.0"          
+        value: "v0.12.0"   
+      - name: PIP_EXTRA_INDEX_URL # List of (space separated) extra-index-url for pip repositories
+        value: $PIP_EXTRA_INDEX_URL    
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
       - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
