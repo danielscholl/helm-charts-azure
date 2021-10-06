@@ -141,10 +141,14 @@ airflow:
       - name: AIRFLOW_VAR_AZURE_DNS_HOST
         value: $DNS_HOST
       - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
-        value: "$AZURE_ENABLE_MSI"             
+        value: "$AZURE_ENABLE_MSI"      
+      - name: AIRFLOW_VAR_DAG_IMAGE_ACR
+        value: "msosdu.azurecr.io"        
       # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
-        value: "v0.11.0"
+        value: "v0.12.0"
+      - name: BUILD_TAG
+        value: "v0.12.0"          
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
       - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
@@ -185,7 +189,7 @@ airflow:
         "pyyaml==5.4.1",
         "requests==2.25.1",
         "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.11.0.tar.gz",
+        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.11.0-e908cdaa.tar.gz",
         "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.0.1.tar.gz"
     ]
     extraVolumeMounts:

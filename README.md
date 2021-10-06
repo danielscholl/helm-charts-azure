@@ -19,6 +19,7 @@ __Version Tracking__
 |  None        |  1.0.0         | None             | 1.1.0          | azure-0.4.2       |                   |
 |  None        |  1.0.0         | None             | 1.0.1          | 0.4.1             |                   |
 |  None        |  1.0.0         | None             | 1.0.0          | 0.4.0             |                   |
+
 __Installation Sequence__
 
 Charts should be installed in the following order.
