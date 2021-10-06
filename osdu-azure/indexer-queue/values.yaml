@@ -101,6 +101,8 @@ configuration:
       value: "600"
     - name: max_delivery_count
       value: "5"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
