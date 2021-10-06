@@ -53,11 +53,11 @@ spec:
         - backend:
             serviceName: crs-conversion
             servicePort: 80
-            path: /api/crs/converter/*
+          path: /api/crs/converter/*
         - backend:
             serviceName: unit
             servicePort: 80
-            path: /api/unit/*
+          path: /api/unit/*
         - backend:
             serviceName: partition
             servicePort: 80
