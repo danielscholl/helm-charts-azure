@@ -34,6 +34,15 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
+  ################################################################################
+  # Specify the resource limits
+  #
+  resourceLimits:
+    defaultCpuRequests: "0.5"
+    defaultMemoryRequests: "4Gi"
+    defaultCpuLimits: "1"
+    defaultMemoryLimits: "4Gi"
+
 
   ################################################################################
   # Specify the Ingress Settings
