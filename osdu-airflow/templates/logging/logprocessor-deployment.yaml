@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: airflow-log-processor
-        image: {{ .Values.image.repository }}/airflow-function:{{ .Values.image.tag | default .Chart.AppVersion }}
+        image: {{ .Values.image.repository }}/airflow-function:{{ .Values.image.version.airflow_log_processor | default .Chart.AppVersion }}
         imagePullPolicy: Always
         env:
           - name: AzureFunctionsJobHost__functions__0

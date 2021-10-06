@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: appinsights-statsd
-        image: {{ .Values.image.repository }}/airflow-statsd:{{ .Values.image.tag | default .Chart.AppVersion }}
+        image: {{ .Values.image.repository }}/airflow-statsd:{{ .Values.image.version.airflow_statsd | default .Chart.AppVersion }}
         imagePullPolicy: Always
         command: ["node"]
         args: ["/usr/src/app/statsd/stats.js", "/usr/src/app/statsd/backends/config/appinsightsconfig.js"]
