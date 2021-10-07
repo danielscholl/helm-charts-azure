@@ -28,7 +28,7 @@ spec:
         disabled: true
     service:
       spec:
-        type: LoadBalancer
+        type: ClusterIP
   nodeSets:
     - name: default
       count: {{ $esNodeCount }}
