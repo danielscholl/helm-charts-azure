@@ -224,6 +224,8 @@ airflow:
       value: "v0.12.0"
     - name: BUILD_TAG
       value: "v0.12.0"      
+    - name: PIP_EXTRA_INDEX_URL # List of (space separated) extra-index-url for pip repositories
+      value: <pip_extra_index_urls>
     ## Begin -- Ingest Manifest DAG variables
     - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
       value: "entitlements_client"
