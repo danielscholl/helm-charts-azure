@@ -1,5 +1,13 @@
 {{- $list := split "," .Values.dataPartitions}}
+{{- $nodepoolPrefix := .Values.nodepoolNamePrefix}}
+{{- $memLimit := .Values.resources.limits.memory}}
+{{- $cpuReq := .Values.resources.requests.cpu}}
+{{- $cpuLimit := .Values.resources.limits.cpu}}
+{{- $esVersion := .Values.elasticsearch.version}}
+{{- $esNodeCount := .Values.elasticsearch.nodeCount}}
+{{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
 {{- range $index, $element := $list}}
+---
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -7,18 +15,13 @@ metadata:
   labels:
     name: "{{lower $element}}"
 ---
-{{- end}}
-
-{{- $nodePoolNamePrefix := .Values.nodePoolNamePrefix}}
-{{- $list := split "," .Values.dataPartitions}}
-{{- range $index, $element := $list}}
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: "{{lower $element}}"
   namespace: "{{lower $element}}"
 spec:
-  version: 7.11.2
+  version: {{ $esVersion }}
   http:
     tls:
       selfSignedCertificate:
@@ -28,7 +31,7 @@ spec:
         type: LoadBalancer
   nodeSets:
     - name: default
-      count: 1
+      count: {{ $esNodeCount }}
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data
@@ -37,7 +40,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 10Gi
+                storage: {{ $esNodeStorage }}Gi
             storageClassName: managed-premium
       config:
         node.master: true
@@ -47,6 +50,16 @@ spec:
       podTemplate:
         spec:
           nodeSelector:
-            agentpool: "{{ list $nodePoolNamePrefix $index | join "" }}"
----
+            agentpool: {{ $nodepoolPrefix }}{{ trimPrefix "_" $index }}
+        containers:
+        - name: elasticsearch
+          env:
+          - name: ES_JAVA_OPTS
+            value: "-Xms{{ div $memLimit 2 }}g -Xmx{{ div $memLimit 2 }}g"
+          resources:
+            requests:
+              cpu: {{ $cpuReq }}
+            limits:
+              memory: {{ $memLimit }}Gi
+              cpu: {{ $cpuLimit }}
 {{- end}}
