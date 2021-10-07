@@ -33,9 +33,6 @@ azure:
 #
 image:
   repository: msosdu.azurecr.io
-  version:
-    airflow_statsd: 1.0.1
-    airflow_log_processor: 1.0.0
 
 airflowLogin:
   name: <airflowLogin_name>                                   #<-- Default Airflow Web UI username
