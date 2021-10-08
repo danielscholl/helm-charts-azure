@@ -35,7 +35,7 @@ data:
 
     # loop until all active task are finished
     echo "*** waiting for active tasks to finish"
-    while (( celery inspect --broker $AIRFLOW__CELERY__BROKER_URL --destination celery@$HOSTNAME --json active | python3 -c "import json; active_tasks = json.loads(input())['celery@$HOSTNAME']; print(len(active_tasks))" > 0 )); do
+    while (( $(celery inspect --broker $AIRFLOW__CELERY__BROKER_URL --destination celery@$HOSTNAME --json active | python3 -c "import json; active_tasks = json.loads(input())['celery@$HOSTNAME']; print(len(active_tasks))") > 0 )); do
       sleep 10
     done
   preinit-db.sh: |
