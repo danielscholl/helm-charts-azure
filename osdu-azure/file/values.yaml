@@ -76,7 +76,12 @@ configuration:
     repository: msosdu.azurecr.io/file
     tag: oak
     path: /api/file/*
-    probe: /api/file/v2/readiness_check
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:

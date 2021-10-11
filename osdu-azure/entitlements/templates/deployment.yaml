@@ -52,19 +52,15 @@ spec:
           {{- if .probe }}
           readinessProbe:
             httpGet:
-              path: {{ .probe }}
+              path: {{ .readinessProbe }}
               port: http
-            initialDelaySeconds: 20
-          {{- end }}
-          resources:
-          {{- if .request }}
-            requests:
-              cpu: {{ .request.cpu | quote }}
-          {{- end }}
-          {{- if .limit }}
-            limits:
-              cpu: {{ .limit.cpu | quote }}
-          {{- end }}
+            initialDelaySeconds: {{ .probeInitialDelaySeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ .livenessProbe }}
+              port: http
+            initialDelaySeconds: {{ .probeInitialDelaySeconds }}
+            periodSeconds: {{ .livenessPeriodSeconds }}
           volumeMounts:
           {{- if .keyvault }}
           - name: azure-keyvault
