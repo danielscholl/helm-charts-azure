@@ -34,6 +34,7 @@ UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 PIP_EXTRA_INDEX_URL="<pip_index_urls>"    # (Optional variable) List of (space separated) extra-index-url for pip repositories
+ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -117,7 +118,7 @@ pgbouncer:
 # Specify KEDA configuration
 #
 keda:
-  version_2_enabled: false
+  version_2_enabled: $ENABLE_KEDA_2_X
 
 
 ################################################################################
