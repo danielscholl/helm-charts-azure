@@ -1,9 +1,7 @@
-{{- $namespace := .Release.Namespace }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: post-install-job-config
-  namespace: {{ $namespace }}
 data:
   requirements.txt: |
     flask-bcrypt
@@ -53,7 +51,7 @@ data:
                 break
             else:
                 retry -= 1
-                print(f'wait {retry_window}s for retry')
+                print(f'wait {retry_window}s for retry') 
         return
 
 

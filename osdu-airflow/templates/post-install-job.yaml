@@ -1,9 +1,7 @@
-{{- $namespace := .Release.Namespace }}
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ .Release.Name }}-setup-default-user-v2"
-  namespace: {{ $namespace }}
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
@@ -16,6 +14,8 @@ spec:
   template:
     metadata:
       name: "{{ .Release.Name }}"
+      annotations:
+        sidecar.istio.io/inject: "false"
       labels:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         app.kubernetes.io/instance: {{ .Release.Name | quote }}
@@ -35,16 +35,33 @@ spec:
           readOnly: true
         env:
         - name: DATABASE_USER
+        {{- if .Values.pgbouncer.enabled }}
+          value: {{ .Values.pgbouncer.airflowdb.user }}
+        {{- else }}
           value: {{ .Values.airflow.externalDatabase.user }}
+        {{- end }}
         - name: DATABASE_HOST
+        {{- if .Values.pgbouncer.enabled }}
+          value: {{ .Values.pgbouncer.airflowdb.host }}
+        {{- else }}
           value: {{ .Values.airflow.externalDatabase.host }}
+        {{- end }}
         - name: DATABASE_DB
+        {{- if .Values.pgbouncer.enabled }}
+          value: {{ .Values.pgbouncer.airflowdb.name }}
+        {{- else }}
           value: {{ .Values.airflow.externalDatabase.database }}
+        {{- end }}
         - name: DATABASE_USER_PASS
           valueFrom:
             secretKeyRef:
+            {{- if .Values.pgbouncer.enabled }}
+              name: {{ .Values.pgbouncer.airflowdb.passwordSecret }}
+              key: {{ .Values.pgbouncer.airflowdb.passwordSecretKey }}
+            {{- else }}
               name: {{ .Values.airflow.externalDatabase.passwordSecret }}
               key: {{ .Values.airflow.externalDatabase.passwordSecretKey }}
+            {{- end }}
         - name: AIRFLOW_ADMIN
           value: {{ .Values.airflowLogin.name }}
         - name: AIRFLOW_ADMIN_PASS
@@ -65,4 +82,4 @@ spec:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: azure-keyvault
+            secretProviderClass: azure-keyvault           
