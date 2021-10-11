@@ -46,33 +46,33 @@ ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 # Translate Values File
 cat > osdu_azure_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
-
+global:
 ################################################################################
 # Specify the default replica count for each service.
 #
-replicaCount: 2
-
-################################################################################
-# Specify the azure environment specific values
-#
-azure:
-  tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
-  subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-  resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
-  identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
-  keyvault: $ENV_VAULT
-  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-  podIdentityAuthEnabled: false
-  oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
-
-################################################################################
-# Specify the Ingress Settings
-#
-ingress:
-  issuer: letsencrypt-prod-dns
-  dns: $DNS_HOST
-  enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
+ replicaCount: 2
+ 
+ ################################################################################
+ # Specify the azure environment specific values
+ #
+ azure:
+   tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
+   subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
+   resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
+   identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
+   identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+   keyvault: $ENV_VAULT
+   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
+   podIdentityAuthEnabled: false
+   oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
+ 
+ ################################################################################
+ # Specify the Ingress Settings
+ #
+ ingress:
+   issuer: letsencrypt-prod-dns
+   dns: $DNS_HOST
+   enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
 EOF
 ```
 

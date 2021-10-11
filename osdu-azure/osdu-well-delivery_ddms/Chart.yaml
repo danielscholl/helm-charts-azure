@@ -18,3 +18,8 @@ type: application
 description: Installs the OSDU on Azure Well Delivery DDMS Service
 version: 1.11.0
 appVersion: 0.11.0
+dependencies:
+  - name: "well-delivery-ddms"
+    repository: file://../well-delivery-ddms
+    version: "1.11.0"
+    enabled: true

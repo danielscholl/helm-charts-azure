@@ -21,100 +21,43 @@ global:
   nodepool: services
   isAutoscalingEnabled: false
 
-################################################################################
-# Specify the azure environment specific values
-#
-azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: <azure_tenant>
+    subscription: <azure_subscription>
+    resourcegroup: <azure_resourcegroup>
+    identity: <azure_identity>
+    identity_id: <azure_identity_id>
+    keyvault: <azure_keyvault>
+    appid: <azure_appid>
 
 
-################################################################################
-# Specify the Ingress Settings
-#
-ingress:
-  dns: <ingress_dns>
-  issuer: letsencrypt-prod-dns
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    dns: <ingress_dns>
+    issuer: letsencrypt-prod-dns
 
 
-################################################################################
-# Specify the Pod Identity
-#
-identity:
-  name: osdu-identity
+  ################################################################################
+  # Specify the Pod Identity
+  #
+  identity:
+    name: osdu-identity
 
 
-################################################################################
-# Specify the Service Settings
-#
-service:
-  type: ClusterIP
-  port: 80
-  target: 8080
+  ################################################################################
+  # Specify the Service Settings
+  #
+  service:
+    type: ClusterIP
+    port: 80
+    target: 8080
 
 ################################################################################
 # Specify the OSDU Services to Load
 #
 configuration:
-
-  ########################
-  ##  Well Delivery DDMS SERVICE
-  #
-  - service: well-delivery-ddms
-    repository: msosdu.azurecr.io/well-delivery-ddms
-    path: /api/well-delivery/*
-    probe: /api/well-delivery/_ah/warmup
-    auth:
-      disable:
-        - "*/swagger"
-        - "*/swagger-resources"
-        - "*/swagger-ui.html"
-        - "*/v2/api-docs"
-        - "*/actuator/health"
-        - "*/health"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "/api/well-delivery/swagger-resources/*"
-        - "/api/well-delivery/webjars/*"
-    env:
-    - name: SERVICE_NAME
-      value: os-well-delivery-ddms
-    - name: KEYVAULT_URI
-      config:
-        name: osdu-svc-config
-        key: ENV_KEYVAULT
-    - name: AZ_AI_INSTRUMENTATION_KEY
-      secret:
-        name: central-logging
-        key: appinsights
-    - name: aad_client_id
-      secret:
-        name: active-directory
-        key: application-appid
-    - name: server.servlet.contextPath
-      value: /api/well-delivery/
-    - name: server_port
-      value: "80"
-    - name: entitlements_service_endpoint
-      value: http://entitlements/api/entitlements/v2
-    - name: entitlements_service_api_key
-      value: "OBSOLETE"
-    - name: legal_service_endpoint
-      value: http://legal/api/legal/v1
-    - name: storage_service_endpoint
-      value: http://storage/api/storage/v2
-    - name: schema_service_endpoint
-      value: http://schema/api/schema-service/v1
-    - name: partition_service_endpoint
-      value: http://partition/api/partition/v1  
-    - name: azure_activedirectory_AppIdUri
-      value: "api://$(aad_client_id)"
-    - name: azure_istioauth_enabled
-      value: "true"
-    - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"

@@ -18,3 +18,16 @@ type: application
 description: Installs the OSDU Platform Reference and Helper Services
 version: 1.11.0
 appVersion: 0.11.0
+dependencies:
+  - name: "unit"
+    repository: file://../unit
+    version: "1.11.0"
+    enabled: true
+  - name: "crs-catalog"
+    repository: file://../crs-catalog
+    version: "1.11.0"
+    enabled: true
+  - name: "crs-conversion"
+    repository: file://../crs-conversion
+    version: "1.11.0"
+    enabled: true

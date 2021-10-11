@@ -24,47 +24,48 @@ global:
 ################################################################################
 # Specify the azure environment specific values
 #
-azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
-  appid: <azure_appid>
-  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+  azure:
+    tenant: <azure_tenant>
+    subscription: <azure_subscription>
+    resourcegroup: <azure_resourcegroup>
+    identity: <azure_identity>
+    identity_id: <azure_identity_id>
+    keyvault: <azure_keyvault>
+    appid: <azure_appid>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+
+  ################################################################################
+  # Specify the resource limits
+  #
+  resourceLimits:
+    defaultCpuRequests: "0.5"
+    defaultMemoryRequests: "4Gi"
+    defaultCpuLimits: "1"
+    defaultMemoryLimits: "4Gi"
 
 
-################################################################################
-# Specify the Ingress Settings
-#
-ingress:
-  dns: <ingress_dns>
-  issuer: letsencrypt-prod-dns
-  enableKeyvaultCert: false
-
-################################################################################
-# Specify the resource limits
-#
-resourceLimits:
-  defaultCpuRequests: "0.5"
-  defaultMemoryRequests: "4Gi"
-  defaultCpuLimits: "1"
-  defaultMemoryLimits: "4Gi"
-
-################################################################################
-# Specify the Pod Identity
-#
-identity:
-  name: osdu-identity
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    dns: <ingress_dns>
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
 
 
-################################################################################
-# Specify the Service Settings
-#
-service:
-  type: ClusterIP
-  port: 80
+  ################################################################################
+  # Specify the Pod Identity
+  #
+  identity:
+    name: osdu-identity
+
+
+  ################################################################################
+  # Specify the Service Settings
+  #
+  service:
+    type: ClusterIP
+    port: 80
 
 
 ################################################################################
@@ -123,7 +124,7 @@ configuration:
     - name: azure_activedirectory_session_stateless
       value: "false"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config

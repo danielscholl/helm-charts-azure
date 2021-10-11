@@ -1,0 +1,140 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  replicaCount: 1
+  nodepool: services
+  isAutoscalingEnabled: false
+
+
+  ################################################################################
+  # Specify KEDA configuration
+  #
+  keda:
+    version_2_enabled: false
+
+
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: <azure_tenant>
+    subscription: <azure_subscription>
+    resourcegroup: <azure_resourcegroup>
+    identity: <azure_identity>
+    identity_id: <azure_identity_id>
+    keyvault: <azure_keyvault>
+    appid: <azure_appid>
+    podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+
+
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    dns: <ingress_dns>
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
+
+
+  ################################################################################
+  # Specify the Pod Identity
+  #
+  identity:
+    name: osdu-identity
+
+
+  ################################################################################
+  # Specify the Service Settings
+  #
+  service:
+    type: ClusterIP
+    port: 80
+
+
+ ################################################################################
+ # Specify the OSDU Services to Load
+ #
+configuration:
+
+  ########################
+  ##  SCHEMA SERVICE
+  #
+  - service: schema
+    repository: msosdu.azurecr.io/schema
+    tag: oak
+    path: /api/schema-service/v1/*
+    probe: /api/schema-service/v1/swagger-ui.html
+    keyvault: true
+    auth:
+      disable:
+        - "/"
+        - "*/index.html"
+        - "*/v2/api-docs"
+        - "*/configuration/ui"
+        - "*/configuration/security"
+        - "*/swagger"
+        - "*/swagger-ui.html"
+        - "*/swagger-resources"
+        - "/api/schema-service/v1/swagger-resources/*"
+        - "/api/schema-service/v1/webjars/*"
+        - "*/actuator/health"
+        - "*/_ah/**"
+    env:
+    - name: spring_application_name
+      value: schema
+    - name: server.servlet.contextPath
+      value: /api/schema-service/v1/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: LOG_PREFIX
+      value: schema
+    - name: entitlements_service_endpoint
+      value: http://entitlements/api/entitlements/v2
+    - name: entitlements_service_api_key
+      value: "OBSOLETE"
+    - name: partition_service_endpoint
+      value: "http://partition/api/partition/v1"
+    - name: shared_partition
+      value: opendes    # Make this configurable
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: event_grid_enabled
+      value: "false"
+    - name: event_grid_topic
+      value: "schemachangedtopic"
+    - name: azure_activedirectory_AppIdUri
+      value: "api://$(aad_client_id)"
+    - name: azure_paas_podIdentity_isEnabled
+      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+    - name: KEYVAULT_URI
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
