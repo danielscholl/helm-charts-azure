@@ -6,20 +6,20 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
-{{- range $index, $element := $list}}
+{{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "{{lower $element}}"
+  name: "es-{{lower $datapartition}}"
   labels:
-    name: "{{lower $element}}"
+    name: "es-{{lower $datapartition}}"
 ---
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  name: "{{lower $element}}"
-  namespace: "{{lower $element}}"
+  name: "elasticsearch"
+  namespace: "es-{{lower $datapartition}}"
 spec:
   version: {{ $esVersion }}
   http:
