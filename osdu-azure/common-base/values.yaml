@@ -33,7 +33,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
-
+    includePartitionSecrets: <azure_includePartitionSecrets>
 
   ################################################################################
   # Specify the Ingress Settings
