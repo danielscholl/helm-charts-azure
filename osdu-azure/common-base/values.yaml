@@ -41,7 +41,7 @@ global:
   ingress:
     dns: <ingress_dns>
     issuer: letsencrypt-prod-dns
-    enableKeyvaultCert: false
+    enableKeyvaultCert: <ingress_enableKeyvaultCert>
 
   ################################################################################
   # Specify the resource limits
