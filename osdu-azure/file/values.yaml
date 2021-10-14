@@ -128,6 +128,8 @@ configuration:
       value: "1000"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+    - name: authorizeAPI
+      value: http://entitlements/api/entitlements/v2
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
