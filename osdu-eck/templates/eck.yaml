@@ -11,15 +11,15 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "es-{{lower $datapartition}}"
+  name: "es-{{ $datapartition }}"
   labels:
-    name: "es-{{lower $datapartition}}"
+    name: "es-{{ $datapartition }}"
 ---
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: "elasticsearch"
-  namespace: "es-{{lower $datapartition}}"
+  namespace: "es-{{ $datapartition }}"
 spec:
   version: {{ $esVersion }}
   http:
