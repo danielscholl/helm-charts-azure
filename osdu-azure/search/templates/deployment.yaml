@@ -50,7 +50,6 @@ spec:
             - name: http
               containerPort: {{ $servicePort }}
               protocol: TCP
-          {{- if .probe }}
           readinessProbe:
             httpGet:
               path: {{ .readinessProbe }}

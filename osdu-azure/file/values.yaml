@@ -119,8 +119,6 @@ configuration:
       value: $(server_port)
     - name: SEARCH_HOST
       value: http://search/api/search/v2
-    - name: JAVA_HEAP_MEMORY
-      value: 4096
     - name: osdu_storage_url
       value: http://storage/api/storage/v2
     - name: partition_service_endpoint
@@ -135,6 +133,8 @@ configuration:
       value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: authorizeAPI
       value: http://entitlements/api/entitlements/v2
+    - name: SPRING_CONFIG_NAME
+      value: "common,application"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
