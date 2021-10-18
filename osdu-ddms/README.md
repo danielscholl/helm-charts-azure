@@ -102,8 +102,8 @@ kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESP
 kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install seismic-services osdu-dms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install wellbore-services osdu-dms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 
 # Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces for now its in osdu-azure
 helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
