@@ -3,13 +3,13 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ .Release.Name | quote }}
-  namespace: {{ $namespace }}
+  namespace: "osdu-azure"
   labels:
     app: {{ .Release.Name | quote }}
 spec:
   completions: 1
   parallelism: 1
-  backoffLimit: 5
+  backoffLimit: 4
   template:
     metadata:
       labels:
@@ -20,18 +20,14 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - image: {{ .Values.image.repository }}/partition-data-init:{{ .Values.image.tag | default .Chart.Version }}
+      - image: {{ .Values.image.repository }}/helper-services-data-seeding-agent:{{ .Values.image.tag | default .Chart.Version }}
         imagePullPolicy: Always
-        name: "partition-data-init"
+        name: "helper-services-data-seeding-agent"
         env:
-        - name: OSDU_HOST
-          value: {{ .Values.ingress.dns }}
-        - name: RESOURCE_GROUP_NAME
-          value: {{ .Values.azure.resourcegroup }}
         - name: OSDU_IDENTITY_ID
           value: {{ .Values.azure.identity_id }}
-        - name: PARTITIONS # comma separated list of partitions
-          value: {{ .Values.storage.partitions }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.azure.resourcegroup }}
         - name: CONFIG_MAP_NAME
           value: {{ .Values.config.configmapname }}
         - name: VERSION

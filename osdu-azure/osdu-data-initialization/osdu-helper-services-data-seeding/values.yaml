@@ -1,0 +1,12 @@
+# This file contains the essential configs for the Azure Data Seeding Agent
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  resourcegroup: <azure_resourcegroup>
+  identity_id: <azure_identity_id>
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
+image:
+  repository: msosdu.azurecr.io
+  tag: <image_tag>
