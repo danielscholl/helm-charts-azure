@@ -230,7 +230,9 @@ spec:
                     elseif jwt_authn[sauth_issuer]["aud"] then
                       request_handle:headers():add("x-app-id", jwt_authn[sauth_issuer]["aud"])
                     end
-                    if jwt_authn[sauth_issuer]["sub"] then
+                    if jwt_authn[sauth_issuer]["oid"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[sauth_issuer]["oid"])
+                    elseif jwt_authn[sauth_issuer]["sub"] then
                       request_handle:headers():add("x-user-id", jwt_authn[sauth_issuer]["sub"])
                     end
                   end
