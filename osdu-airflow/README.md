@@ -33,8 +33,9 @@ _The following commands can help generate a prepopulated custom_values file._
 UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
-PIP_EXTRA_INDEX_URL="<pip_index_urls>"    # (Optional variable) List of (space separated) extra-index-url for pip repositories
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
+ACR_NAME=msosdu
+AIRFLOW_IMAGE_TAG=v0.9
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -284,8 +285,8 @@ airflow:
   ###################################
   airflow:
     image:
-      repository: community.opengroup.org:5555/osdu/platform/deployment-and-operations/base-containers-azure/airflow-docker-image/master
-      tag: v0.9
+      repository: $ACR_NAME.azurecr.io/airflow-docker-image
+      tag: $AIRFLOW_IMAGE_TAG
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
@@ -372,8 +373,6 @@ airflow:
       value: "v0.12.0"
     - name: BUILD_TAG
       value: "v0.12.0"
-    - name: PIP_EXTRA_INDEX_URL # List of (space separated) extra-index-url for pip repositories
-      value: $PIP_EXTRA_INDEX_URL      
     ## Begin -- Ingest Manifest DAG variables
     - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
       value: "entitlements_client"
