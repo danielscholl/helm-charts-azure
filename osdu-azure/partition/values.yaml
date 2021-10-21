@@ -18,7 +18,6 @@
 
 global:
   debug: false
-  replicaCount: 5
   nodepool: services
   isAutoscalingEnabled: false
 
