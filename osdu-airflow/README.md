@@ -34,8 +34,10 @@ UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
-ACR_NAME=msosdu
-AIRFLOW_IMAGE_TAG=v0.9
+ACR_NAME="msosdu"
+AIRFLOW_IMAGE_TAG="v0.9"
+STATSD_HOST="appinsights-statsd"
+STATSD_PORT="8125"
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -291,8 +293,8 @@ airflow:
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
-      AIRFLOW__SCHEDULER__STATSD_HOST: "appinsights-statsd"
-      AIRFLOW__SCHEDULER__STATSD_PORT: 8125
+      AIRFLOW__SCHEDULER__STATSD_HOST: "${STATSD_HOST}"
+      AIRFLOW__SCHEDULER__STATSD_PORT: $STATSD_PORT
       AIRFLOW__SCHEDULER__STATSD_PREFIX: "osdu_airflow"
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
       ## Enable for Debug purpose
