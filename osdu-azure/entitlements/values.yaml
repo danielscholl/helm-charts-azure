@@ -70,7 +70,7 @@ configuration:
   ##  ENTITLEMENTS SERVICE
   #
   - service: entitlements
-    repository: msosdu.azurecr.io/entitlements
+    repository: <azure_acr>/entitlements
     tag: oak
     path: /api/entitlements/v2/*
     readinessProbe: /actuator/health

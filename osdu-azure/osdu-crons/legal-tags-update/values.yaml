@@ -15,5 +15,5 @@ azure:
 
 
 image:
-  repository: msosdu.azurecr.io
+  repository: <azure_acr>
   tag: <version>
