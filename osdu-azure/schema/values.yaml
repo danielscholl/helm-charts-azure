@@ -76,7 +76,7 @@ configuration:
   ##  SCHEMA SERVICE
   #
   - service: schema
-    repository: msosdu.azurecr.io/schema
+    repository: <azure_acr>/schema
     tag: oak
     path: /api/schema-service/v1/*
     readinessProbe: /actuator/health

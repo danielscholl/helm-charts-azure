@@ -8,5 +8,5 @@ azure:
 config:
   configmapname: ~~CONFIG_MAP_NAME~~
 image:
-  repository: msosdu.azurecr.io
+  repository: <azure_acr>
   tag: <image_tag>

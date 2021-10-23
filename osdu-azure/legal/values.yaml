@@ -71,7 +71,7 @@ configuration:
   ##  LEGAL SERVICE
   #
   - service: legal
-    repository: msosdu.azurecr.io/legal
+    repository: <azure_acr>/legal
     tag: oak
     path: /api/legal/v1/*
     readinessProbe: /actuator/health

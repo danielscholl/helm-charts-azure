@@ -43,7 +43,12 @@ spec:
       {{- end }}
       containers:
         - name: {{ .service }}
+          {{- if hasPrefix "<azure_acr>/" .repository }}
+          {{- $repo := .repository | replace "<azure_acr>/" "msosdu.azurecr.io/" }}
+          image: {{ $repo }}:{{ .tag | default $version }}
+          {{- else }}
           image: {{ .repository }}:{{ .tag | default $version }}
+          {{- end }}
           imagePullPolicy: {{ $pullPolicy | default "Always" }}
           ports:
             - name: http
