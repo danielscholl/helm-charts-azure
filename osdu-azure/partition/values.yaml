@@ -79,7 +79,7 @@ configuration:
   ##  PARTITION SERVICE
   #
   - service: partition
-    repository: msosdu.azurecr.io/partition
+    repository: <azure_acr>/partition
     tag: oak
     path: /api/partition/v1/*
     readinessProbe: /actuator/health

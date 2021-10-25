@@ -77,7 +77,7 @@ configuration:
   ##  REGISTER SERVICE
   #
   - service: register
-    repository: msosdu.azurecr.io/register
+    repository: <azure_acr>/register
     path: /api/register/v1/*
     probe: /api/register/v1/swagger-ui.html
     keyvault: true

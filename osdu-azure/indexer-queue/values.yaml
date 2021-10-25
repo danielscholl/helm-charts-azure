@@ -78,7 +78,7 @@ configuration:
     ##  Indexer Queue
     #
   - service: indexer-queue
-    repository: msosdu.azurecr.io/indexer-queue
+    repository: <azure_acr>/indexer-queue
     tag: oak
     keyvault: true
     env:

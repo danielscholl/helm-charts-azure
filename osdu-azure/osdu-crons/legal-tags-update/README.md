@@ -28,7 +28,7 @@ azure:
   dns: $DNS_HOST
 
 image:
-  repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io/<path>
+  repository: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/container-registry --query value -otsv).azurecr.io
   tag: ${VERSION}
 EOF
 ```
