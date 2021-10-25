@@ -74,7 +74,7 @@ global:
 configuration:
 
   - service: notification
-    repository: msosdu.azurecr.io/notification
+    repository: <azure_acr>/notification
     tag: oak
     path: /api/notification/v1/*
     probe: /api/notification/v1/swagger-ui.html

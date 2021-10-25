@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "data-seeding-job"
+  name: {{ .Release.Name | quote }}
   namespace: {{ $namespace }}
   labels:
-    app: "data-seeding-job"
+    app: {{ .Release.Name | quote }}
 spec:
   completions: 1
   parallelism: 1
@@ -15,46 +15,17 @@ spec:
       labels:
         app: {{ .Chart.Name }}
         aadpodidbinding: osdu-identity
+      annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       restartPolicy: OnFailure
-      volumes:
-      - name: seeder-azure-keyvault
-        csi:
-          driver: secrets-store.csi.k8s.io
-          readOnly: true
-          volumeAttributes:
-            secretProviderClass: azure-keyvault
       containers:
       - image: {{ .Values.image.repository }}/data-seeding-agent:{{ .Values.image.tag | default .Chart.Version }}
         imagePullPolicy: Always
         name: "data-seeding-agent"
-        volumeMounts:
-        - name: seeder-azure-keyvault
-          mountPath: "/mnt/azure-keyvault"
-          readOnly: true
         env:
         - name: ADMIN_ID
           value: {{ .Values.azure.appid }}
-        - name: ARM_TENANT_ID
-          valueFrom:
-            secretKeyRef:
-              name: active-directory
-              key: tenantid
-        - name: ARM_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              name: active-directory
-              key: principal-clientid
-        - name: ARM_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: active-directory
-              key: principal-clientpassword
-        - name: PRINCIPAL_OBJECT_ID
-          valueFrom:
-            secretKeyRef:
-              name: active-directory
-              key: principal-objectid
         - name: OSDU_IDENTITY_ID
           value: {{ .Values.azure.identity_id }}
         - name: ARM_SUBSCRIPTION_ID

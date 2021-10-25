@@ -75,7 +75,7 @@ configuration:
   ##  INGEST WORKFLOW SERVICE
   #
   - service: workflow
-    repository: msosdu.azurecr.io/workflow
+    repository: <azure_acr>/workflow
     tag: oak
     path: /api/workflow/*
     readinessProbe: /actuator/health

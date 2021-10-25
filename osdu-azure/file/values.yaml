@@ -74,7 +74,7 @@ global:
 configuration:
 
   - service: file
-    repository: msosdu.azurecr.io/file
+    repository: <azure_acr>/file
     tag: oak
     path: /api/file/*
     readinessProbe: /actuator/health

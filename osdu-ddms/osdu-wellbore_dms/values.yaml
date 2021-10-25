@@ -73,7 +73,7 @@ configuration:
   ##  WELLBORE SERVICE
   #
   - service: wellbore-ddms
-    repository: msosdu.azurecr.io/wellbore-ddms
+    repository: <azure_acr>/wellbore-ddms
     path: /api/os-wellbore-ddms/*
     probe: /api/os-wellbore-ddms/healthz
     keyvault: true

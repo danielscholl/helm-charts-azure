@@ -65,7 +65,7 @@ configuration:
   #######################
   #  UNIT SERVICE
   - service: unit
-    repository: msosdu.azurecr.io/unit
+    repository: <azure_acr>/unit
     path: /api/unit/*
     probe: /api/unit/_ah/readiness_check
     keyvault: true

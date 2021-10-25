@@ -65,7 +65,7 @@ configuration:
   #######################
   #  CRS CONVERSION SERVICE
   - service: crs-conversion
-    repository: msosdu.azurecr.io/crs-conversion
+    repository: <azure_acr>/crs-conversion
     path: /api/crs/converter/*
     probe: /api/crs/converter/swagger-ui.html
     keyvault: true

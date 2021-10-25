@@ -32,7 +32,7 @@ azure:
 # Specify any optional override values
 #
 image:
-  repository: msosdu.azurecr.io
+  repository: <azure_acr>
 
 airflowLogin:
   name: <airflowLogin_name>                                   #<-- Default Airflow Web UI username
