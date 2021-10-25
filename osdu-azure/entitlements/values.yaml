@@ -35,6 +35,7 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     oidAuthEnabled: <azure_oidAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
