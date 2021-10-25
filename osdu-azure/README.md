@@ -66,7 +66,7 @@ global:
    podIdentityAuthEnabled: false
    oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
    corsEnabled: false # set this to true if you want to enable CORS.
- 
+   suthEnabled: false # set this to true if you want to use SAuth identity envoy
  ################################################################################
  # Specify the Ingress Settings
  #
