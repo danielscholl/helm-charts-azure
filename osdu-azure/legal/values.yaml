@@ -73,7 +73,6 @@ configuration:
   #
   - service: legal
     repository: <azure_acr>/legal
-    tag: oak
     path: /api/legal/v1/*
     readinessProbe: /actuator/health
     readinessPort: 8081

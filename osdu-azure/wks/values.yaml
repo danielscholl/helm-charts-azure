@@ -77,7 +77,6 @@ configuration:
   - service: wks
     scaledObject: true
     repository: <azure_acr>/wks
-    tag: oak
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true

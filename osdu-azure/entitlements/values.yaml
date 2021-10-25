@@ -72,7 +72,6 @@ configuration:
   #
   - service: entitlements
     repository: <azure_acr>/entitlements
-    tag: oak
     path: /api/entitlements/v2/*
     readinessProbe: /actuator/health
     readinessPort: 8081
