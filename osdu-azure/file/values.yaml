@@ -75,7 +75,6 @@ configuration:
 
   - service: file
     repository: <azure_acr>/file
-    tag: oak
     path: /api/file/*
     readinessProbe: /actuator/health
     readinessPort: 8081

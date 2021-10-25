@@ -78,7 +78,6 @@ configuration:
   #
   - service: schema
     repository: <azure_acr>/schema
-    tag: oak
     path: /api/schema-service/v1/*
     readinessProbe: /actuator/health
     readinessPort: 8081

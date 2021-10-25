@@ -78,7 +78,6 @@ configuration:
   #
   - service: indexer
     repository: <azure_acr>/indexer
-    tag: oak
     path: /api/indexer/v2/*
     readinessProbe: /actuator/health
     readinessPort: 8081

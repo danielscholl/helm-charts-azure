@@ -78,7 +78,6 @@ configuration:
   #
   - service: search
     repository: <azure_acr>/search
-    tag: oak
     path: /api/search/v2/*
     readinessProbe: /actuator/health
     readinessPort: 8081
