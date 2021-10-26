@@ -15,5 +15,5 @@ apiVersion: v2
 name: data-seeding-agent
 description: A data seeding for OSDU on Azure that uploads/ingests data required for OSDU to function
 type: application
-version: 1.11.0
-appVersion: 0.11.0
+version: 1.0.0
+appVersion: 1.0.0
