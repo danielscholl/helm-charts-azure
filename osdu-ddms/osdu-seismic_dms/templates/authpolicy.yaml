@@ -1,6 +1,6 @@
 {{- $namespace := .Release.Namespace }}
 {{- $release := .Release.Name }}
-{{- $corsenabled := .Values.global.azure.corsEnabled | default false }}
+{{- $corsenabled := .Values.azure.corsEnabled | default false }}
 {{- range .Values.configuration }}
 {{- if .auth }}
 apiVersion: security.istio.io/v1beta1
