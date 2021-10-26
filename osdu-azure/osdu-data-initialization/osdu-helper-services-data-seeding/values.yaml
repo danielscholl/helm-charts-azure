@@ -9,4 +9,3 @@ config:
   configmapname: ~~CONFIG_MAP_NAME~~
 image:
   repository: <azure_acr>
-  tag: <image_tag>

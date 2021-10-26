@@ -20,7 +20,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - image: {{ .Values.image.repository }}/partition-data-init:{{ .Values.image.tag | default .Chart.Version }}
+      - image: {{ .Values.image.repository }}/partition-data-init:{{ .Chart.AppVersion }}
         imagePullPolicy: Always
         name: "partition-data-init"
         env:
@@ -35,4 +35,4 @@ spec:
         - name: CONFIG_MAP_NAME
           value: {{ .Values.config.configmapname }}
         - name: VERSION
-          value: {{ .Values.image.tag }}
+          value: {{ .Chart.AppVersion }}
