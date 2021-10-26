@@ -58,12 +58,12 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .readinessProbe }}
-              port: http
+              port: {{ .readinessPort }}
             initialDelaySeconds: {{ .probeInitialDelaySeconds }}
           livenessProbe:
             httpGet:
               path: {{ .livenessProbe }}
-              port: http
+              port: {{ .livenessPort }}
             initialDelaySeconds: {{ .probeInitialDelaySeconds }}
             periodSeconds: {{ .livenessPeriodSeconds }}
           volumeMounts:
