@@ -76,10 +76,15 @@ configuration:
   ##  SCHEMA SERVICE
   #
   - service: schema
-    repository: msosdu.azurecr.io/schema
+    repository: <azure_acr>/schema
     tag: oak
     path: /api/schema-service/v1/*
-    probe: /api/schema-service/v1/swagger-ui.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:

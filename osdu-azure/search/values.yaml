@@ -76,10 +76,15 @@ configuration:
   ##  SEARCH SERVICE
   #
   - service: search
-    repository: msosdu.azurecr.io/search
+    repository: <azure_acr>/search
     tag: oak
     path: /api/search/v2/*
-    probe: /api/search/v2/swagger-ui.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:

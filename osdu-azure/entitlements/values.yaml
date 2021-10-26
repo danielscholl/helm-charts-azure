@@ -70,10 +70,15 @@ configuration:
   ##  ENTITLEMENTS SERVICE
   #
   - service: entitlements
-    repository: msosdu.azurecr.io/entitlements
+    repository: <azure_acr>/entitlements
     tag: oak
     path: /api/entitlements/v2/*
-    probe: /api/entitlements/v2/_ah/readiness_check
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:
@@ -102,6 +107,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: SPRING_CONFIG_NAME
+      value: "common,application"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled

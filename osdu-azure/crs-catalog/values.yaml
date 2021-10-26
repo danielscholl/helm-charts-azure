@@ -64,7 +64,7 @@ configuration:
   #######################
   #  CRS CATALOG SERVICE
   - service: crs-catalog
-    repository: msosdu.azurecr.io/crs-catalog
+    repository: <azure_acr>/crs-catalog
     path: /api/crs/catalog/*
     probe: /api/crs/catalog/swagger-ui.html
     keyvault: true

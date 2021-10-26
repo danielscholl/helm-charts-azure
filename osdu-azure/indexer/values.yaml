@@ -76,10 +76,15 @@ configuration:
   ##  INDEXER SERVICE
   #
   - service: indexer
-    repository: msosdu.azurecr.io/indexer
+    repository: <azure_acr>/indexer
     tag: oak
     path: /api/indexer/v2/*
-    probe: /api/indexer/v2/swagger-ui.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:

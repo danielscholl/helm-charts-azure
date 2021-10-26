@@ -74,10 +74,15 @@ configuration:
   ##  INGEST WORKFLOW SERVICE
   #
   - service: workflow
-    repository: msosdu.azurecr.io/workflow
+    repository: <azure_acr>/workflow
     tag: oak
     path: /api/workflow/*
-    probe: /api/workflow/swagger-ui.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:

@@ -32,7 +32,7 @@ azure:
 # Specify any optional override values
 #
 image:
-  repository: msosdu.azurecr.io
+  repository: <azure_acr>
 
 airflowLogin:
   name: <airflowLogin_name>                                   #<-- Default Airflow Web UI username
@@ -234,14 +234,14 @@ airflow:
   ###################################
   airflow:
     image:
-      repository: community.opengroup.org:5555/osdu/platform/deployment-and-operations/base-containers-azure/airflow-docker-image/master
-      tag: v0.9
+      repository: <acr_name>.azurecr.io/airflow-docker-image
+      tag: <airflow_image_tag>
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
-      AIRFLOW__SCHEDULER__STATSD_HOST: "appinsights-statsd"
-      AIRFLOW__SCHEDULER__STATSD_PORT: 8125
+      AIRFLOW__SCHEDULER__STATSD_HOST: "<statsd_endpoint>"
+      AIRFLOW__SCHEDULER__STATSD_PORT: <statsd_port>
       AIRFLOW__SCHEDULER__STATSD_PREFIX: "osdu_airflow"
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
       ## Enable for Debug purpose
@@ -322,8 +322,6 @@ airflow:
       value: "v0.12.0"
     - name: BUILD_TAG
       value: "v0.12.0"      
-    - name: PIP_EXTRA_INDEX_URL # List of (space separated) extra-index-url for pip repositories
-      value: <pip_extra_index_urls>
     ## Begin -- Ingest Manifest DAG variables
     - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
       value: "entitlements_client"

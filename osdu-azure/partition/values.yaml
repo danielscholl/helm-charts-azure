@@ -77,10 +77,15 @@ configuration:
   ##  PARTITION SERVICE
   #
   - service: partition
-    repository: msosdu.azurecr.io/partition
+    repository: <azure_acr>/partition
     tag: oak
     path: /api/partition/v1/*
-    probe: /api/partition/v1/swagger-ui.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100 
+    livenessPeriodSeconds: 10
     keyvault: true
     auth:
       disable:
