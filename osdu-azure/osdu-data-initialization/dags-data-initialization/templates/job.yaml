@@ -20,7 +20,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - image: {{ .Values.image.repository }}/dags-data-seed:{{ .Values.image.tag | default .Chart.Version }}
+      - image: {{ .Values.image.repository }}/dags-data-seed:{{ .Chart.AppVersion }}
         imagePullPolicy: Always
         name: "dags-data-init"
         env:

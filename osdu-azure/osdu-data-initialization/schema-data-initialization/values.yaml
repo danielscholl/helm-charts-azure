@@ -22,4 +22,3 @@ config:
 
 image:
   repository: <azure_acr>
-  tag: <image_tag>
