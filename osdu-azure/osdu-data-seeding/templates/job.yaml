@@ -20,7 +20,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       containers:
-      - image: {{ .Values.image.repository }}/data-seeding-agent:{{ .Values.image.tag | default .Chart.Version }}
+      - image: {{ .Values.image.repository }}/data-seeding-agent:{{ .Chart.AppVersion }}
         imagePullPolicy: Always
         name: "data-seeding-agent"
         env:
@@ -37,4 +37,4 @@ spec:
         - name: CONFIG_MAP_NAME
           value: {{ .Values.config.configmapname }}
         - name: VERSION
-          value: {{ .Values.image.tag }}
+          value: {{ .Chart.AppVersion }}

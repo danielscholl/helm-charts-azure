@@ -15,5 +15,5 @@ apiVersion: v2
 name: partition-data-init
 description: A data initialization agent for partition service for OSDU on Azure.
 type: application
-version: 0.11.0
-appVersion: 1.11.2
+version: 1.0.0
+appVersion: 1.0.0
