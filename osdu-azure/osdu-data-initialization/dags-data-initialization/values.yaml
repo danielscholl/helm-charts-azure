@@ -6,10 +6,7 @@ azure:
   resourcegroup: <azure_resourcegroup>
   identity_id: <azure_identity_id>
   tenant_id: <azure_tenant_id>
-  client_id: <azure_client_id>
-  client_secret: <azure_client_secret>
-  app_resource_id: <azure_app_resource_id>
-  enable_msi: <azure_enable_msi>
+  enable_msi: true
 
 ingress:
   dns: <ingress_dns>
