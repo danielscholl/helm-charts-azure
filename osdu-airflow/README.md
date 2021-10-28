@@ -270,10 +270,10 @@ airflow:
   scheduler:
     resources:
       requests:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
       limits:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-identity"
