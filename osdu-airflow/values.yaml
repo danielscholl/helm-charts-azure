@@ -236,7 +236,7 @@ airflow:
   ###################################
   airflow:
     image:
-      repository: <acr_name>.azurecr.io/airflow-docker-image
+      repository: <azure_acr>.azurecr.io/airflow-docker-image
       tag: <airflow_image_tag>
       pullPolicy: IfNotPresent
       pullSecret: ""
