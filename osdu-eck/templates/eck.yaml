@@ -51,6 +51,11 @@ spec:
         spec:
           nodeSelector:
             agentpool: {{ $nodepoolPrefix }}{{ trimPrefix "_" $index }}
+          tolerations:
+          - key: "sku"
+            operator: "Equal"
+            value: "es"
+            effect: "NoSchedule"
         containers:
         - name: elasticsearch
           env:
