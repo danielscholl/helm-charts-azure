@@ -367,7 +367,7 @@ airflow:
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: "$AZURE_ENABLE_MSI"
     - name: AIRFLOW_VAR_DAG_IMAGE_ACR
-      value: "msosdu.azurecr.io"        
+      value: <azure_acr>.azurecr.io        
     - name: PYTHONPATH
       value: "/opt/celery"
       # Needed for installing python osdu python sdk. In future this will be changed
