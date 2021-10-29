@@ -289,7 +289,7 @@ airflow:
     image:
       repository: $AZURE_ACR.azurecr.io/airflow-docker-image
       tag: $AIRFLOW_IMAGE_TAG
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
