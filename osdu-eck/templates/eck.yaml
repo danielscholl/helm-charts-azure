@@ -11,15 +11,15 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "es-{{ $datapartition }}"
+  name: "es-{{ lower $datapartition }}"
   labels:
-    name: "es-{{ $datapartition }}"
+    name: "es-{{ lower $datapartition }}"
 ---
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: "elasticsearch"
-  namespace: "es-{{ $datapartition }}"
+  namespace: "es-{{ lower $datapartition }}"
 spec:
   version: {{ $esVersion }}
   http:
@@ -51,6 +51,11 @@ spec:
         spec:
           nodeSelector:
             agentpool: {{ $nodepoolPrefix }}{{ trimPrefix "_" $index }}
+          tolerations:
+          - key: "sku"
+            operator: "Equal"
+            value: "es"
+            effect: "NoSchedule"
         containers:
         - name: elasticsearch
           env:
