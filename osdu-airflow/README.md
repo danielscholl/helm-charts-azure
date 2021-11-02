@@ -34,7 +34,7 @@ UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
-ACR_NAME="msosdu"
+AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
 AIRFLOW_IMAGE_TAG="v0.9"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
@@ -84,7 +84,7 @@ azure:
 # Specify any optional override values
 #
 image:
-  repository: msosdu.azurecr.io
+  repository: $AZURE_ACR
 
 airflowLogin:
   name: admin                                   #<-- Default Airflow Web UI username
@@ -287,7 +287,7 @@ airflow:
   ###################################
   airflow:
     image:
-      repository: $ACR_NAME.azurecr.io/airflow-docker-image
+      repository: $AZURE_ACR/airflow-docker-image
       tag: $AIRFLOW_IMAGE_TAG
       pullPolicy: IfNotPresent
       pullSecret: ""
@@ -367,7 +367,7 @@ airflow:
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: "$AZURE_ENABLE_MSI"
     - name: AIRFLOW_VAR_DAG_IMAGE_ACR
-      value: "msosdu.azurecr.io"        
+      value: $AZURE_ACR       
     - name: PYTHONPATH
       value: "/opt/celery"
       # Needed for installing python osdu python sdk. In future this will be changed

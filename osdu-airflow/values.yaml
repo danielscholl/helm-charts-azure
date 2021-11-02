@@ -234,7 +234,7 @@ airflow:
   ###################################
   airflow:
     image:
-      repository: <acr_name>.azurecr.io/airflow-docker-image
+      repository: <azure_acr>/airflow-docker-image
       tag: <airflow_image_tag>
       pullPolicy: IfNotPresent
       pullSecret: ""
@@ -314,7 +314,7 @@ airflow:
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: <azure_enable_msi>
     - name: AIRFLOW_VAR_DAG_IMAGE_ACR
-      value: "msosdu.azurecr.io"        
+      value: <azure_acr>        
     - name: PYTHONPATH
       value: "/opt/celery"
       # Needed for installing python osdu python sdk. In future this will be changed
