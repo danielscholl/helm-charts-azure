@@ -102,6 +102,8 @@ configuration:
       value: osdu-db
     - name: ENTITLEMENT_URL
       value: http://entitlements/api/entitlements/v2
+    - name: PARTITION_API
+      value: http://partition/api/partition/v1
     - name: ESRI_DATA_PATH
       value: /crs-conversion-service
     - name: service_domain_name
