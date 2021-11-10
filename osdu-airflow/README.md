@@ -270,10 +270,10 @@ airflow:
   scheduler:
     resources:
       requests:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
       limits:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-identity"
@@ -289,7 +289,7 @@ airflow:
     image:
       repository: $AZURE_ACR/airflow-docker-image
       tag: $AIRFLOW_IMAGE_TAG
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
@@ -422,10 +422,7 @@ airflow:
         "jsonschema==3.2.0",
         "pyyaml==5.4.1",
         "requests==2.25.1",
-        "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_ingestion-0.12.0.tar.gz"
+        "tenacity==8.0.1"
     ]
     extraVolumeMounts:
         - name: azure-keyvault

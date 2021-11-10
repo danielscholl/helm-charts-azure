@@ -41,6 +41,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -74,7 +75,6 @@ configuration:
 
   - service: notification
     repository: <azure_acr>/notification
-    tag: oak
     path: /api/notification/v1/*
     probe: /api/notification/v1/swagger-ui.html
     keyvault: true

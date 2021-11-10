@@ -41,6 +41,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################

@@ -40,6 +40,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -76,7 +77,6 @@ configuration:
   - service: wks
     scaledObject: true
     repository: <azure_acr>/wks
-    tag: oak
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true

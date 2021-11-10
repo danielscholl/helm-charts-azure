@@ -191,3 +191,51 @@ spec:
                 end
               end
 {{- end }}
+{{- if .Values.global.azure.suthEnvoyFilterEnabled }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: header-add-sub-from-sauth-token
+  namespace: {{ $namespace }}
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: envoy.http_connection_manager
+              subFilter:
+                name: envoy.lua.remove-user-appid-header
+      patch:
+        operation: INSERT_AFTER
+        value:
+          name: envoy.lua.appid-from-sauth-aad-token
+          typed_config:
+            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            inlineCode: |
+              sauth_issuer = "https://csi.slb.com/v2"
+              function envoy_on_request(request_handle)
+                local jwt_authn = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
+                if jwt_authn then
+                  if jwt_authn[sauth_issuer] then
+                    if jwt_authn[sauth_issuer]["azp"] then
+                      request_handle:headers():add("x-app-id", jwt_authn[sauth_issuer]["azp"])
+                    elseif jwt_authn[sauth_issuer]["client"] then
+                      request_handle:headers():add("x-app-id", jwt_authn[sauth_issuer]["client"])
+                    elseif jwt_authn[sauth_issuer]["sub"] and not string.find(jwt_authn[sauth_issuer]["sub"], "@") then
+                      request_handle:headers():add("x-app-id", jwt_authn[sauth_issuer]["sub"])
+                    elseif jwt_authn[sauth_issuer]["aud"] then
+                      request_handle:headers():add("x-app-id", jwt_authn[sauth_issuer]["aud"])
+                    end
+                    if jwt_authn[sauth_issuer]["oid"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[sauth_issuer]["oid"])
+                    elseif jwt_authn[sauth_issuer]["sub"] then
+                      request_handle:headers():add("x-user-id", jwt_authn[sauth_issuer]["sub"])
+                    end
+                  end
+                end
+              end
+{{- end }}
