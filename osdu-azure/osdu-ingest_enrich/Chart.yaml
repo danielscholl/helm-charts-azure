@@ -16,14 +16,14 @@ apiVersion: v2
 name: osdu-ingest_enrich
 type: application
 description: Installs the OSDU Dataflow Ingestion and Enrichment Services
-version: 1.11.0
-appVersion: 0.11.0
+version: 1.12.0
+appVersion: 0.12.0
 dependencies:
   - name: "wks"
     repository: file://../wks
-    version: "1.11.0"
+    version: "1.12.0"
     enabled: true
   - name: "workflow"
     repository: file://../workflow
-    version: "1.11.0"
+    version: "1.12.0"
     enabled: true
