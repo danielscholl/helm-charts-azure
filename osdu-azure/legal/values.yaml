@@ -17,7 +17,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 1
+  replicaCount: 5
   nodepool: services
   isAutoscalingEnabled: false
 
@@ -35,6 +35,7 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     oidAuthEnabled: <azure_oidAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -72,7 +73,6 @@ configuration:
   #
   - service: legal
     repository: <azure_acr>/legal
-    tag: oak
     path: /api/legal/v1/*
     readinessProbe: /actuator/health
     readinessPort: 8081

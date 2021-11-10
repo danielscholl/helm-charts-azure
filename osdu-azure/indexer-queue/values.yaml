@@ -41,6 +41,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -78,7 +79,6 @@ configuration:
     #
   - service: indexer-queue
     repository: <azure_acr>/indexer-queue
-    tag: oak
     keyvault: true
     env:
     - name: spring_application_name

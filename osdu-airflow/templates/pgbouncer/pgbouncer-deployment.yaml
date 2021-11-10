@@ -31,7 +31,7 @@ spec:
       containers:
         - name: pgbouncer
           image: mcr.microsoft.com/azure-oss-db-tools/pgbouncer-sidecar:pgbouncerv1.13
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           command:
             - "/bin/sh"
           args:

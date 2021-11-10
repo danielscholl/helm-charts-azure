@@ -23,6 +23,10 @@ spec:
       labels:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8081"
+        prometheus.io/scrape: "true"
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:

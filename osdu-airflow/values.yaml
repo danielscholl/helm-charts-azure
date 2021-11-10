@@ -192,6 +192,8 @@ airflow:
       aadpodidbinding: "osdu-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
+    # Use replicas when auto scaling is not enabled
+    replicas: 6
     autoscale:
       enabled: false
       minReplicas: 2
@@ -217,10 +219,10 @@ airflow:
   scheduler:
     resources:
       requests:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
       limits:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-identity"
@@ -236,7 +238,7 @@ airflow:
     image:
       repository: <azure_acr>/airflow-docker-image
       tag: <airflow_image_tag>
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
@@ -265,7 +267,11 @@ airflow:
       AIRFLOW__CORE__STORE_SERIALIZED_DAGS: True #This flag decides whether to serialise DAGs and persist them in DB
       AIRFLOW__CORE__STORE_DAG_CODE: True #This flag decides whether to persist DAG files code in DB
       AIRFLOW__WEBSERVER__WORKER_CLASS: gevent
-      AIRFLOW__CELERY__WORKER_CONCURRENCY: 16 # Do not remove this config as it is used for autoscaling as well
+      AIRFLOW__CORE__PARALLELISM: "2000"
+      AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: "2000"
+      AIRFLOW__CORE__DAG_CONCURRENCY: "2000"
+      AIRFLOW__CELERY__WORKER_CONCURRENCY: "20"
+      AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: "1500"
     extraEnv:
     - name: CLOUD_PROVIDER
       value: "azure"
@@ -314,7 +320,7 @@ airflow:
     - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
       value: <azure_enable_msi>
     - name: AIRFLOW_VAR_DAG_IMAGE_ACR
-      value: <azure_acr>        
+      value: <azure_acr>
     - name: PYTHONPATH
       value: "/opt/celery"
       # Needed for installing python osdu python sdk. In future this will be changed
@@ -370,10 +376,7 @@ airflow:
         "jsonschema==3.2.0",
         "pyyaml==5.4.1",
         "requests==2.25.1",
-        "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_ingestion-0.12.0.tar.gz"
+        "tenacity==8.0.1"
     ]
     extraVolumeMounts:
         - name: azure-keyvault

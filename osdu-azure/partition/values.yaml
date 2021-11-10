@@ -18,6 +18,7 @@
 
 global:
   debug: false
+  replicaCount: 5
   nodepool: services
   isAutoscalingEnabled: false
 
@@ -33,6 +34,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
   ################################################################################
   # Specify the resource limits
@@ -78,7 +80,6 @@ configuration:
   #
   - service: partition
     repository: <azure_acr>/partition
-    tag: oak
     path: /api/partition/v1/*
     readinessProbe: /actuator/health
     readinessPort: 8081
