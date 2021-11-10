@@ -8,8 +8,8 @@ declare -a src_img=("crs-catalog-service" "crs-conversion-service" "entitlements
 
 declare -a dest_img=("crs-catalog" "crs-conversion" "entitlements" "file" "indexer" "workflow" "legal" "notification" "partition" "policy" "register" "schema" "search" "unit" "wks" "indexer-queue" "storage")
 
-declare src_version="-v0.11.0"
-declare dest_version="0.11.0"
+declare src_version="-v0.12.0"
+declare dest_version="0.12.0"
 
 # get length of an array
 len=${#src_img[@]}

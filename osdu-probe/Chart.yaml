@@ -15,5 +15,5 @@ apiVersion: v2
 name: osdu-probe
 description: A probe-test tool for OSDU on Azure that emits metrics to ApplicationInsights
 type: application
-version: 1.11.0
-appVersion: 0.11.0
+version: 1.12.0
+appVersion: 0.12.0
