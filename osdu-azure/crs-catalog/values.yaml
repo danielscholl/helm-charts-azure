@@ -32,6 +32,7 @@ global:
     identity_id: <azure_identity_id>
     keyvault: <azure_keyvault>
     appid: <azure_appid>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -99,6 +100,8 @@ configuration:
       value: true
     - name: ENTITLEMENT_URL
       value: http://entitlements/api/entitlements/v2
+    - name: PARTITION_API
+      value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
     - name: KEYVAULT_URI

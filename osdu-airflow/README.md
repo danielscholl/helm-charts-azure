@@ -35,7 +35,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v0.9"
+AIRFLOW_IMAGE_TAG="v0.10"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -270,10 +270,10 @@ airflow:
   scheduler:
     resources:
       requests:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
       limits:
-        cpu: "3000m"
+        cpu: "2500m"
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-identity"
@@ -289,7 +289,7 @@ airflow:
     image:
       repository: $AZURE_ACR/airflow-docker-image
       tag: $AIRFLOW_IMAGE_TAG
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
@@ -422,10 +422,7 @@ airflow:
         "jsonschema==3.2.0",
         "pyyaml==5.4.1",
         "requests==2.25.1",
-        "tenacity==8.0.1",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_api-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_airflow-0.12.0.tar.gz",
-        "https://azglobalosdutestlake.blob.core.windows.net/pythonsdk/osdu_ingestion-0.12.0.tar.gz"
+        "tenacity==8.0.1"
     ]
     extraVolumeMounts:
         - name: azure-keyvault

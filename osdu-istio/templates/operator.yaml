@@ -4,8 +4,47 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: istio-osdu
 spec:
+  meshConfig:
+    defaultConfig:
+      extraStatTags:
+        - request_url_path
+        - request_method
   profile: default
   values:
     global:
       proxy:
         logLevel: info
+    telemetry:
+      v2:
+        prometheus:
+          configOverride:
+            inboundSidecar:
+              metrics:
+                - name: requests_total
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
+                - name: request_duration_milliseconds
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
+            outboundSidecar:
+              metrics:
+                - name: requests_total
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
+                - name: request_duration_milliseconds
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
+            gateway:
+              metrics:
+                - name: requests_total
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
+                - name: request_duration_milliseconds
+                  dimensions:
+                    request_url_path: request.url_path
+                    request_method: request.method
