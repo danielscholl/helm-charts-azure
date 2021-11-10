@@ -40,6 +40,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    corsEnabled: <azure_corsEnabled>
 
 
   ################################################################################
@@ -75,7 +76,6 @@ configuration:
   #
   - service: workflow
     repository: <azure_acr>/workflow
-    tag: oak
     path: /api/workflow/*
     readinessProbe: /actuator/health
     readinessPort: 8081
