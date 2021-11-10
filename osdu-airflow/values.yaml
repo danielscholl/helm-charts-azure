@@ -192,6 +192,8 @@ airflow:
       aadpodidbinding: "osdu-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
+    # Use replicas when auto scaling is not enabled
+    replicas: 6
     autoscale:
       enabled: false
       minReplicas: 2
