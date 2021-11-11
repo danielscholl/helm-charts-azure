@@ -64,6 +64,12 @@ service:
 #
 configMap: wellbore-svc-config
 
+
+################################################################################
+# Specify the core services namespace
+#
+coreServicesNamespace: osdu-azure
+
 ################################################################################
 # Specify the OSDU Services to Load
 #
