@@ -99,13 +99,14 @@ airflow:
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
+        cert-manager.io/cluster-issuer: null
+        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
         cert-manager.io/acme-challenge-type: http01
       path: "/airflow"
       host: <airflow_ingress_web_host>
       livenessPath: "/airflow/health"
       tls:
-        enabled: <airflow_ingress_web_tls_enabled>
+        enabled: false
         secretName: osdu-certificate
       precedingPaths:
         - path: "/airflow/*"
