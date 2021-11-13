@@ -158,7 +158,9 @@ configuration:
     - name: dp_airflow_for_system_dag
       value: "false"
     - name: ignore_dagContent
-      value: "false"
+      value: "true"
+    - name: ignore_customOperatorContent
+      value: "true"
     - name: cosmosdb_system_database
       value: osdu-system-db
     - name: authorizeAPI
