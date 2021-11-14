@@ -112,9 +112,9 @@ configuration:
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_serviceBus_enabled
-      value: "false"
-    - name: azure_eventGrid_enabled
       value: "true"
+    - name: azure_eventGrid_enabled
+      value: "false"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
     - name: KEYVAULT_URI
