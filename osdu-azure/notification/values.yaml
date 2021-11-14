@@ -116,11 +116,11 @@ configuration:
     - name: LOG_PREFIX
       value: "notification"
     - name: service_bus_enabled
-      value: "false"
+      value: "true"
     - name: event_grid_to_service_bus_enabled
       value: "false"
     - name: event_grid_enabled
-      value: "true"
+      value: "false"
     - name: initial_subscription_manager_delay_seconds
       value: "0"
     - name: consecutive_subscription_manager_delay_seconds
