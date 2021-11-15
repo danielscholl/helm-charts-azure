@@ -161,3 +161,15 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: authorizeAPIKey
       value: "OBSOLETE"
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
