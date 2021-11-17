@@ -7,9 +7,9 @@ metadata:
 data:
   CLOUD_PROVIDER: az
   OPENAPI_PREFIX: /api/os-wellbore-ddms
-  SERVICE_HOST_STORAGE: http://storage.{{ .Values.coreServicesNamepsace }}/api/storage
-  SERVICE_HOST_SEARCH: http://search-service.{{ .Values.coreServicesNamepsace }}/api/search
-  SERVICE_HOST_PARTITION: http://partition.{{ .Values.coreServicesNamepsace }}/api/partition
+  SERVICE_HOST_STORAGE: http://storage.{{ .Values.coreServicesNamespace }}/api/storage
+  SERVICE_HOST_SEARCH: http://search.{{ .Values.coreServicesNamespace }}/api/search
+  SERVICE_HOST_PARTITION: http://partition.{{ .Values.coreServicesNamespace }}/api/partition
   USE_PARTITION_SERVICE: enabled
   AZ_LOGGER_LEVEL: INFO
 
