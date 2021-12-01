@@ -51,7 +51,8 @@ global:
 # Specify the default replica count for each service.
 #
  replicaCount: 2
- 
+ base_name_sr: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)
+
  ################################################################################
  # Specify the azure environment specific values
  #
