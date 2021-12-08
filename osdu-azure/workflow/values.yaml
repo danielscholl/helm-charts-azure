@@ -20,7 +20,6 @@ global:
   replicaCount: 4
   nodepool: services
   isAutoscalingEnabled: false
-  base_name_sr: <base_name_sr>
 
   ################################################################################
   # Specify KEDA configuration
@@ -168,15 +167,22 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: authorizeAPIKey
       value: "OBSOLETE"
-    - name: airflowdb_host
-      value: "{{ .Values.global.base_name_sr }}-pg.postgres.database.azure.com"
-    - name: airflowdb_port
+    - name: postgres_name
+      valueFrom:
+        secretKeyRef:
+          name: postgres
+          key: postgres-name
+    - name: postgres_username
+      valueFrom:
+        secretKeyRef:
+          name: postgres
+          key: postgres-username
+    - name: postgres_password
+      valueFrom:
+        secretKeyRef:
+          name: postgres
+          key: postgres-password
+    - name: postgres_port
       value: "5432"
-    - name: airflowdb_username
-      value: "osdu_admin@{{ .Values.global.base_name_sr }}-pg"
-    - name: airflowdb_database
+    - name: postgres_db
       value: "airflow"
-    - name: airflowdb_password
-      secret:
-        name: postgres
-        key: postgres-password
