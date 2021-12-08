@@ -75,7 +75,13 @@ configuration:
   ##  WKS SERVICE
   #
   - service: wks
-    scaledObject: true
+    scaledObject: false
+    readinessProbe: /health
+    readinessPort: 8081
+    livenessProbe: /health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 100
+    livenessPeriodSeconds: 10
     repository: <azure_acr>/wks
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
