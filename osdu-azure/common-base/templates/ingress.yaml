@@ -110,3 +110,7 @@ spec:
             serviceName: dataset
             servicePort: 80
           path: /api/dataset/v1/*
+        - backend:
+            serviceName: wks
+            servicePort: 80
+          path: /api/wks-service/v1/*
