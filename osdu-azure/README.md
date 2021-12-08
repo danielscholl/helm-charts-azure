@@ -51,7 +51,7 @@ global:
 # Specify the default replica count for each service.
 #
  replicaCount: 2
-
+ 
  ################################################################################
  # Specify the azure environment specific values
  #
