@@ -4,6 +4,7 @@
 #
 azure:
   resourcegroup: <azure_resourcegroup>
+  subscription: <azure_subscription>
   identity_id: <azure_identity_id>
 
 ingress:
