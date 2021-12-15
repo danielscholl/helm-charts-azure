@@ -44,3 +44,5 @@ spec:
           value: {{ .Values.azure.enable_msi | quote }}
         - name: PARTITIONS # comma separated list of partitions
           value: {{ .Values.storage.partitions }}
+        - name: SUBSCRIPTION
+          value: {{ .Values.azure.subscription }}

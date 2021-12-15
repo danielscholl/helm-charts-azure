@@ -36,3 +36,5 @@ spec:
           value: {{ .Values.config.configmapname }}
         - name: VERSION
           value: {{ .Chart.AppVersion }}
+        - name: SUBSCRIPTION
+          value: {{ .Values.azure.subscription }}
