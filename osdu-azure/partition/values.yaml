@@ -20,6 +20,7 @@ global:
   debug: false
   replicaCount: 5
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################

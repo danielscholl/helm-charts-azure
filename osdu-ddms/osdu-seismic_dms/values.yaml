@@ -19,7 +19,8 @@
 global:
   replicaCount: 1
   nodepool: services
-  isAutoscalingEnabled: false  
+  defaultNodepool: internal
+  isAutoscalingEnabled: false
 
 ################################################################################
 # Specify the azure environment specific values

@@ -5,6 +5,7 @@
 {{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
@@ -30,8 +31,11 @@ spec:
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
-        nodepool: {{ $nodepool }}
-{{- end }}        
+        agentpool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
+{{- end }}  
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault
