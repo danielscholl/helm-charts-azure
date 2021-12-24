@@ -15,9 +15,9 @@
 apiVersion: v2
 name: osdu-airflow2
 type: application
-appVersion: "latest"
+appVersion: 1.0.0
 description: Installs the airflow and required components for osdu on Azure"
-version: 0.1.0
+version: 1.10.1
 
 dependencies:
   - name: airflow

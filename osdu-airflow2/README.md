@@ -39,7 +39,6 @@ AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variab
 AIRFLOW_IMAGE_TAG="v0.10"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
-AIRFLOW_FUNCTION_TAG="1.0.0"
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -86,7 +85,6 @@ azure:
 #
 image:
   repository: $AZURE_ACR
-  tag: $AIRFLOW_FUNCTION_TAG
 
 
 airflowLogin:

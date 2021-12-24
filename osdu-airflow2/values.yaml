@@ -32,7 +32,6 @@ azure:
 #
 image:
   repository: <azure_acr>
-  tag: <airflow_image_tag>
 
 airflowLogin:
   name: <airflowLogin_name> #<-- Default Airflow Web UI username
@@ -288,7 +287,7 @@ airflow:
       AIRFLOW__CORE__DAG_CONCURRENCY: "2000"
       AIRFLOW__CELERY__WORKER_CONCURRENCY: "20"
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: "1500"
-      AIRFLOW_VAR_KEYVAULT_URI: https://osdu-mvp-cringes-qn63-kv.vault.azure.net/
+      AIRFLOW_VAR_KEYVAULT_URI: https://<azure_keyvault>.vault.azure.net/
     extraEnv:
       - name: CLOUD_PROVIDER
         value: "azure"
