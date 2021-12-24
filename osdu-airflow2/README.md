@@ -475,7 +475,7 @@ NAMESPACE=airflow2
 kubectl create namespace $NAMESPACE
 
 # Install Charts
-helm install airflow osdu-airflow -n $NAMESPACE -f osdu_airflow_custom_values.yaml
+helm install airflow2 osdu-airflow2 -n $NAMESPACE -f osdu_airflow2_custom_values.yaml
 ```
 
 
