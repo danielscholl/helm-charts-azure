@@ -26,7 +26,8 @@ Charts should be installed in the following order.
 
 1. [osdu-base](osdu-base/README.md)
 2. [osdu-istio](osdu-istio/README.md)
-3. [osdu-airflow](osdu-airflow/README.md)
+3. [osdu-airflow](osdu-airflow/README.md) or [osdu-airflow2](osdu-airflow2/README.md)*
 4. [osdu-azure](osdu-azure/README.md)
-4. [ddms-*](osdu-ddms/README.md)
+5. [ddms-*](osdu-ddms/README.md)
 
+__*Microsoft recommends installing osdu-airflow2 helm chart for OSDU platform.__
