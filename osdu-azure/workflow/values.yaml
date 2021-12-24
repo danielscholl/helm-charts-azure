@@ -185,4 +185,4 @@ configuration:
     - name: postgres_port
       value: "5432"
     - name: postgres_db
-      value: "airflow"
+      value: <airflow_db_name>

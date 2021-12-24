@@ -36,6 +36,7 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
+AIRFLOW_DB="<airflow_db>"           # ie: airflow
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -74,6 +75,12 @@ global:
    issuer: letsencrypt-prod-dns
    dns: $DNS_HOST
    enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
+
+################################################################################
+# Specify any optional override values
+#
+airflow:
+  db_name: $AIRFLOW_DB
 EOF
 ```
 
