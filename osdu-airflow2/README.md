@@ -8,6 +8,7 @@ __Version Tracking__
 
 
 __Pull Helm Chart__
+helm version used v3.5.2 for validating charts
 
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 
