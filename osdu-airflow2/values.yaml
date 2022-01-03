@@ -101,13 +101,7 @@ airflow:
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
         cert-manager.io/acme-challenge-type: http01
-        cert-manager.io/cluster-issuer: null
-        # cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
-        # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
-        # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
-        # The certificate name needs to be changed if the namespace or the secret name change.
-        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-osdu-certificate"
-
+        cert-manager.io/cluster-issuer: <airflow_ingress_web_annotations_cert-manager.io/cluster-issuer>
       path: "/airflow2"
       host: <airflow_ingress_web_host>
       livenessPath: "/airflow2/health"

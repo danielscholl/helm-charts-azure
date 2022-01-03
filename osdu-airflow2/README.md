@@ -157,8 +157,8 @@ airflow:
         cert-manager.io/acme-challenge-type: http01
         cert-manager.io/cluster-issuer: letsencrypt-prod-dns
         # Please uncomment below two lines and comment above line to use your own certificate from keyvault
-        # cert-manager.io/cluster-issuer: null
-        # appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-osdu-certificate"
+        #cert-manager.io/cluster-issuer: null
+        #appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
       path: "/airflow2"
       host: $DNS_HOST
       livenessPath: "/airflow2/health"
