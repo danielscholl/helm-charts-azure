@@ -14,6 +14,11 @@ spec:
     global:
       proxy:
         logLevel: info
+    gateways:
+      istio-ingressgateway:
+        serviceAnnotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        loadBalancerIP: "{{ .Values.global.istio.loadBalancerIP }}"
     telemetry:
       v2:
         prometheus:
@@ -48,3 +53,7 @@ spec:
                   dimensions:
                     request_url_path: request.url_path
                     request_method: request.method
+  components:
+   ingressGateways:
+   - name: istio-ingressgateway
+     enabled: true

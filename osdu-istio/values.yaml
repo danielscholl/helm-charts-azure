@@ -35,3 +35,17 @@ global:
   istio:
     username: <istio_username>
     password: <istio_password>
+    loadBalancerIp: <istio_loadbalancerip>
+    enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
+    dns_host: <istio_dns_host> 
+
+  ################################################################################
+  # Specify cron job specific values
+  #
+  job:
+    name: cert-checker
+    image: mcr.microsoft.com/azure-cli 
+    appgw_configmap_name: osdu-istio-appgw-cert
+    osdu_configmap_name: osdu-svc-properties  
+
+

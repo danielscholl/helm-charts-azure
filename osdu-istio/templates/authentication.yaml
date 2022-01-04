@@ -28,7 +28,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   mtls:
-    mode: PERMISSIVE
+    mode: STRICT
 {{- else }}
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
@@ -58,5 +58,16 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   mtls:
-    mode: PERMISSIVE
+    mode: STRICT
 {{- end }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: osdu-rule
+  namespace: osdu
+spec:
+  host: "*.osdu.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL

@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      hosts:
+        - "{{ .Values.global.istio.dns_host }}"
+      tls:
+        mode: SIMPLE
+        {{- if .Values.global.istio.enableIstioKeyvaultCert }}
+        credentialName: istio-appgw-ssl-cert
+        {{ else }}
+        credentialName: osdu-certificate
+        {{- end }}
