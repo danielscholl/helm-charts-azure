@@ -36,6 +36,9 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
+OSDU_AIRFLOW_VERSION2_ENABLED="<true_or_false>"  # false to target airflow 1.10.12 or true to airflow2
+# this point to the URL for the airflow installation
+OSDU_AIRFLOW_URL="<airflow_url>"    # ie: "http://airflow-web.airflow.svc.cluster.local:8080/airflow" for airflow1
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -51,7 +54,7 @@ global:
 # Specify the default replica count for each service.
 #
  replicaCount: 2
- 
+
  ################################################################################
  # Specify the azure environment specific values
  #
@@ -67,6 +70,8 @@ global:
    oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
    corsEnabled: false # set this to true if you want to enable CORS.
    suthEnabled: false # set this to true if you want to use SAuth identity envoy
+   airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
+   osduAirflowURL: $OSDU_AIRFLOW_URL
  ################################################################################
  # Specify the Ingress Settings
  #
@@ -101,12 +106,12 @@ helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu
 __DDMS Moved__
 
 The following services have been moved to new namespaces:
-1. Seismic Store Service 
-2. Wellbore DDMS 
+1. Seismic Store Service
+2. Wellbore DDMS
 
 Well Delivery DDMS is still in 'osdu' namespace
 
-Click [here](osdu-ddms/README.md) for more information. 
+Click [here](osdu-ddms/README.md) for more information.
 
 __Optional Preview Features Helm Chart__
 
