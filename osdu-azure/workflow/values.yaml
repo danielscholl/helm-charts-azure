@@ -167,3 +167,5 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: authorizeAPIKey
       value: "OBSOLETE"
+    - name: OSDU_AIRFLOW_VERSION2_ENABLED
+      value: "false"
