@@ -9,4 +9,4 @@
 
 __Supported OSDU Services__
 
-- [Well Delivery DDMS](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/well-delivery/well-delivery)
+- [Well Delivery Domain Services](https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/well-delivery/well-delivery)
