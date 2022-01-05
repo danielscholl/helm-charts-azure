@@ -79,11 +79,14 @@ helm uninstall seismic-store-service
 # Wellbore 
 helm uninstall os-wellbore-ddms
 
+# Well delivery
+helm uninstall os-well-delivery-ddms
+
 ```
 
 The folder structure has been updated. Please take the latest pull from gitlab 
 Make sure the new folder is present at root: osdu-ddms
-The following folder should not be present: osdu-azure > osdu-seismic_dms or osdu-wellbore_dms. If present please delete
+The following folder should not be present: osdu-azure > osdu-seismic_dms, osdu-wellbore_dms, or osdu-well-delivery-ddms. If present please delete.
 
 __Install Helm Chart__
 
@@ -96,16 +99,20 @@ Install the helm chart.
 # DDMS Namespace
 SDMS_NAMESPACE=ddms-seismic
 WDMS_NAMESPACE=ddms-wellbore
+WDDMS_NAMESPACE=ddms-well-delivery
 NAMESPACE=osdu-azure
 
 kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESPACE istio-injection=enabled
 kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
+kubectl create namespace $WDDMS_NAMESPACE && kubectl label namespace $WDDMS_NAMESPACE istio-injection=enabled
 
 # Install Charts
 helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install well-delivery-services osdu-ddms/osdu-well-delivery_dms -n $WDDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 
+# LIZZIE TO DO: GET RID OF THIS WHEN I'M SURE IT WORKS
 # Explictly pass in namespace of core services to ddms since they may eventually be deployed into their own namespaces for now its in osdu-azure
-helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+# helm install well-delivery-services osdu-azure/osdu-well-delivery_ddms -n $NAMESPACE -f osdu_azure_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 ```
 

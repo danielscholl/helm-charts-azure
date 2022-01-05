@@ -64,7 +64,7 @@ global:
 configuration:
 
   ########################
-  ##  Well Delivery DDMS SERVICE
+  ##  WELL DELIVERY SERVICE
   #
   - service: well-delivery-ddms
     repository: <azure_acr>/well-delivery-ddms
