@@ -25,7 +25,7 @@ To use Airflow1 as with the workflow service set the env variable in the values 
 | `OSDU_AIRFLOW_URL` | `http://airflow2-web.airflow2.svc.cluster.local:8080/airflow2` |
 | `OSDU_AIRFLOW_VERSION2_ENABLED` | `true` |
 
-The steps for creation of the airflow2 setup is document [here]().
+The steps for creation of the airflow2 setup is document [here](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/blob/stripathi/airflow2-doc/docs/airflow2-migration-guide.md).
 
 ### Revert to airflow 1.10.12
 
@@ -35,4 +35,3 @@ To use Airflow1 as with the workflow service set the env variable in the values 
 | ---  | ---   |
 | `OSDU_AIRFLOW_URL` | `"http://airflow-web.airflow.svc.cluster.local:8080/airflow"` |
 | `OSDU_AIRFLOW_VERSION2_ENABLED` | `false` |
-    
