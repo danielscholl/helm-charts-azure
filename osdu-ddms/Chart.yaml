@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 apiVersion: v2
-name: osdu-seismic_dms
+name: osdu-ddms
 type: application
-description: Installs OSDU on Azure
+description: Installs OSDU Domain Data Management Services
 version: 1.11.0
 appVersion: 0.11.0  # This isn't used just for documentation.

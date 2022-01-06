@@ -20,43 +20,49 @@ global:
   replicaCount: 1
   nodepool: services
   isAutoscalingEnabled: false
+  pullPolicy: IfNotPresent
 
-  ################################################################################
-  # Specify the azure environment specific values
-  #
-  azure:
-    tenant: <azure_tenant>
-    subscription: <azure_subscription>
-    resourcegroup: <azure_resourcegroup>
-    identity: <azure_identity>
-    identity_id: <azure_identity_id>
-    keyvault: <azure_keyvault>
-    appid: <azure_appid>
-    corsEnabled: <azure_corsEnabled>
-
-
-  ################################################################################
-  # Specify the Ingress Settings
-  #
-  ingress:
-    dns: <ingress_dns>
-    issuer: letsencrypt-prod-dns
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: <azure_keyvault>
+  appid: <azure_appid>
+  corsEnabled: <azure_corsEnabled>
 
 
-  ################################################################################
-  # Specify the Pod Identity
-  #
-  identity:
-    name: osdu-identity
+################################################################################
+# Specify the Ingress Settings
+#
+ingress:
+  dns: <ingress_dns>
+  issuer: letsencrypt-prod-dns
 
 
-  ################################################################################
-  # Specify the Service Settings
-  #
-  service:
-    type: ClusterIP
-    port: 80
-    target: 8080
+################################################################################
+# Specify the Pod Identity
+#
+identity:
+  name: osdu-identity
+
+
+################################################################################
+# Specify the Service Settings
+#
+service:
+  type: ClusterIP
+  port: 80
+  target: 8080
+
+################################################################################
+# Specify the Config Map
+#
+configMap: well-delivery-svc-config
 
 ################################################################################
 # Specify the OSDU Services to Load
@@ -70,6 +76,7 @@ configuration:
     repository: <azure_acr>/well-delivery-ddms
     path: /api/well-delivery/*
     probe: /api/well-delivery/_ah/warmup
+    keyvault: true
     auth:
       disable:
         - "*/swagger"

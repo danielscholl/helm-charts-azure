@@ -1,9 +1,9 @@
 {{- $namespace := .Release.namespace }}
-{{- $pullPolicy := .Values.global.pullPolicy -}}
-{{- $servicePort := .Values.global.service.port -}}
-{{- $hostName := .Values.global.ingress.dns -}}
-{{- $replicaCount := .Values.global.replicaCount -}}
-{{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
+{{- $pullPolicy := .Values.pullPolicy -}}
+{{- $servicePort := .Values.service.port -}}
+{{- $hostName := .Values.ingress.dns -}}
+{{- $replicaCount := .Values.replicaCount -}}
+{{- $isAutoscalingEnabled := .Values.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
