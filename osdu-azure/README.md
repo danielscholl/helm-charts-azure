@@ -70,6 +70,8 @@ global:
    oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
    corsEnabled: false # set this to true if you want to enable CORS.
    suthEnabled: false # set this to true if you want to use SAuth identity envoy
+
+  ingestion:
    airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
    osduAirflowURL: $OSDU_AIRFLOW_URL
  ################################################################################

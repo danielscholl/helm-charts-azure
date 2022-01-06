@@ -117,7 +117,7 @@ configuration:
       - name: OSDU_ENTITLEMENTS_APPKEY
         value: "OBSOLETE"
       - name: OSDU_AIRFLOW_URL
-        value: "{{ .Values.global.azure.osduAirflowURL }}"
+        value: "{{ .Values.global.ingestion.osduAirflowURL }}"
       - name: OSDU_AIRFLOW_USERNAME
         value: "admin"
       - name: azure_istioauth_enabled
@@ -163,4 +163,4 @@ configuration:
       - name: authorizeAPIKey
         value: "OBSOLETE"
       - name: OSDU_AIRFLOW_VERSION2_ENABLED
-        value: "{{ .Values.global.azure.airflowVersion2Enabled }}"
+        value: "{{ .Values.global.ingestion.airflowVersion2Enabled }}"
