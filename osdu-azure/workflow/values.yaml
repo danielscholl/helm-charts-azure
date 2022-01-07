@@ -41,6 +41,10 @@ global:
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
 
+  ingestion:
+    airflowVersion2Enabled: <osdu_airflow_version2_enabled>
+    osduAirflowURL: <osdu_airflow_url>
+
   ################################################################################
   # Specify the Ingress Settings
   #
