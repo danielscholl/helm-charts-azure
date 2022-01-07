@@ -1,6 +1,0 @@
-apiVersion: v2
-appVersion: 0.11.0
-description: Installs OSDU on Azure
-name: osdu-seismic_dms
-type: application
-version: 1.11.0
