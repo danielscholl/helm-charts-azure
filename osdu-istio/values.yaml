@@ -27,6 +27,10 @@ global:
     tenant: <azure_tenant>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    srResourceGroupName: <azure_srResourceGroupName>
+    kvName: <azure_kvName>
+    clusterName: <azure_clusterName>
+    appGwName: <azure_appGwName>
 
   ################################################################################
   # Specify the istio specific values
