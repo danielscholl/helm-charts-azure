@@ -5,11 +5,13 @@ metadata:
   name: {{ .Values.configMap }}
   namespace: {{ $namespace }}
 data:
-  DES_SERVICE_HOST: https://{{ .Values.ingress.dns }}
-  REDIS_INSTANCE_PORT: "6380"
-  APP_ENVIRONMENT_IDENTIFIER: cloud
-  CLOUDPROVIDER: azure
-  PORT: "80"
+  CLOUD_PROVIDER: az
+  OPENAPI_PREFIX: /api/os-well-delivery-ddms
+  SERVICE_HOST_STORAGE: http://storage.{{ .Values.coreServicesNamepsace }}/api/storage
+  SERVICE_HOST_SEARCH: http://search-service.{{ .Values.coreServicesNamepsace }}/api/search
+  SERVICE_HOST_PARTITION: http://partition.{{ .Values.coreServicesNamepsace }}/api/partition
+  USE_PARTITION_SERVICE: enabled
+  AZ_LOGGER_LEVEL: INFO
 
 ---
 

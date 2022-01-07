@@ -102,10 +102,6 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
-    - name: aad_client_id
-      secret:
-        name: active-directory
-        key: application-appid
     - name: server.servlet.contextPath
       value: /api/well-delivery/
     - name: server_port
