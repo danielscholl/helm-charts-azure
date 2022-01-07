@@ -12,7 +12,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 
 ```bash
 # Setup Variables
-CHART=osdu-seismic_dms
+CHART=osdu-ddms
 VERSION=1.11.0
 
 # Pull Chart
