@@ -59,10 +59,7 @@ spec:
                   name: {{ .Values.global.job.appgw_configmap_name }}
                   key: ENV_APPGW_NAME
             - name: ENV_SUBSCRIPTION_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Values.global.job.osdu_configmap_name }}
-                  key: ENV_SUBSCRIPTION_NAME
+              value: "{{ .Values.azure.subscription }}"
             command:
             - /bin/sh
             args:
