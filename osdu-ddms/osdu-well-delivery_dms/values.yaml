@@ -34,6 +34,7 @@ azure:
   keyvault: <azure_keyvault>
   appid: <azure_appid>
   corsEnabled: <azure_corsEnabled>
+  podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
 
 
 ################################################################################
@@ -102,6 +103,10 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
     - name: server.servlet.contextPath
       value: /api/well-delivery/
     - name: server_port
@@ -119,8 +124,8 @@ configuration:
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1  
     - name: azure_activedirectory_AppIdUri
-      value: "api://$(aad_client_id)"
+      value: "api://{{ .Values.configuration.service.env.aad_client_id }}"
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+      value: "{{ .Values.azure.podIdentityAuthEnabled }}"
