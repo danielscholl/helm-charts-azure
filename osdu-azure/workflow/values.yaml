@@ -27,7 +27,6 @@ global:
   keda:
     version_2_enabled: false
 
-
   ################################################################################
   # Specify the azure environment specific values
   #
@@ -42,6 +41,10 @@ global:
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
 
+  ingestion:
+    airflowVersion2Enabled: <osdu_airflow_version2_enabled>
+    osduAirflowURL: <osdu_airflow_url>
+    airflowDbName: <airflow_db>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -51,13 +54,11 @@ global:
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: false
 
-
   ################################################################################
   # Specify the Pod Identity
   #
   identity:
     name: osdu-identity
-
 
   ################################################################################
   # Specify the Service Settings
@@ -70,7 +71,6 @@ global:
 # Specify the OSDU Services to Load
 #
 configuration:
-
   ########################
   ##  INGEST WORKFLOW SERVICE
   #
@@ -81,7 +81,7 @@ configuration:
     readinessPort: 8081
     livenessProbe: /actuator/health
     livenessPort: 8081
-    probeInitialDelaySeconds: 100 
+    probeInitialDelaySeconds: 100
     livenessPeriodSeconds: 10
     keyvault: true
     auth:
@@ -103,86 +103,88 @@ configuration:
         - "*/v3/api-docs"
         - "/api/workflow/info"
     env:
-    - name: spring_application_name
-      value: workflow
-    - name: server.servlet.contextPath
-      value: /api/workflow/
-    - name: server_port
-      value: 80
-    - name: ACCEPT_HTTP
-      value: true
-    - name: LOG_PREFIX
-      value: "workflow"
-    - name: cosmosdb_database
-      value: osdu-db
-    - name: partition_service_endpoint
-      value: "http://partition/api/partition/v1"
-    - name: OSDU_ENTITLEMENTS_URL
-      value: "http://entitlements/api/entitlements/v2"
-    - name: OSDU_ENTITLEMENTS_APPKEY
-      value: "OBSOLETE"
-    - name: OSDU_AIRFLOW_URL
-      value: "http://airflow-web.airflow.svc.cluster.local:8080/airflow"
-    - name: OSDU_AIRFLOW_USERNAME
-      value: "admin"
-    - name: azure_istioauth_enabled
-      value: "true"
-    - name: azure_activedirectory_AppIdUri
-      value: "api://$(aad_client_id)"
-    - name: azure_paas_podIdentity_isEnabled
-      value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
-    - name: KEYVAULT_URI
-      config:
-        name: osdu-svc-config
-        key: ENV_KEYVAULT
-    - name: aad_client_id
-      secret:
-        name: active-directory
-        key: application-appid
-    - name: appinsights_key
-      secret:
-        name: central-logging
-        key: appinsights
-    - name: OSDU_AIRFLOW_PASSWORD
-      secret:
-        name: airflow
-        key: admin-password
-    - name: AIRFLOW_STORAGE_ACCOUNT_NAME
-      secret:
-        name: airflow
-        key: azurestorageaccountname
-    - name: AIRFLOW_STORAGE_ACCOUNT_KEY
-      secret:
-        name: airflow
-        key: azurestorageaccountkey
-    - name: dp_airflow_for_system_dag
-      value: "false"
-    - name: ignore_dagContent
-      value: "true"
-    - name: ignore_customOperatorContent
-      value: "true"
-    - name: cosmosdb_system_database
-      value: osdu-system-db
-    - name: authorizeAPI
-      value: http://entitlements/api/entitlements/v2
-    - name: authorizeAPIKey
-      value: "OBSOLETE"
-    - name: postgres_name
-      valueFrom:
-        secretKeyRef:
-          name: postgres
-          key: postgres-name
-    - name: postgres_username
-      valueFrom:
-        secretKeyRef:
-          name: postgres
-          key: postgres-username
-    - name: postgres_password
-      valueFrom:
-        secretKeyRef:
-          name: postgres
-          key: postgres-password
-    - name: postgres_port
-      value: "5432"
-    - name: postgres_db
-      value: "{{ .Values.airflow.db_name }}"
+      - name: spring_application_name
+        value: workflow
+      - name: server.servlet.contextPath
+        value: /api/workflow/
+      - name: server_port
+        value: 80
+      - name: ACCEPT_HTTP
+        value: true
+      - name: LOG_PREFIX
+        value: "workflow"
+      - name: cosmosdb_database
+        value: osdu-db
+      - name: partition_service_endpoint
+        value: "http://partition/api/partition/v1"
+      - name: OSDU_ENTITLEMENTS_URL
+        value: "http://entitlements/api/entitlements/v2"
+      - name: OSDU_ENTITLEMENTS_APPKEY
+        value: "OBSOLETE"
+      - name: OSDU_AIRFLOW_URL
+        value: "{{ .Values.global.ingestion.osduAirflowURL }}"
+      - name: OSDU_AIRFLOW_USERNAME
+        value: "admin"
+      - name: azure_istioauth_enabled
+        value: "true"
+      - name: azure_activedirectory_AppIdUri
+        value: "api://$(aad_client_id)"
+      - name: azure_paas_podIdentity_isEnabled
+        value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+      - name: KEYVAULT_URI
+        config:
+          name: osdu-svc-config
+          key: ENV_KEYVAULT
+      - name: aad_client_id
+        secret:
+          name: active-directory
+          key: application-appid
+      - name: appinsights_key
+        secret:
+          name: central-logging
+          key: appinsights
+      - name: OSDU_AIRFLOW_PASSWORD
+        secret:
+          name: airflow
+          key: admin-password
+      - name: AIRFLOW_STORAGE_ACCOUNT_NAME
+        secret:
+          name: airflow
+          key: azurestorageaccountname
+      - name: AIRFLOW_STORAGE_ACCOUNT_KEY
+        secret:
+          name: airflow
+          key: azurestorageaccountkey
+      - name: dp_airflow_for_system_dag
+        value: "false"
+      - name: ignore_dagContent
+        value: "true"
+      - name: ignore_customOperatorContent
+        value: "true"
+      - name: cosmosdb_system_database
+        value: osdu-system-db
+      - name: authorizeAPI
+        value: http://entitlements/api/entitlements/v2
+      - name: authorizeAPIKey
+        value: "OBSOLETE"
+      - name: OSDU_AIRFLOW_VERSION2_ENABLED
+        value: "{{ .Values.global.ingestion.airflowVersion2Enabled }}"
+      - name: postgres_name
+        valueFrom:
+          secretKeyRef:
+            name: postgres
+            key: postgres-name
+      - name: postgres_username
+        valueFrom:
+          secretKeyRef:
+            name: postgres
+            key: postgres-username
+      - name: postgres_password
+        valueFrom:
+          secretKeyRef:
+            name: postgres
+            key: postgres-password
+      - name: postgres_port
+        value: "5432"
+      - name: postgres_db
+        value: "{{ .Values.global.ingestion.airflowDbName }}"
