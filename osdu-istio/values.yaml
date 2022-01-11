@@ -31,6 +31,7 @@ global:
     kvName: <azure_kvName>
     clusterName: <azure_clusterName>
     appGwName: <azure_appGwName>
+    subscription: <azure_subscription>
 
   ################################################################################
   # Specify the istio specific values
