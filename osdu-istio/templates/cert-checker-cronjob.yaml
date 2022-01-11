@@ -60,6 +60,8 @@ spec:
                   key: ENV_APPGW_NAME
             - name: ENV_SUBSCRIPTION_NAME
               value: "{{ .Values.azure.subscription }}"
+            - name: ENV_OSDU_NAMESPACE
+              value: "{{ .Values.global.namespace }}"
             command:
             - /bin/sh
             args:
@@ -177,7 +179,7 @@ spec:
     {{ else }}
               
               K8S_CERT_SECRET=osdu-certificate
-              K8S_NAMESPACE_NAME=osdu 
+              K8S_NAMESPACE_NAME=${ENV_OSDU_NAMESPACE}
 
               # Check certificate expire date.
               check_expire_date
