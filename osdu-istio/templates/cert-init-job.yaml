@@ -40,7 +40,7 @@ spec:
                 name: {{ .Values.global.job.appgw_configmap_name }}
                 key: ENV_APPGW_NAME
           - name: ENV_SUBSCRIPTION_NAME
-            value: "{{ .Values.azure.subscription }}"
+            value: "{{ .Values.global.azure.subscription }}"
           - name: ENV_OSDU_NAMESPACE
             value: "{{ .Values.global.namespace }}"
         command:

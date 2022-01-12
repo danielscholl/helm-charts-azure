@@ -65,7 +65,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: osdu-rule
-  namespace: {{ .Values.global.namespace }}
+  namespace: {{ .Release.Namespace}}
 spec:
   host: "*.{{ .Values.global.namespace }}.svc.cluster.local"
   trafficPolicy:

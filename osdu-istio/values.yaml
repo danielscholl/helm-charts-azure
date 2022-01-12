@@ -42,7 +42,7 @@ global:
   istio:
     username: <istio_username>
     password: <istio_password>
-    loadBalancerIp: <istio_loadbalancerip>
+    loadBalancerIP: <istio_loadbalancerip>
     enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
     dns_host: <istio_dns_host> 
 
