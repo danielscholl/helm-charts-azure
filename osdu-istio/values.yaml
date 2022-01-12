@@ -32,6 +32,8 @@ global:
     clusterName: <azure_clusterName>
     appGwName: <azure_appGwName>
     subscription: <azure_subscription>
+    podIdentity: <azure_podIdentity>
+    commonPodIdentity: <azure_commonPodIdentity>
 
   ################################################################################
   # Specify the istio specific values

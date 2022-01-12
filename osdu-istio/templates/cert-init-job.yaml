@@ -7,26 +7,18 @@ metadata:
     app: "{{ .Values.global.job.name }}"
 spec:
   template:
+    metadata:
+      labels:
+        aadpodidbinding: osdu-identity
     spec:
       containers:
       - name: cert-checker
         image: {{ .Values.global.job.image }}
         env:
-          - name: client_id
-            valueFrom:
-              secretKeyRef:
-                name: active-directory
-                key: principal-clientid
-          - name: client_secret
-            valueFrom:
-              secretKeyRef:
-                name: active-directory
-                key: principal-clientpassword
-          - name: tenant_id
-            valueFrom:
-              secretKeyRef:
-                name: active-directory
-                key: tenantid
+          - name: ENV_OSDU_IDENTITY_ID
+            value: "{{ .Values.azure.podIdentity }}"
+          - name: ENV_OSDU_COMMON_IDENTITY_ID
+            value: "{{ .Values.azure.commonPodIdentity }}"
           - name: ENV_SR_GROUP_NAME
             valueFrom:
               configMapKeyRef:
@@ -87,14 +79,18 @@ spec:
           apk add --update coreutils
 
           # Log in in Azure and get cluster credentials
-          az login --service-principal -username "${client_id}" --password "${client_secret}" --tenant "${tenant_id}"
-          az account set --subscription ${ENV_SUBSCRIPTION_NAME}
-          az aks get-credentials --resource-group ${ENV_SR_GROUP_NAME} --name ${ENV_CLUSTER_NAME}
+          #az login --service-principal -username "${client_id}" --password "${client_secret}" --tenant "${tenant_id}"
+          #az account set --subscription ${ENV_SUBSCRIPTION_NAME}
+          #az aks get-credentials --resource-group ${ENV_SR_GROUP_NAME} --name ${ENV_CLUSTER_NAME}
 
 {{- if .Values.global.istio.enableIstioKeyvaultCert }}
 
           K8S_CERT_SECRET=istio-appgw-ssl-cert
           K8S_NAMESPACE_NAME=istio-system
+
+          # Login to common resource
+          az login --identity --username $ENV_OSDU_COMMON_IDENTITY_ID
+          az account set --subscription ${ENV_SUBSCRIPTION_NAME}
 
           # Download BYOC certificate from keyvault
           echo "Download BYOC certificate from keyvault"
@@ -108,6 +104,11 @@ spec:
           openssl pkcs12 -in ${K8S_CERT_SECRET}.pfx -out cert.pem -passin pass:"" -nodes -passout pass:""
           openssl rsa -in cert.pem -out cert.key
           openssl crl2pkcs7 -nocrl -certfile cert.pem | openssl pkcs7 -print_certs -out cert.crt
+
+          # Login to AKS
+          az login --identity --username $ENV_OSDU_IDENTITY_ID
+          az account set --subscription ${ENV_SUBSCRIPTION_NAME}
+          az aks get-credentials --resource-group ${ENV_SR_GROUP_NAME} --name ${ENV_CLUSTER_NAME}
 
           # Create secret for istio-ingressgateway in istio-system namespace
           kubectl create secret -n ${K8S_ISTIONAMESPACE_NAME} generic ${K8S_CERT_SECRET} \
