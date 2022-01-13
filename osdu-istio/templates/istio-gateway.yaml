@@ -16,7 +16,7 @@ spec:
       tls:
         mode: SIMPLE
         {{- if .Values.global.istio.enableIstioKeyvaultCert }}
-        credentialName: istio-appgw-ssl-cert
+        credentialName: appgw-ssl-cert
         {{ else }}
         credentialName: osdu-certificate
         {{- end }}
