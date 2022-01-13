@@ -217,3 +217,19 @@ spec:
         port:
           number: 8080
         host: airflow2-web
+  - match:
+    - uri:
+        prefix: /petrel-ds
+    route:
+    - destination:
+        port:
+          number: 80
+        host: pds-frontend
+  - match:
+    - uri:
+        prefix: /petrel-ds/api/v1
+    route:
+    - destination:
+        port:
+          number: 80
+        host: pds-backend
