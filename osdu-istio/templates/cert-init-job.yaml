@@ -16,9 +16,9 @@ spec:
         image: {{ .Values.global.job.image }}
         env:
           - name: ENV_OSDU_IDENTITY_ID
-            value: "{{ .Values.azure.podIdentity }}"
+            value: "{{ .Values.global.azure.podIdentity }}"
           - name: ENV_OSDU_COMMON_IDENTITY_ID
-            value: "{{ .Values.azure.commonPodIdentity }}"
+            value: "{{ .Values.global.azure.commonPodIdentity }}"
           - name: ENV_SR_GROUP_NAME
             valueFrom:
               configMapKeyRef:
