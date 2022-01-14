@@ -13,8 +13,7 @@ spec:
   values:
     global:
       proxy:
-        logLevel: debug
-        privileged: true
+        logLevel: info
     gateways:
       istio-ingressgateway:
         serviceAnnotations:
