@@ -226,11 +226,11 @@ spec:
           number: 80
         host: pds-backend
   - match:
-  - uri:
-      prefix: /petrel-ds/
-  route:
-  - destination:
-      port:
-        number: 80
-      host: pds-frontend
+    - uri:
+        prefix: /petrel-ds/
+    route:
+    - destination:
+        port:
+          number: 80
+        host: pds-frontend
         

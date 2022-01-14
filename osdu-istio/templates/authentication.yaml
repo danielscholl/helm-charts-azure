@@ -40,3 +40,4 @@ spec:
         - "{{ $ad_application }}"
       forwardOriginalToken: TRUE
       outputPayloadToHeader: "x-payload"
+{{- end }}
