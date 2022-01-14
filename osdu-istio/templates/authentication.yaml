@@ -20,15 +20,6 @@ spec:
       forwardOriginalToken: TRUE
       outputPayloadToHeader: "x-payload"
     {{- end }}
----
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: osdu-peer-auth
-  namespace: {{ .Release.Namespace }}
-spec:
-  mtls:
-    mode: STRICT
 {{- else }}
 apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
@@ -49,25 +40,3 @@ spec:
         - "{{ $ad_application }}"
       forwardOriginalToken: TRUE
       outputPayloadToHeader: "x-payload"
-
----
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: osdu-peer-auth
-  namespace: {{ .Release.Namespace }}
-spec:
-  mtls:
-    mode: STRICT
-{{- end }}
----
-apiVersion: networking.istio.io/v1beta1
-kind: DestinationRule
-metadata:
-  name: osdu-rule
-  namespace: {{ .Release.Namespace}}
-spec:
-  host: "*.{{ .Values.global.namespace }}.svc.cluster.local"
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
