@@ -409,6 +409,8 @@ airflow:
         value: "http://dataset.${OSDU_NAMESPACE}.svc.cluster.local/api/dataset/v1"
       - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
         value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query_with_cursor"
+      - name: AIRFLOW_VAR_ENV_VARS_ENABLED
+        value: "true"
       ## End -- Ingest Manifest DAG variables
 
     extraPipPackages:
