@@ -39,6 +39,7 @@ DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
 OSDU_AIRFLOW_VERSION2_ENABLED="<true_or_false>"  # false to target airflow 1.10.12 or true to airflow2
 # this point to the URL for the airflow installation
 OSDU_AIRFLOW_URL="<airflow_url>"    # ie: "http://airflow-web.airflow.svc.cluster.local:8080/airflow" for airflow1
+AIRFLOW_DB="<airflow_db>"           # ie: airflow
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
@@ -74,6 +75,8 @@ global:
  ingestion:
    airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
    osduAirflowURL: $OSDU_AIRFLOW_URL
+   airflowDbName: $AIRFLOW_DB
+
  ################################################################################
  # Specify the Ingress Settings
  #
