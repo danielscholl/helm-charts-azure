@@ -1,0 +1,19 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentity
+metadata:
+  name: pod-common-identity
+  namespace: {{ $namespace }}
+spec:
+  type: 0
+  resourceID: "{{ .Values.global.azure.common_resource_id }}"
+  clientID: "{{ .Values.global.azure.common_identity_id }}"
+---
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentityBinding
+metadata:
+  name: pod-common-identity-binding
+  namespace: {{ $namespace }}
+spec:
+  azureIdentity: pod-common-identity
+  selector: pod-multi-identity

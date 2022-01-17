@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        aadpodidbinding: osdu-identity
+        aadpodidbinding: pod-multi-identity
     spec:
       containers:
       - name: cert-checker
