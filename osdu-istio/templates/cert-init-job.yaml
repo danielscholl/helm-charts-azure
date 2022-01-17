@@ -94,7 +94,7 @@ spec:
 
           # Download BYOC certificate from keyvault
           echo "Download BYOC certificate from keyvault"
-          az keyvault secret download --file ${KV_CERT_NAME}.pfx --vault-name ${ENV_KEYVAULT_NAME} --encoding base64 --name ${KV_CERT_NAME
+          az keyvault secret download --file ${KV_CERT_NAME}.pfx --vault-name ${ENV_KEYVAULT_NAME} --encoding base64 --name ${KV_CERT_NAME}
           
           # Extract key and crt
           openssl pkcs12 -in ${K8S_CERT_SECRET}.pfx -out cert.pem -passin pass:"" -nodes -passout pass:""
@@ -109,7 +109,7 @@ spec:
           # Create secret for istio-ingressgateway in istio-system namespace
           kubectl create secret -n ${K8S_ISTIONAMESPACE_NAME} generic ${K8S_CERT_SECRET} \
           --save-config --dry-run=client \
-          --from-file=tls.crt=cert.crt --from-file=tls.key=cert.key \
+          --from-file=cert=cert.crt --from-file=key=cert.key \
           -o yaml | kubectl apply -f -
 
           # Restart istio-ingressgateway pods
@@ -127,7 +127,7 @@ spec:
           # Create secret for istio-ingressgateway in istio-system namespace from key and crt
           kubectl create secret -n ${K8S_ISTIONAMESPACE_NAME} generic ${K8S_CERT_SECRET} \
           --save-config --dry-run=client \
-          --from-file=tls.crt=cert.crt --from-file=tls.key=cert.key \
+          --from-file=cert=cert.crt --from-file=key=cert.key \
           -o yaml | kubectl apply -f -
 
           # Create certificate file
