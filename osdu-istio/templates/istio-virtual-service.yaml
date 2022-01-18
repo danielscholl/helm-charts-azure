@@ -29,14 +29,6 @@ spec:
           number: 80
   - match:
     - uri:
-        prefix: "/entitlements/v1"
-    route:
-    - destination:
-        host: entitlements-azure.{{ .Values.global.namespace }}.svc.cluster.local
-        port:
-          number: 80
-  - match:
-    - uri:
         prefix: "/api/legal/v1"
     route:
     - destination:
@@ -56,7 +48,7 @@ spec:
         prefix: "/api/indexer/v2"
     route:
     - destination:
-        host: indexer-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -64,7 +56,7 @@ spec:
         prefix: "/api/search/v2"
     route:
     - destination:
-        host: search-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -88,7 +80,7 @@ spec:
         prefix: "/api/schema-service/v1"
     route:
     - destination:
-        host: schema-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: schema.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -104,7 +96,7 @@ spec:
         prefix: "/api/crs/catalog"
     route:
     - destination:
-        host: crs-catalog-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: crs-catalog.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -112,7 +104,7 @@ spec:
         prefix: "/api/crs/converter"
     route:
     - destination:
-        host: crs-conversion-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: crs-conversion.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -120,7 +112,7 @@ spec:
         prefix: "/api/unit"
     route:
     - destination:
-        host: unit-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: unit.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -144,7 +136,7 @@ spec:
         prefix: "/api/os-wellbore-ddms"
     route:
     - destination:
-        host: os-wellbore-ddms.ddms-wellbore.svc.cluster.local
+        host: wellbore-ddms.ddms-wellbore.svc.cluster.local
         port:
           number: 80
   - match:
@@ -176,7 +168,7 @@ spec:
         prefix: "/seistore-svc/api/v3"
     route:
     - destination:
-        host: sdms.ddms-seismic.svc.cluster.local
+        host: seismic-ddms.ddms-seismic.svc.cluster.local
         port:
           number: 80
   - match:
@@ -192,7 +184,7 @@ spec:
         prefix: "/api/well-delivery"
     route:
     - destination:
-        host: well-delivery.{{ .Values.global.namespace }}.svc.cluster.local
+        host: well-delivery-ddms.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
@@ -200,7 +192,15 @@ spec:
         prefix: "/api/policy/v1"
     route:
     - destination:
-        host: policy-service.{{ .Values.global.namespace }}.svc.cluster.local
+        host: policy.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/dataset/v1/"
+    route:
+    - destination:
+        host: dataset.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
