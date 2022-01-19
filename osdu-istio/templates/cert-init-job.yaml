@@ -56,7 +56,7 @@ spec:
           cleanup() {
               echo Clean all existing files
               rm -f cert.crt cert.key osdu-certificate.pfx ${KV_CERT_NAME}.pem
-              curl -X POST "http://localhost:${SIDECAR_PORT}/quitquitquit"
+              #curl -X POST "http://localhost:${SIDECAR_PORT}/quitquitquit"
           }
 
           trap cleanup 0 2 3 6 ERR
