@@ -35,7 +35,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v0.10"
+AIRFLOW_IMAGE_TAG="v0.10.1"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -381,19 +381,25 @@ airflow:
     - name: AIRFLOW_VAR_CORE__CONFIG__DATALOAD_CONFIG_PATH
       value: "/opt/airflow/dags/configs/dataload.ini"
     - name: AIRFLOW_VAR_CORE__SERVICE__SCHEMA__URL
-      value: "http://schema.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1/schema"
+      value: "http://schema.${OSDU_NAMESPACE}.svc.cluster.local/api/schema-service/v1"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH__URL
-      value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query"
+      value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
-      value: "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2/records"
+      value: "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
       value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
-      value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow"
+      value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow/v1"
     - name: AIRFLOW_VAR_CORE__SERVICE__DATASET__HOST
       value: "http://dataset.${OSDU_NAMESPACE}.svc.cluster.local/api/dataset/v1"
     - name: AIRFLOW_VAR_CORE__SERVICE__SEARCH_WITH_CURSOR__URL
       value: "http://search.${OSDU_NAMESPACE}.svc.cluster.local/api/search/v2/query_with_cursor"
+    - name: AIRFLOW_VAR_CORE__SERVICE__PARTITION__URL
+      value: "http://partition.${OSDU_NAMESPACE}.svc.cluster.local/api/partition/v1"
+    - name: AIRFLOW_VAR_CORE__SERVICE__LEGAL__HOST
+      value: "http://legal.${OSDU_NAMESPACE}.svc.cluster.local/api/legal/v1"
+    - name: AIRFLOW_VAR_CORE__SERVICE__ENTITLEMENTS__URL
+      value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"      
     - name: AIRFLOW_VAR_ENV_VARS_ENABLED
       value: "true"
 
