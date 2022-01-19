@@ -79,28 +79,14 @@ spec:
                 az account set --subscription ${ENV_SUBSCRIPTION_NAME}
                 az aks get-credentials --resource-group ${ENV_SR_GROUP_NAME} --name ${ENV_CLUSTER_NAME}
 
-                kubectl get secret -n ${K8S_ISTIONAMESPACE_NAME} ${K8S_CERT_SECRET} -o jsonpath="{ .data.tls\.crt }" | base64 -d > cert.crt
+                kubectl get secret -n ${K8S_ISTIONAMESPACE_NAME} ${K8S_CERT_SECRET} -o jsonpath="{ .data.cert }" | base64 -d > cert.crt
                 SECRET_CERT_EXPIRE_DATE=$(openssl x509 -in cert.crt -enddate -noout |  cut -d '=' -f2)
                 SECRET_CERT_EXPIRE_DATE=$(date "+%Y-%m-%d" --date="${SECRET_CERT_EXPIRE_DATE}")
-
-                publiccert=$(az network application-gateway ssl-cert show -g ${ENV_SR_GROUP_NAME} --gateway-name ${ENV_APPGW_NAME} -n ${KV_CERT_NAME} -o tsv --query publicCertData)
-                echo "-----BEGIN PKCS7-----" >> public.cert; echo "${publiccert}" >> public.cert; echo "-----END PKCS7-----" >> public.cert
-                GW_CERT_EXPIRE_DATE=$(cat public.cert | fold -w 64 | openssl pkcs7 -print_certs | openssl x509 -noout -enddate |  cut -d '=' -f2)
-                GW_CERT_EXPIRE_DATE=$(date -d "$GW_CERT_EXPIRE_DATE" +%F)
-
 
                 if [ ${KV_CERT_EXPIREDATE} = ${SECRET_CERT_EXPIRE_DATE} ]; then
                   echo "KV_CERT_EXPIREDATE: ${KV_CERT_EXPIREDATE} and SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE}"
                   echo "The cert in secret is up to date"
-                  echo "Compairing the cert in secret with AppGW cert"
-                  if [ ${SECRET_CERT_EXPIRE_DATE} = ${GW_CERT_EXPIRE_DATE} ]; then
-                    echo "SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE} and GW_CERT_EXPIRE_DATE: ${GW_CERT_EXPIRE_DATE}"
-                    echo "The cert in AppGW is up to date"
-                    exit 0
-                  else
-                    echo "SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE} and GW_CERT_EXPIRE_DATE: ${GW_CERT_EXPIRE_DATE}"
-                    echo "The cert in AppGW is not up to date"
-                  fi
+                  exit 0
                 else
                   echo "KV_CERT_EXPIREDATE: ${KV_CERT_EXPIREDATE} and SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE}"
                   echo "The cert in secret is not up to date"
@@ -112,7 +98,7 @@ spec:
               cleanup() {
                 echo "Clean all existing files"
                 rm -f cert.crt cert.key public.cert osdu-certificate.pfx ${KV_CERT_NAME}.pem
-                curl -X POST "http://localhost:${SIDECAR_PORT}/quitquitquit"
+                #curl -X POST "http://localhost:${SIDECAR_PORT}/quitquitquit"
               }
 
               trap cleanup 0 2 3 6 ERR
