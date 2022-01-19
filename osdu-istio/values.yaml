@@ -18,7 +18,7 @@
 
 global:
 
-  namespace: osdu
+  namespace: <osdu_namespace>
 
   ################################################################################
   # Specify the azure environment specific values
@@ -27,6 +27,13 @@ global:
     tenant: <azure_tenant>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    srResourceGroupName: <azure_srResourceGroupName>
+    kvName: <azure_kvName>
+    clusterName: <azure_clusterName>
+    appGwName: <azure_appGwName>
+    subscription: <azure_subscription>
+    podIdentity: <azure_podIdentity>
+    commonPodIdentity: <azure_commonPodIdentity>
 
   ################################################################################
   # Specify the istio specific values
@@ -35,3 +42,17 @@ global:
   istio:
     username: <istio_username>
     password: <istio_password>
+    loadBalancerIP: <istio_loadbalancerip>
+    enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
+    dns_host: <istio_dns_host> 
+
+  ################################################################################
+  # Specify cron job specific values
+  #
+  job:
+    name: cert-checker
+    image: mcr.microsoft.com/azure-cli 
+    appgw_configmap_name: osdu-istio-appgw-cert
+
+
+

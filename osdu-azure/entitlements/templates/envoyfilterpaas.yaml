@@ -22,7 +22,7 @@ spec:
         value:
           name: envoy.lua.appid-from-msft-aad-token
           typed_config:
-            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
             inlineCode: |
               msft_issuer = "https://sts.windows.net/{{ $mstenant }}/"
               function envoy_on_request(request_handle)
@@ -58,7 +58,7 @@ spec:
         value:
           name: envoy.lua.appid-from-msftonline-token
           typed_config:
-            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
             inlineCode: |
               msft_issuer = "https://login.microsoftonline.com/{{ $mstenant }}/v2.0"
               function envoy_on_request(request_handle)
