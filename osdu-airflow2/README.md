@@ -50,7 +50,7 @@ ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 OSDU_NAMESPACE=osdu-azure
 
 # Translate Values File
-cat > osdu_airflow_custom_values.yaml << EOF
+cat > osdu_airflow2_custom_values.yaml << EOF
 ###############################################################################
 # Specify the azure environment specific values
 #
