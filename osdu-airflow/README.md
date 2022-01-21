@@ -387,7 +387,7 @@ airflow:
     - name: AIRFLOW_VAR_CORE__SERVICE__STORAGE__URL
       value: "http://storage.${OSDU_NAMESPACE}.svc.cluster.local/api/storage/v2"
     - name: AIRFLOW_VAR_CORE__SERVICE__FILE__HOST
-      value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file/v2"
+      value: "http://file.${OSDU_NAMESPACE}.svc.cluster.local/api/file"
     - name: AIRFLOW_VAR_CORE__SERVICE__WORKFLOW__HOST
       value: "http://workflow.${OSDU_NAMESPACE}.svc.cluster.local/api/workflow/v1"
     - name: AIRFLOW_VAR_CORE__SERVICE__DATASET__HOST
