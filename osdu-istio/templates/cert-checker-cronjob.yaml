@@ -97,7 +97,7 @@ spec:
               # Cleanup function
               cleanup() {
                 echo "Clean all existing files"
-                rm -f cert.crt cert.key public.cert osdu-certificate.pfx ${KV_CERT_NAME}.pem
+                rm -f clcert.crt cacert.crt cert.pem cert.crt cert.key public.cert osdu-certificate.pfx ${KV_CERT_NAME}.pem ${KV_CERT_NAME}.pfx
                 #curl -X POST "http://localhost:${SIDECAR_PORT}/quitquitquit"
               }
 
@@ -141,10 +141,18 @@ spec:
               az keyvault secret download --file ${KV_CERT_NAME}.pfx --vault-name ${ENV_KEYVAULT_NAME} --encoding base64 --name ${KV_CERT_NAME}
 
               # Extract key and crt
-              openssl pkcs12 -in ${K8S_CERT_SECRET}.pfx -out cert.pem -passin pass:"" -nodes -passout pass:""
+              openssl pkcs12 -in ${KV_CERT_NAME}.pfx -out cert.pem -passin pass:"" -nodes -passout pass:""
               openssl rsa -in cert.pem -out cert.key
-              openssl crl2pkcs7 -nocrl -certfile cert.pem | openssl pkcs7 -print_certs -out cert.crt
-
+              echo "Extracted the private key succesfully"
+              
+              openssl pkcs12 -in ${KV_CERT_NAME}.pfx -nokeys -clcerts -out clcert.crt -passin pass:""
+              openssl pkcs12 -in ${KV_CERT_NAME}.pfx -nokeys -cacerts -out cacert.crt -passin pass:""
+              
+              rm -f cert.crt
+              cat clcert.crt | tee -a cert.crt
+              cat cacert.crt | tee -a cert.crt
+              echo "Extracted the certificate list succesfully"
+              
               # Login to AKS
               az login --identity --username $ENV_OSDU_IDENTITY_ID
               az account set --subscription ${ENV_SUBSCRIPTION_NAME}
