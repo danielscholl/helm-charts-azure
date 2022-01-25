@@ -80,6 +80,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
