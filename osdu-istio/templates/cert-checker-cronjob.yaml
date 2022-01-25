@@ -149,8 +149,7 @@ spec:
               openssl pkcs12 -in ${KV_CERT_NAME}.pfx -nokeys -cacerts -out cacert.crt -passin pass:""
               
               rm -f cert.crt
-              cat clcert.crt | tee -a cert.crt
-              cat cacert.crt | tee -a cert.crt
+              cat clcert.crt cacert.crt > cert.crt
               echo "Extracted the certificate list succesfully"
               
               # Login to AKS
