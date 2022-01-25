@@ -13,7 +13,7 @@
 # limitations under the License.
 
 apiVersion: v2
-name: well-delivery-ddms
+name: osdu-well-delivery_dms
 type: application
 description: Installs the OSDU on Azure Well Delivery DDMS Service
 version: 1.11.0
