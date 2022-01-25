@@ -85,11 +85,13 @@ configuration:
       disable:
         - "/"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/swagger"
         - "*/swagger-ui.html"
         - "*/swagger-resources"
         - "*/actuator/health"
         - "/api/register/v1/swagger-resources/*"
+        - "/api/register/v1/swagger-ui/*"
         - "/api/register/v1/webjars/*"
         - "/api/register/v1/test/challenge/*"
     env:

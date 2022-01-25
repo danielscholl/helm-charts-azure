@@ -82,12 +82,14 @@ configuration:
       disable:
         - "/"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/swagger"
         - "*/swagger-ui.html"
         - "*/swagger-resources"
         - "*/actuator/health"
         - "/api/notification/v1/swagger-resources/*"
         - "/api/notification/v1/webjars/*"
+        - "/api/notification/v1/swagger-ui/*"
     env:
     - name: spring_application_name
       value: notification-azure

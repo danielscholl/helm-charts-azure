@@ -93,6 +93,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v1/api-docs"
+        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
@@ -100,6 +101,7 @@ configuration:
         - "*/swagger-resources"
         - "/api/partition/v1/swagger-resources/*"
         - "/api/partition/v1/webjars/*"
+        - "/api/partition/v1/swagger-ui/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:

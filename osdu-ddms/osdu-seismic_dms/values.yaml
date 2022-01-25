@@ -80,6 +80,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/swagger"
         - "*/swagger-ui.html"
         - "*/swagger-resources"
@@ -89,6 +90,7 @@ configuration:
         - "*/configuration/security"
         - "/seistore-svc/api/v3/swagger-resources/*"  # CAN"T FIND SWAGGER
         - "/seistore-svc/api/v3/webjars/*"
+        - "/seistore-svc/api/v3/swagger-ui/*"
     env:
     - name: KEYVAULT_URL
       config:

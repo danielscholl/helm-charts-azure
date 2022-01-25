@@ -76,11 +76,13 @@ configuration:
         - "*/swagger-resources"
         - "*/swagger-ui.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/actuator/health"
         - "*/health"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "/api/well-delivery/swagger-resources/*"
+        - "/api/well-delivery/swagger-ui/*"
         - "/api/well-delivery/webjars/*"
     env:
     - name: SERVICE_NAME

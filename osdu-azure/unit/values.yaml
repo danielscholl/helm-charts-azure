@@ -74,6 +74,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
@@ -82,6 +83,7 @@ configuration:
         - "*/actuator/health"
         - "*/_ah/**"
         - "/api/unit/swagger-resources/*"
+        - "/api/unit/swagger-ui/*"
         - "/api/unit/webjars/*"
     pvc:
       - name: unit

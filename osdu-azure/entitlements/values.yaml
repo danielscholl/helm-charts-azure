@@ -85,12 +85,15 @@ configuration:
       disable:
         - "/"
         - "*/v2/api-docs"
+        - "*/api-docs"
+        - "*/swagger"
         - "*/swagger-resources"
         - "*/swagger-ui.html"
         - "*/actuator/health"
         - "*/health"
         - "/api/entitlements/v2/swagger-resources/*"
         - "/api/entitlements/v2/webjars/*"
+        - "/api/entitlements/v2/swagger-ui/*"
     env:
     - name: spring_application_name
       value: entitlements

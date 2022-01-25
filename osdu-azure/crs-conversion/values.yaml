@@ -74,6 +74,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
@@ -83,6 +84,7 @@ configuration:
         - "*/_ah/**"
         - "/api/crs/converter/swagger-resources/*"
         - "/api/crs/converter/webjars/*"
+        - "/api/crs/converter/swagger-ui/*"
     pvc:
       - name: crs-conversion
         volume: shared-data
