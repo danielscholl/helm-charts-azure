@@ -9,6 +9,7 @@ appinsightstatsd:
 # Specify log analytics configuration
 #
 logAnalytics:
+  isEnabled: <loganalytics_enabled>
   workspaceId:
     secretName: "central-logging"
     secretKey: "workspace-id"
