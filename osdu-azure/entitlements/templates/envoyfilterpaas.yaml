@@ -67,11 +67,13 @@ spec:
                 local jwt_authn = request_handle:streamInfo():dynamicMetadata():get("envoy.filters.http.jwt_authn")
                 if jwt_authn then
                   if jwt_authn[msft_issuer] then
-                    request_handle:headers():add("x-app-id", jwt_authn[msft_issuer]["aud"])
-                    if jwt_authn[msft_issuer]["appid"] then
-                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["appid"])
-                    elseif jwt_authn[msft_issuer]["azp"] then
-                      request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["azp"])
+                    if not jwt_authn[msft_issuer]["upn"] and not jwt_authn[msft_issuer]["unique_name"] then
+                      request_handle:headers():add("x-app-id", jwt_authn[msft_issuer]["aud"])
+                      if jwt_authn[msft_issuer]["appid"] then
+                        request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["appid"])
+                      elseif jwt_authn[msft_issuer]["azp"] then
+                        request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["azp"])
+                      end
                     end
                   end
                 end
