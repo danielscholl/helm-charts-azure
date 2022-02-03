@@ -418,6 +418,8 @@ airflow:
         value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"          
       - name: AIRFLOW_VAR_ENV_VARS_ENABLED
         value: "true"
+      - name: AIRFLOW_VAR_CORE__CONFIG__SHOW_SKIPPED_IDS
+        value: "True"
       ## End -- Ingest Manifest DAG variables
 
     extraPipPackages:
