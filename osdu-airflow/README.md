@@ -320,6 +320,7 @@ airflow:
       AIRFLOW__CORE__STORE_DAG_CODE: True #This flag decides whether to persist DAG files code in DB
       AIRFLOW__WEBSERVER__WORKER_CLASS: gevent
       AIRFLOW__CELERY__WORKER_CONCURRENCY: 16 # Do not remove this config as it is used for autoscaling as well
+      AIRFLOW_VAR_CORE__CONFIG__SHOW_SKIPPED_IDS: true
     extraEnv:
     - name: CLOUD_PROVIDER
       value: "azure"
@@ -403,8 +404,6 @@ airflow:
       value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"      
     - name: AIRFLOW_VAR_ENV_VARS_ENABLED
       value: "true"
-    - name: AIRFLOW_VAR_CORE__CONFIG__SHOW_SKIPPED_IDS
-      value: "True"
 
     ## End -- Ingest Manifest DAG variables
     extraConfigmapMounts:
