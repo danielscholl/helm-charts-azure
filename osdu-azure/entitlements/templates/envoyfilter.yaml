@@ -102,7 +102,7 @@ spec:
                 if jwt_authn then
                   if jwt_authn[msft_issuer] then
                     request_handle:headers():add("x-app-id", jwt_authn[msft_issuer]["aud"])
-                    if jwt_authn[msft_issuer]["oid"] then
+                    if jwt_authn[msft_issuer]["oid"] and jwt_authn[msft_issuer]["scp"] then
                       request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["oid"])
                     elseif jwt_authn[msft_issuer]["azp"] then
                       request_handle:headers():add("x-user-id", jwt_authn[msft_issuer]["azp"])
