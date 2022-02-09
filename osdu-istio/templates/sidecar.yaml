@@ -6,6 +6,9 @@ metadata:
 spec:
   egress:
   - hosts:
-    - "osdu/*"
+    - "osdu-azure/*"
+    - "ddms-seismic/*"
+    - "ddms-wellbore/*"
+    - "ddms-well-delivery/*"
     - "istio-system/*"
 
