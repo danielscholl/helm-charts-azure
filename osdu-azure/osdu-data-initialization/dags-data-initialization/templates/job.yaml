@@ -36,3 +36,5 @@ spec:
           value: {{ .Values.azure.tenant_id }}
         - name: AZURE_ENABLE_MSI
           value: {{ .Values.azure.enable_msi | quote}}
+        - name: SUBSCRIPTION
+          value: {{ .Values.azure.subscription }}

@@ -28,7 +28,7 @@ spec:
           value: {{ .Values.azure.appid }}
         - name: OSDU_IDENTITY_ID
           value: {{ .Values.azure.identity_id }}
-        - name: ARM_SUBSCRIPTION_ID
+        - name: SUBSCRIPTION
           value: {{ .Values.azure.subscription }}
         - name: PARTITIONS # comma separated list of partitions
           value: {{ .Values.storage.partitions }}
