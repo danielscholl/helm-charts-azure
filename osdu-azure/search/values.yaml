@@ -21,6 +21,7 @@ global:
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
+  kubernetesSecrets: "redis"
 
 
   ################################################################################

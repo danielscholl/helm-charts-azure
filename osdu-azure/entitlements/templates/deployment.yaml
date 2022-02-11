@@ -5,6 +5,7 @@
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $defaultNodepool := .Values.global.defaultNodepool }}
+{{- $kubernetesSecrets := .Values.global.kubernetesSecrets -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
@@ -13,6 +14,8 @@ kind: Deployment
 metadata:
   name: {{ .service }}
   namespace: {{ $namespace }}
+  annotations:
+    secret.reloader.stakater.com/reload: {{ $kubernetesSecrets | quote}}
 spec:
   replicas: {{ .replicaCount | default $replicaCount }}
   selector:
