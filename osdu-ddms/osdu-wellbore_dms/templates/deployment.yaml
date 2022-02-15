@@ -24,6 +24,9 @@ spec:
       labels:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
+        prometheus.io/path: /api/os-wellbore-ddms/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
