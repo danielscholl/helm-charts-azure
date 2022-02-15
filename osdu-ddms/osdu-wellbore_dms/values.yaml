@@ -91,6 +91,7 @@ configuration:
         - "/api/os-wellbore-ddms/ddms/v2/about"
         - "/api/os-wellbore-ddms/docs"
         - "/api/os-wellbore-ddms/openapi.json"
+        - "/api/os-wellbore-ddms/metrics"
     env:
     - name: SERVICE_NAME
       value: os-wellbore-ddms
