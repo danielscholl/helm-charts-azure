@@ -146,6 +146,7 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
     - name: AZURE_CLIENT_ID
       secret:
         name: active-directory

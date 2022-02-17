@@ -102,6 +102,7 @@ configuration:
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+    podIdentityEnvs:
       - name: AZURE_CLIENT_ID
         secret:
           name: active-directory

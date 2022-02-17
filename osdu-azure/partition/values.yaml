@@ -137,6 +137,7 @@ configuration:
         key: application-appid
     - name: azure_istioauth_enabled
       value: "true"
+    podIdentityEnvs:
     - name: AZURE_CLIENT_ID
       secret:
         name: active-directory
