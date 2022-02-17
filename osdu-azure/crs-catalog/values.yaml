@@ -67,7 +67,7 @@ configuration:
   - service: crs-catalog
     repository: <azure_acr>/crs-catalog
     path: /api/crs/catalog/*
-    probe: /api/crs/catalog/swagger-ui.html
+    probe: /api/crs/catalog/swagger-ui/index.html
     keyvault: true
     auth:
       disable:
@@ -118,6 +118,7 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
     - name: AZURE_CLIENT_ID
       secret:
         name: active-directory

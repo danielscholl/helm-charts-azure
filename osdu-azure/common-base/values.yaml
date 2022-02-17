@@ -85,6 +85,7 @@ configuration:
     env:
       - name: TITLE
         value: "Azure OSDU Platform - (AKS)"
+    podIdentityEnvs:
       - name: AZURE_CLIENT_ID
         secret:
           name: active-directory

@@ -79,7 +79,7 @@ configuration:
   - service: register
     repository: <azure_acr>/register
     path: /api/register/v1/*
-    probe: /api/register/v1/swagger-ui.html
+    probe: /api/register/v1/swagger-ui/index.html
     keyvault: true
     auth:
       disable:
@@ -131,6 +131,7 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
     - name: AZURE_CLIENT_ID
       secret:
         name: active-directory

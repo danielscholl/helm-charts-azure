@@ -189,6 +189,7 @@ configuration:
         value: "5432"
       - name: postgres_db
         value: "{{ .Values.global.ingestion.airflowDbName }}"
+    podIdentityEnvs:
       - name: AZURE_CLIENT_ID
         secret:
           name: active-directory

@@ -6,6 +6,7 @@
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
+{{- $podIdentityAuthEnabled := .Values.global.azure.podIdentityAuthEnabled}}
 {{- range .Values.configuration }}
 apiVersion: apps/v1
 kind: Deployment
@@ -99,6 +100,17 @@ spec:
                   name: {{ .secret.name | quote }}
                   key: {{ .secret.key | quote }}
               {{- end }}
+            {{- end }}
+            {{- if not $podIdentityAuthEnabled }}
+            {{- range .podIdentityEnvs }}
+            - name: {{ .name }}
+              {{- if .secret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret.name | quote }}
+                  key: {{ .secret.key | quote }}
+              {{- end }}
+            {{- end }}
             {{- end }}
           {{- end }}
 
