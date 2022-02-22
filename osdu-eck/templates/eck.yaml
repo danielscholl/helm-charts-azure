@@ -14,6 +14,7 @@ metadata:
   name: "es-{{ lower $datapartition }}"
   labels:
     name: "es-{{ lower $datapartition }}"
+    istio-injection: enabled
 ---
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
@@ -48,6 +49,11 @@ spec:
         node.ingest: true
         node.store.allow_mmap: false
       podTemplate:
+        metadata:
+          annotations:
+            traffic.sidecar.istio.io/includeInboundPorts: "*"
+            traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
+            traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         spec:
           nodeSelector:
             agentpool: {{ $nodepoolPrefix }}{{ trimPrefix "_" $index }}
