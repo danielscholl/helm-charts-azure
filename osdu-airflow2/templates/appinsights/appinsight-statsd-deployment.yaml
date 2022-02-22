@@ -14,7 +14,7 @@ kind: Deployment
 metadata:
   name: appinsights-statsd
   labels:
-    app: appinsights-statsd
+    app: appinsights-statsd          
 spec:
   replicas: 1
   selector:
@@ -24,11 +24,11 @@ spec:
     metadata:
       labels:
         app: appinsights-statsd
-        aadpodidbinding: "osdu-identity"
+        aadpodidbinding: "osdu-airflow2-identity"
     spec:
       containers:
       - name: appinsights-statsd
-        image: {{ .Values.image.repository }}/airflow-statsd:{{ .Values.image.tag | default .Chart.AppVersion }}
+        image: {{ .Values.appinsightstatsd.image.repository }}/airflow-statsd:{{ .Values.appinsightstatsd.image.tag }}
         imagePullPolicy: Always
         command: ["node"]
         args: ["/usr/src/app/statsd/stats.js", "/usr/src/app/statsd/backends/config/appinsightsconfig.js"]
@@ -53,5 +53,6 @@ spec:
             memory: 256Mi
       volumes:
         - name: config-volume
-          configMap:
+          configMap: 
             name: airflow-appinsight-statsd-config
+        

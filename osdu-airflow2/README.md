@@ -51,11 +51,26 @@ OSDU_NAMESPACE=osdu-azure
 
 # Translate Values File
 cat > osdu_airflow2_custom_values.yaml << EOF
-###############################################################################
+################################################################################
+# Specify the azure environment specific values
+#
+azure:
+  tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
+  subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
+  resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
+  identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
+  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+  keyvault: $ENV_VAULT  
+  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
+
+################################################################################
 # Specify the azure environment specific values
 #
 appinsightstatsd:
-  aadpodidbinding: "osdu-identity"
+  aadpodidbinding: "osdu-airflow2-identity"
+  image:
+    repository: $AZURE_ACR
+    tag: "1.0.0-OSDU"
 
 #################################################################################
 # Specify log analytics configuration
@@ -68,25 +83,9 @@ logAnalytics:
   workspaceKey:
     secretName: "central-logging"
     secretKey: "workspace-key"
-
-################################################################################
-# Specify the azure environment specific values
-#
-azure:
-  tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
-  subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-  resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
-  identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
-  keyvault: $ENV_VAULT
-  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-
-################################################################################
-# Specify any optional override values
-#
-image:
-  repository: $AZURE_ACR
-
+  image:
+    repository: $AZURE_ACR
+    tag: "1.0.0-OSDU"
 
 airflowLogin:
   name: admin                                   #<-- Default Airflow Web UI username
@@ -125,6 +124,7 @@ pgbouncer:
 keda:
   version_2_enabled: $ENABLE_KEDA_2_X
 
+
 ################################################################################
 # Specify the airflow configuration
 #
@@ -135,12 +135,13 @@ airflow:
     ##
     enabled: false
 
+
   ##################################
   # Kubernetes Pod Operator config
   ##################################
   kubernetesPodOperator:
     namespace: airflow
-
+  
   serviceAccount:
     name: airflow
 
@@ -155,16 +156,17 @@ airflow:
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+        cert-manager.io/cluster-issuer: null
+        # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
+        # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
+        # The certificate name needs to be changed if the namespace or the secret name change.
+        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-azure-osdu-certificate"
         cert-manager.io/acme-challenge-type: http01
-        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-        # Please uncomment below two lines and comment above line to use your own certificate from keyvault
-        #cert-manager.io/cluster-issuer: null
-        #appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
       path: "/airflow2"
       host: $DNS_HOST
       livenessPath: "/airflow2/health"
       tls:
-        enabled: true
+        enabled: false
         secretName: osdu-certificate
       precedingPaths:
         - path: "/airflow2/*"
@@ -178,7 +180,7 @@ airflow:
     enabled: false
   externalDatabase:
     type: postgres
-    host:  airflow-pgbouncer                              	     #<-- Azure PostgreSQL Database host or pgbouncer host (if pgbouncer is enabled)
+    host: airflow-pgbouncer #<-- Azure PostgreSQL Database host or pgbouncer host (if pgbouncer is enabled)
     user:  osdu_admin@$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-pg                           #<-- Azure PostgreSQL Database username, formatted as {username}@{hostname}
     passwordSecret: "postgres"
     passwordSecretKey: "postgres-password"
@@ -222,7 +224,7 @@ airflow:
         cpu: "1000m"
         memory: "4Gi"
     podLabels:
-      aadpodidbinding: "osdu-identity"
+      aadpodidbinding: "osdu-airflow2-identity"
     autoscale:
       enabled: false
       minReplicas: 2
@@ -246,7 +248,7 @@ airflow:
         cpu: "1200m"
         memory: "5Gi"
     podLabels:
-      aadpodidbinding: "osdu-identity"
+      aadpodidbinding: "osdu-airflow2-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
     # Use replicas when auto scaling is not enabled
@@ -283,7 +285,7 @@ airflow:
         cpu: "2500m"
         memory: "1Gi"
     podLabels:
-      aadpodidbinding: "osdu-identity"
+      aadpodidbinding: "osdu-airflow2-identity"
     autoscale:
       enabled: false
       minReplicas: 2
@@ -294,7 +296,7 @@ airflow:
       sidecar.istio.io/inject: "false"
     variables: |
       {}
-
+    
   ###################################
   # Airflow - Common Configs
   ###################################
@@ -304,7 +306,7 @@ airflow:
     image:
       repository: $AZURE_ACR/airflow2-docker-image
       tag: $AIRFLOW_IMAGE_TAG
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
@@ -337,7 +339,7 @@ airflow:
       AIRFLOW__CORE__PARALLELISM: "2000"
       AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: "2000"
       AIRFLOW__CORE__DAG_CONCURRENCY: "2000"
-      AIRFLOW__CELERY__WORKER_CONCURRENCY: "20"
+      AIRFLOW__CELERY__WORKER_CONCURRENCY: "20" # Do not remove this config as it is used for autoscaling as well
       AIRFLOW__CORE__DAG_FILE_PROCESSOR_TIMEOUT: "1500"
       AIRFLOW_VAR_KEYVAULT_URI: https://$ENV_VAULT.vault.azure.net/
       AIRFLOW_VAR_CORE__CONFIG__SHOW_SKIPPED_IDS: true
@@ -387,7 +389,7 @@ airflow:
         value: $AZURE_ACR
       - name: PYTHONPATH
         value: "/opt/celery"
-        # Needed for installing python osdu python sdk. In future this will be changed
+      # Needed for installing python osdu python sdk. In future this will be changed
       - name: CI_COMMIT_TAG
         value: "v0.12.0"
       - name: BUILD_TAG
@@ -416,13 +418,14 @@ airflow:
       - name: AIRFLOW_VAR_CORE__SERVICE__LEGAL__HOST
         value: "http://legal.${OSDU_NAMESPACE}.svc.cluster.local/api/legal/v1"
       - name: AIRFLOW_VAR_CORE__SERVICE__ENTITLEMENTS__URL
-        value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"          
+        value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"
+      ## End -- Ingest Manifest DAG variables          
+      - name: AIRFLOW__API__AUTH_BACKEND
+	      value: "airflow.api.auth.backend.basic_auth"
       - name: AIRFLOW_VAR_ENV_VARS_ENABLED
         value: "true"
-      ## End -- Ingest Manifest DAG variables
 
-    extraPipPackages:
-      [
+    extraPipPackages: [
         "flask-bcrypt==0.7.1",
         "apache-airflow[statsd,kubernetes,password]==2.1.2",
         "apache-airflow-providers-microsoft-azure==3.1.1",
@@ -465,7 +468,7 @@ airflow:
           name: airflow-remote-log-config
     dbMigrations:
       podLabels:
-        aadpodidbinding: "osdu-identity"
+        aadpodidbinding: "osdu-airflow2-identity"
 
 EOF
 ```
