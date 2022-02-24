@@ -156,10 +156,11 @@ airflow:
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
         cert-manager.io/acme-challenge-type: http01
-        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-        # Please uncomment below two lines and comment above line to use your own certificate from keyvault
-        #cert-manager.io/cluster-issuer: null
-        #appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
+        cert-manager.io/cluster-issuer: null
+        # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
+        # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
+        # The certificate name needs to be changed if the namespace or the secret name change.
+        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-azure-osdu-certificate"
       path: "/airflow2"
       host: $DNS_HOST
       livenessPath: "/airflow2/health"
@@ -318,7 +319,7 @@ airflow:
       AIRFLOW__WEBSERVER__AUTHENTICATE: "True"
       AIRFLOW__WEBSERVER__AUTH_BACKEND: "airflow.contrib.auth.backends.password_auth"
       AIRFLOW__WEBSERVER__RBAC: "True"
-      AIRFLOW__API__AUTH_BACKEND: "airflow.api.auth.backend.default"
+      AIRFLOW__API__AUTH_BACKEND: "airflow.api.auth.backend.basic_auth"
       AIRFLOW__CORE__REMOTE_LOGGING: "True"
       AIRFLOW__CORE__REMOTE_LOG_CONN_ID: "az_log"
       AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
@@ -484,7 +485,7 @@ NAMESPACE=airflow2
 kubectl create namespace $NAMESPACE
 
 # Install Charts
-helm install airflow2 osdu-airflow2 -n $NAMESPACE -f osdu_airflow2_custom_values.yaml
+helm install airflow2 osdu-airflow2 -n $NAMESPACE --wait --timeout 10m0s -f osdu_airflow2_custom_values.yaml
 ```
 
 
