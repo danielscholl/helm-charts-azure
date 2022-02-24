@@ -421,7 +421,7 @@ airflow:
         value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"
       ## End -- Ingest Manifest DAG variables          
       - name: AIRFLOW__API__AUTH_BACKEND
-	      value: "airflow.api.auth.backend.basic_auth"
+        value: "airflow.api.auth.backend.basic_auth"
       - name: AIRFLOW_VAR_ENV_VARS_ENABLED
         value: "true"
 
@@ -486,8 +486,12 @@ Install the helm chart.
 NAMESPACE=airflow2
 kubectl create namespace $NAMESPACE
 
+# Create pod operator Namespace
+POD_OPERATOR_NAMESPACE=airflow
+kubectl create namespace $POD_OPERATOR_NAMESPACE
+
 # Install Charts
-helm install airflow2 osdu-airflow2 -n $NAMESPACE -f osdu_airflow2_custom_values.yaml
+helm install airflow2 osdu-airflow2 -n $NAMESPACE -f osdu_airflow2_custom_values.yaml --wait --timeout 10m0s
 ```
 
 
