@@ -24,6 +24,9 @@ spec:
       labels:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
+        prometheus.io/path: /seistore-svc/api/v3/metrics
+        prometheus.io/port: {{ $servicePort }}
+        prometheus.io/scrape: "true"
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
