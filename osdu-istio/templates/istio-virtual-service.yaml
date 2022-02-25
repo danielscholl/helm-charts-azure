@@ -19,6 +19,7 @@ spec:
         host: partition.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/partition/v1"
@@ -27,6 +28,7 @@ spec:
         host: partition.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/legal/v1"
@@ -35,6 +37,7 @@ spec:
         host: legal.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/storage/v2"
@@ -43,6 +46,7 @@ spec:
         host: storage.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/indexer/v2"
@@ -51,6 +55,7 @@ spec:
         host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/search/v2"
@@ -59,6 +64,7 @@ spec:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/search-extensions/v1alpha"
@@ -67,6 +73,7 @@ spec:
         host: search-extensions.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/delivery/v2"
@@ -75,6 +82,7 @@ spec:
         host: delivery.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/schema-service/v1"
@@ -83,6 +91,7 @@ spec:
         host: schema.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/register/v1"
@@ -91,6 +100,7 @@ spec:
         host: register.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/crs/catalog"
@@ -99,6 +109,7 @@ spec:
         host: crs-catalog.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/crs/converter"
@@ -107,6 +118,7 @@ spec:
         host: crs-conversion.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/unit"
@@ -115,6 +127,7 @@ spec:
         host: unit.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/file"
@@ -123,6 +136,7 @@ spec:
         host: file.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/workflow"
@@ -131,6 +145,7 @@ spec:
         host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/os-wellbore-ddms"
@@ -147,6 +162,7 @@ spec:
         host: notification.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/well-planning"
@@ -163,6 +179,7 @@ spec:
         host: entitlements.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/seistore-svc/api/v3"
@@ -195,6 +212,7 @@ spec:
         host: policy.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: "/api/dataset/v1/"
@@ -203,6 +221,7 @@ spec:
         host: dataset.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 300s
   - match:
     - uri:
         prefix: /airflow/
@@ -235,4 +254,3 @@ spec:
         port:
           number: 80
         host: pds-frontend.ddms-petrel.svc.cluster.local
-
