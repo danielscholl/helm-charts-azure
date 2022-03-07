@@ -59,6 +59,9 @@ spec:
   - match:
     - uri:
         prefix: "/api/search/v2"
+    retries:
+      attempts: 2
+      retryOn: 5xx,connect-failure,Gateway-error
     route:
     - destination:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local
