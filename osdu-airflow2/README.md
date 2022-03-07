@@ -36,7 +36,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v0.20.1"
+AIRFLOW_IMAGE_TAG="v2.2.4-20220307-1"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -427,8 +427,8 @@ airflow:
 
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
-        "apache-airflow[statsd,kubernetes,password]==2.1.2",
-        "apache-airflow-providers-microsoft-azure==3.1.1",
+        "apache-airflow[statsd,kubernetes,password]==2.2.4",
+        "apache-airflow-providers-microsoft-azure==3.6.0",
         "google-cloud-storage",
         "python-keycloak==0.24.0",
         "msal==1.9.0",
@@ -444,7 +444,7 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==2.0.2"
+        "apache-airflow-providers-cncf-kubernetes==3.0.2"
       ]
     extraVolumeMounts:
       - name: azure-keyvault
