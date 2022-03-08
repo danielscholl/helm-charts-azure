@@ -7,7 +7,7 @@ metadata:
   name: {{ .service }}-destinationrule
   namespace: istio-system
 spec:
-  host: {{ .service }}.{{ .Release.Namespace }}.svc.cluster.local
+  host: search.{{ .Release.Namespace }}.svc.cluster.local
   trafficPolicy:
     outlierDetection:
       consecutive5xxErrors: {{ $consecutive5xxErrors }}
