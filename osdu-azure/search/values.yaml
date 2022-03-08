@@ -30,6 +30,12 @@ global:
   keda:
     version_2_enabled: false
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    retry_attempts: 3
+
 
   ################################################################################
   # Specify the azure environment specific values

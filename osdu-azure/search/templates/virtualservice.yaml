@@ -13,18 +13,19 @@
 #  limitations under the License.
 # 
 # This will enable inter-service retries.
+{{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: service-virtualservice
-  namespace: {{ .Release.Namespace }}
+  namespace: istio-system
 spec:
   hosts:
-  - search.{{ .Values.global.namespace }}.svc.cluster.local
+  - search.{{ .Release.Namespace }}.svc.cluster.local
   http:
   - route:
     - destination:
-        host: search.{{ .Values.global.namespace }}.svc.cluster.local
+        host: search.{{ .Release.Namespace }}.svc.cluster.local
     retries:
-      attempts: 3
+      attempts: {{ $retryattempts }}
       retryOn: 5xx
