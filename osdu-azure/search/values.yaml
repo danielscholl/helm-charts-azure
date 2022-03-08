@@ -30,6 +30,13 @@ global:
   keda:
     version_2_enabled: false
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    cb_consecutive5xxErrors: false
+    cb_interval: 20s
+    cb_base_ejection_time: 2m
 
   ################################################################################
   # Specify the azure environment specific values
