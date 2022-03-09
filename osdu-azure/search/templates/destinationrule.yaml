@@ -1,3 +1,5 @@
+{{- $namespace := .Release.Namespace }}
+{{- $release := .Release.Name }}
 {{- $consecutive5xxErrors := .Values.global.resiliency.cb_consecutive5xxErrors | default 0 }}
 {{- $interval := .Values.global.resiliency.cb_interval | default 0 }}
 {{- $baseEjectionTime := .Values.global.resiliency.cb_base_ejection_time | default 0 }}
@@ -8,7 +10,7 @@ metadata:
   name: {{ .service }}-destinationrule
   namespace: istio-system
 spec:
-  host: {{ .service }}.{{ .Release.Namespace }}.svc.cluster.local
+  host: {{ .service }}.{{ $namespace }}.svc.cluster.local
   trafficPolicy:
     outlierDetection:
       consecutive5xxErrors: {{ $consecutive5xxErrors }}
