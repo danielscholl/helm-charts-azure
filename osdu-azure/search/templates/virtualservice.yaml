@@ -14,18 +14,21 @@
 # 
 # This will enable inter-service retries.
 {{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+{{- range .Values.configuration }}
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: service-virtualservice
+  name: {{ .service }}-virtualservice
   namespace: istio-system
 spec:
   hosts:
-  - search.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .service }}.{{ .Release.Namespace }}.svc.cluster.local
   http:
   - route:
     - destination:
-        host: search.{{ .Release.Namespace }}.svc.cluster.local
+        host: {{ .service }}.{{ .Release.Namespace }}.svc.cluster.local
     retries:
       attempts: {{ $retryattempts }}
       retryOn: 5xx
+---
+{{- end }}
