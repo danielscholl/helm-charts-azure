@@ -1,15 +1,18 @@
 {{- $consecutive5xxErrors := .Values.global.resiliency.cb_consecutive5xxErrors | default 0 }}
 {{- $interval := .Values.global.resiliency.cb_interval | default 0 }}
 {{- $baseEjectionTime := .Values.global.resiliency.cb_base_ejection_time | default 0 }}
+{{- range .Values.configuration }}
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: {{ .service }}-destinationrule
   namespace: istio-system
 spec:
-  host: search.{{ .Release.Namespace }}.svc.cluster.local
+  host: {{ .service }}.{{ .Release.Namespace }}.svc.cluster.local
   trafficPolicy:
     outlierDetection:
       consecutive5xxErrors: {{ $consecutive5xxErrors }}
       interval: {{ $interval }}
       baseEjectionTime: {{ $baseEjectionTime }}
+---
+{{- end }}
