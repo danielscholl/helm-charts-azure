@@ -65,7 +65,7 @@ spec:
       retryOn: refused-stream,gateway-error,connect-failure,reset
     route:
     - destination:
-        host: search.{{ .Values.global.namespace }}e.svc.cluster.local
+        host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
   - match:
