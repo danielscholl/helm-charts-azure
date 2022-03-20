@@ -34,9 +34,10 @@ global:
   # Specify Resiliency configuration
   #
   resiliency:
-    cb_consecutive5xxErrors: false
+    cb_consecutive5xxErrors: 100
     cb_interval: 20s
     cb_base_ejection_time: 2m
+    cb_max_ejection_percent: 20
 
   ################################################################################
   # Specify the azure environment specific values
