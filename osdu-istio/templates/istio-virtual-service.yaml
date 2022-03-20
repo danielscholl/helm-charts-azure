@@ -68,6 +68,7 @@ spec:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/search/v2"
