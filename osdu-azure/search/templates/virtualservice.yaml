@@ -31,6 +31,6 @@ spec:
         host: {{ .service }}.{{ $namespace }}.svc.cluster.local
     retries:
       attempts: {{ $retryattempts }}
-      retryOn: 5xx
+      retryOn: 5xx,reset
 ---
 {{- end }}

@@ -59,10 +59,18 @@ spec:
     timeout: 300s
   - match:
     - uri:
-        prefix: "/api/search/v2"
+        prefix: /api/search/v2/query
     retries:
       attempts: {{ $retryattempts }}
-      retryOn: 5xx,connect-failure,Gateway-error
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: search.{{ .Values.global.namespace }}e.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/search/v2"
     route:
     - destination:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local

@@ -34,7 +34,7 @@ global:
   # Specify Resiliency configuration
   #
   resiliency:
-    retry_attempts: 3
+    retry_attempts: 1
 
 
   ################################################################################
