@@ -24,6 +24,7 @@ spec:
       labels:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
+      annotations:
         prometheus.io/path: /api/os-wellbore-ddms/metrics
         prometheus.io/port: "8080"
         prometheus.io/scrape: "true"
