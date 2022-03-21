@@ -26,7 +26,10 @@ spec:
   hosts:
   - {{ .service }}.{{ $namespace }}.svc.cluster.local
   http:
-  - route:
+  - match:
+    - uri:
+        prefix: "/api/partition/v1"
+    route:
     - destination:
         host: {{ .service }}.{{ $namespace }}.svc.cluster.local
     retries:
