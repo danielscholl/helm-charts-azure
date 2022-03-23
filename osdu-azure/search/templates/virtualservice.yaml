@@ -34,6 +34,6 @@ spec:
         host: {{ .service }}.{{ $namespace }}.svc.cluster.local
     retries:
       attempts: {{ $retryattempts }}
-      retryOn: 5xx
+      retryOn: refused-stream,gateway-error,connect-failure,reset,502,503
 ---
 {{- end }}
