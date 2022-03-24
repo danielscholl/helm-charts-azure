@@ -19,9 +19,7 @@
 global:
   replicaCount: 4
   nodepool: services
-  defaultNodepool: internal
   isAutoscalingEnabled: false
-  kubernetesSecrets: "redis"
 
 
   ################################################################################
@@ -29,6 +27,16 @@ global:
   #
   keda:
     version_2_enabled: false
+
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    rateLimit:
+      enabled: false
+      max_tokens: 150
+      tokens_per_fill: 150
+      fill_interval: 10
 
 
   ################################################################################
@@ -93,6 +101,7 @@ configuration:
         - "/"
         - "*/index.html"
         - "*/v2/api-docs"
+        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
@@ -100,6 +109,7 @@ configuration:
         - "*/swagger-resources"
         - "/api/search/v2/swagger-resources/*"
         - "/api/search/v2/webjars/*"
+        - "/api/search/v2/swagger-ui/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:
