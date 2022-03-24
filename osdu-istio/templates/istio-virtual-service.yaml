@@ -1,3 +1,4 @@
+{{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -56,6 +57,18 @@ spec:
         port:
           number: 80
     timeout: 300s
+  - match:
+    - uri:
+        prefix: /api/search/v2/query
+    retries:
+      attempts: {{ $retryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: search.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/search/v2"
