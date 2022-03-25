@@ -41,7 +41,6 @@ global:
       fill_interval: 5
     retry_attempts: 1
 
-
   ################################################################################
   # Specify the azure environment specific values
   #
