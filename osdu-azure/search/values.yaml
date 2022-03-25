@@ -38,7 +38,8 @@ global:
       enabled: false
       max_tokens: 150
       tokens_per_fill: 150
-      fill_interval: 10
+      fill_interval: 5
+    retry_attempts: 1
 
 
   ################################################################################
