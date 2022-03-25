@@ -35,7 +35,7 @@ global:
   #
   resiliency:
     rateLimit:
-      enabled: false
+      enabled: true
       max_tokens: 150
       tokens_per_fill: 150
       fill_interval: 5
