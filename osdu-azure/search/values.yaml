@@ -34,8 +34,12 @@ global:
   # Specify Resiliency configuration
   #
   resiliency:
+    rateLimit:
+      enabled: true
+      max_tokens: 150
+      tokens_per_fill: 150
+      fill_interval: 5
     retry_attempts: 1
-
 
   ################################################################################
   # Specify the azure environment specific values
