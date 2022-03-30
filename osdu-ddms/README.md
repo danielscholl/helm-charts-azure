@@ -79,6 +79,9 @@ helm uninstall seismic-store-service
 # Wellbore 
 helm uninstall os-wellbore-ddms
 
+# Well Delivery
+helm uninstall well-delivery-ddms
+
 ```
 
 The folder structure has been updated. Please take the latest pull from gitlab 
