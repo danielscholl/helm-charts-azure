@@ -214,7 +214,7 @@ spec:
         prefix: "/api/well-delivery"
     route:
     - destination:
-        host: well-delivery-ddms.{{ .Values.global.namespace }}.svc.cluster.local
+        host: well-delivery-ddms.ddms-well-delivery.svc.cluster.local
         port:
           number: 80
   - match:
