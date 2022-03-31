@@ -20,8 +20,13 @@ global:
   replicaCount: 8
   nodepool: services
   isAutoscalingEnabled: false
-
-
+  ################################################################################
+  # Specify the auto scale specific values
+  #
+  autoscale:
+    enabled: <azure_autoscale_enabled>
+    cpu:
+        enabled: <autoscale_cpu_enabled>
   ################################################################################
   # Specify KEDA configuration
   #
