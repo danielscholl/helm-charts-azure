@@ -1,0 +1,82 @@
+# This section contains the essential configs for the all data seeding charts
+################################################################################
+#
+global:
+  azure:
+    resourcegroup: <azure_resourcegroup>
+    subscription: <azure_subscription>
+    identity_id: <azure_identity_id>
+    enable_msi: <azure_enable_msi>
+    tenant_id: <azure_tenant_id>
+    resource_id: <azure_app_resource_id>
+    client_id: <azure_client_id>
+    client_secret: <azure_client_secret>
+    identity: <azure_identity>
+    keyvault: <azure_keyvault>
+    appid: <azure_appid> # can be an AAD App OID or a user email
+
+  storage:
+    partitions: <storage_partitions>
+    partitions_hash: <storage_partitions_hash> # comma seperated list of hash of each partition in the same order
+
+  ingress:
+    dns: <ingress_dns>
+
+  service:
+    domain: <service_domain> # eg: contoso.com
+
+  image:
+    repository: <azure_acr>
+
+  config:
+    backoff_limit: 3
+
+
+# This section contains configuration for ds-schema-init chart
+################################################################################
+#
+ds-schema-init:
+  enabled: <schema_enabled>
+
+  config:
+    configmapname: <schema_config_map>
+
+
+# This section contains configuration ds-dags-init chart
+################################################################################
+#
+ds-dags-init:
+  enabled: <dags_enabled>
+
+  config:
+    configmapname: <dags_config_map>
+
+
+# This section contains configuration for ds-helper-services chart
+################################################################################
+#
+ds-helper-services:
+  enabled: <helper_enabled>
+
+  config:
+    configmapname: <helper_config_map>
+
+
+# This section contains configuration for ds-static-init chart
+################################################################################
+#
+ds-static-init:
+  enabled: <ds_static_enabled>
+
+  config:
+    configmapname: <ds_static_config_map>
+
+
+# This section contains configuration for ds-instance-init chart
+################################################################################
+#
+ds-instance-init:
+  enabled: <instance_init_enabled>
+
+  config:
+    configmapname: <instance_init_config_map>

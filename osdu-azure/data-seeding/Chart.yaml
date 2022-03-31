@@ -1,0 +1,40 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+apiVersion: v2
+name: data-seeding
+description: An umbrella chart for all data seeding helm charts
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+dependencies:
+- condition: ds-instance-init.enabled
+  name: ds-instance-init
+  version: 1.0.0
+  repository: "<arc-name>"
+- condition: ds-static-init.enabled
+  name: ds-static-init
+  version: 1.0.0
+  repository: "<arc-name>"
+- condition: ds-schema-init.enabled
+  name: ds-schema-init
+  version: 1.0.0
+  repository: "<arc-name>"
+- condition: ds-helper-services.enabled
+  name: ds-helper-services
+  version: 1.0.0
+  repository: "<arc-name>"
+- condition: ds-dags-init.enabled
+  name: ds-dags-init
+  version: 1.0.0
+  repository: "<arc-name>"
