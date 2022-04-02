@@ -19,6 +19,7 @@
 global:
   debug: false
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################
@@ -34,6 +35,9 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     includePartitionSecrets: <azure_includePartitionSecrets>
+    mountRedisSecrets: <azure_mountRedisSecrets>
+    common_identity_id: <azure_common_identity_id>
+    common_resource_id: <azure_common_resource_id>
 
   ################################################################################
   # Specify the Ingress Settings

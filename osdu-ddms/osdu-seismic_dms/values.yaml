@@ -21,6 +21,7 @@ global:
   nodepool: services
   isAutoscalingEnabled: false
   pullPolicy: IfNotPresent
+  defaultNodepool: internal
 
 ################################################################################
 # Specify the azure environment specific values
@@ -42,7 +43,7 @@ azure:
 ingress:
   dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
-  enableKeyvaultCert: false
+  enableKeyvaultCert: true
 
 
 ################################################################################

@@ -19,6 +19,7 @@
 global:
   replicaCount: 1
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################

@@ -19,7 +19,9 @@
 global:
   replicaCount: 5
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
+  kubernetesSecrets: "redis"
 
   ################################################################################
   # Specify the azure environment specific values

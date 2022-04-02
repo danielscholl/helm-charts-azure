@@ -5,6 +5,7 @@
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
@@ -26,8 +27,11 @@ spec:
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
-        nodepool: {{ $nodepool }}
-{{- end }}      
+        agentpool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
+{{- end }}
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault
@@ -59,8 +63,8 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .probe }}
-              port: http
-            initialDelaySeconds: 20
+              port: 80
+            initialDelaySeconds: 30
           {{- end }}
           resources:
           {{- if .request }}

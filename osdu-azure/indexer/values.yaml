@@ -19,6 +19,7 @@
 global:
   replicaCount: 6
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 

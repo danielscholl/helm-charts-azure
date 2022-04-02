@@ -19,15 +19,15 @@
 global:
   replicaCount: 8
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
-
+  kubernetesSecrets: "redis"
 
   ################################################################################
   # Specify KEDA configuration
   #
   keda:
     version_2_enabled: false
-
 
   ################################################################################
   # Specify the azure environment specific values

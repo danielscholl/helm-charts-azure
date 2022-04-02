@@ -81,8 +81,8 @@ helm uninstall seismic-store-service
 # Wellbore 
 helm uninstall os-wellbore-ddms
 
-# Well delivery
-helm uninstall os-well-delivery-ddms
+# Well Delivery
+helm uninstall well-delivery-ddms
 
 ```
 
@@ -109,7 +109,7 @@ kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESP
 kubectl create namespace $WDDMS_NAMESPACE && kubectl label namespace $WDDMS_NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install well-delivery-services osdu-ddms/osdu-well-delivery_dms -n $WDDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
+helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
+helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
+helm install well-delivery-services osdu-ddms/osdu-well-delivery_dms -n $WDDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
 ```
