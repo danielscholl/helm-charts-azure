@@ -241,7 +241,7 @@ airflow:
     users: null    
     image:
       repository: msosdu.azurecr.io/airflow2-docker-image
-      tag: v2.2.4-20220307-1
+      tag: v2.2.4-20220329-1
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
