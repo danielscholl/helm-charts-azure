@@ -1,0 +1,42 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-dagsinit
+  namespace: {{ $namespace }}
+  labels:
+    app: {{ .Release.Name | quote }}
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: {{ $.Values.global.config.backoff_limit }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.global.image.repository }}/dags-data-seed:{{ .Chart.AppVersion }}
+        imagePullPolicy: Always
+        name: "ds-dags-init"
+        env:
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.global.azure.identity_id }}
+        - name: AZURE_DNS_NAME
+          value: {{ .Values.global.ingress.dns }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.global.azure.resourcegroup }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
+        - name: AZURE_TENANT_ID
+          value: {{ .Values.global.azure.tenant_id }}
+        - name: AZURE_ENABLE_MSI
+          value: {{ .Values.global.azure.enable_msi | quote}}
+        - name: SUBSCRIPTION
+          value: {{ .Values.global.azure.subscription }}
+        - name: BACKOFF_LIMIT
+          value: {{ $.Values.global.config.backoff_limit | quote }}
