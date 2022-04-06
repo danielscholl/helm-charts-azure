@@ -1,0 +1,33 @@
+{{- $namespace := .Release.Namespace }}
+{{- $release := .Release.Name }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $release }}-role
+  namespace: {{ $namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-7"
+    "helm.sh/hook-delete-policy": hook-failed
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["configmaps"]
+  verbs: ["get", "watch", "list", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $release }}-rolebinding
+  namespace: {{ $namespace }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-7"
+    "helm.sh/hook-delete-policy": hook-failed
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ $namespace }}
+roleRef:
+  kind: Role
+  name: {{ $release }}-role
+  apiGroup: rbac.authorization.k8s.io

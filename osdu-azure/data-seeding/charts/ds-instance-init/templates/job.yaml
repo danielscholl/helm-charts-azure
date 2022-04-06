@@ -1,0 +1,52 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $.Release.Name }}-instance-init
+  namespace: {{ $namespace }}
+  labels:
+    app: {{ .Release.Name | quote }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: {{ $.Values.global.config.backoff_limit }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.global.image.repository }}/instance-init:{{ .Chart.AppVersion }}
+        imagePullPolicy: Always
+        name: "ds-instance-init"
+        env:
+        - name: ADMIN_ID
+          value: {{ .Values.global.azure.appid }}
+        - name: OSDU_IDENTITY_ID
+          value: {{ .Values.global.azure.identity_id }}
+        - name: SERVICE_DOMAIN
+          value: {{ .Values.global.service.domain }}
+        - name: OSDU_HOST
+          value: {{ .Values.global.ingress.dns }}
+        - name: RESOURCE_GROUP_NAME
+          value: {{ .Values.global.azure.resourcegroup }}
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.global.storage.partitions }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
+        - name: VERSION
+          value: {{ .Chart.AppVersion }}
+        - name: SUBSCRIPTION
+          value: {{ .Values.global.azure.subscription }}
+        - name: NAMESPACE
+          value: {{ $namespace }}
+        - name: BACKOFF_LIMIT
+          value: {{ $.Values.global.config.backoff_limit | quote }}
