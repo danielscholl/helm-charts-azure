@@ -39,6 +39,14 @@ global:
     corsEnabled: <azure_corsEnabled>
 
   ################################################################################
+  # Specify the auto scale specific values
+  #
+  autoscale:
+    enabled: <azure_autoscale_enabled>
+    cpu:
+      enabled: <autoscale_cpu_enabled>
+
+  ################################################################################
   # Specify the resource limits
   #
   resourceLimits:
