@@ -94,7 +94,7 @@ configuration:
         - "/api/well-delivery/webjars/*"
     env:
     - name: SERVICE_NAME
-      value: os-well-delivery-ddms
+      value: well-delivery-ddms
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
