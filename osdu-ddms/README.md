@@ -84,7 +84,7 @@ helm uninstall seismic-file-metadata
 helm uninstall os-wellbore-ddms
 
 # Well delivery
-helm uninstall os-well-delivery-ddms
+helm uninstall well-delivery-ddms
 
 ```
 
