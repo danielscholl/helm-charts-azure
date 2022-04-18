@@ -33,10 +33,10 @@ spec:
     - applyTo: HTTP_FILTER
       match:
         context: SIDECAR_INBOUND   # will match outbound listeners in all sidecars
-      listener:
-        filterChain:
-          filter:
-            name: envoy.http_connection_manager
+        listener:
+          filterChain:
+            filter:
+              name: envoy.http_connection_manager
       patch:
         operation: INSERT_BEFORE
         value:
