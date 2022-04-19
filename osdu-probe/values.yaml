@@ -7,12 +7,12 @@ azure:
   tenant: <azure_tenant>
   subscription: <azure_subscription>
   resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  keyvault: <azure_keyvault>
   dns: <azure_dns>
-  partition: opendes
-
+  partition: <partition_id>
+  principalid: <azure_principal_id>
+  principalsecret: <azure_principal_secret>
+  clientid: <azure_client_id>
+  appinsightsinstrumentationkey: <azure_appinsights_key>
 
 image:
   repository: <azure_acr>
