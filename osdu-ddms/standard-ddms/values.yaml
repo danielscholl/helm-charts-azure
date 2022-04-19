@@ -1,0 +1,128 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+################################################################################
+# Azure Environment Settings
+#
+azure:
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  keyvault: 
+    name: <azure_keyvault>
+    secrets:
+    - key: appinsight.key
+      obj: appinsights-key
+
+# Common Containers Settings
+containers:
+  registry: <azure_acr>
+
+
+################################################################################
+# Common Ingress Settings
+#
+ingress:
+  dns: <ingress_dns>
+
+  # Configuration if AppGateway routing is enable. Default is Istio Gateway
+  # appGateway: 
+    # issuer: letsencrypt-prod-dns ### Name of certificat issuer
+    # enableKeyvaultCert: false ### Use self-signed cert stored in KeyVault 
+
+
+################################################################################
+# Common Deployment Settings
+#
+deployment:
+  # nodePool: default
+  replicaCount: 1
+  
+  # List of custom Pod anatations that needs to be added to the Pods.
+  podAnnotations:
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/port: "8081"
+    prometheus.io/scrape: "true"
+
+
+################################################################################
+# DDMS service specific Configuration
+#
+configuration:
+  - service: default
+    path: /*
+    container:
+      image: hello-world
+      tag: latest
+      containerPort: 8080
+    
+    # TODO: Need to test autoscaling settings
+    ################################################################################
+    # Specify service specific Authoscaling Settings
+    #
+    # autoscale:
+    #   minReplicas: 1
+    #   maxReplicas: 3
+    #   targetCPU: 80
+
+    ################################################################################
+    # Specify Readiness and Liveness Probes
+    #
+    # probe:
+    #   readiness: 
+    #     path: /healthz
+    #   liveness: 
+    #     path: /healthz
+    
+    ################################################################################
+    # Specify Pod Resource Allocations (optional)
+    #
+    # request:
+    #   cpu: 100m
+    #   memory: 600Mi
+    # limit:
+    #   cpu: 1000m
+    #   memory: 1300Mi
+    
+    ################################################################################
+    # Specify if Istio Auth should be enabled with bypass paths.
+    #
+    # auth:
+    #   disable:
+    #     - "/"
+    #     - "*/about"
+    #     - "*/index.html"
+    #     - "*/swagger-ui.html"
+   
+    ################################################################################
+    # Specify any Configs to enable for the pod trough Env variables. (optional)
+    #
+    # config:
+    #   - name: CLOUD_PROVIDER
+    #     value: az
+    #   - name: AZ_LOGGER_LEVEL
+    #     value: INFO
+
+    ################################################################################
+    # Specify any Secrets to enable for the pod trough Env variables. (optional)
+    #
+    # secrets:
+    #   - name: AZ_AI_INSTRUMENTATION_KEY
+    #     key: appinsight.key
