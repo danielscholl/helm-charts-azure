@@ -31,7 +31,10 @@ azure:
     - key: appinsight.key
       obj: appinsights-key
 
+
+################################################################################
 # Common Containers Settings
+#
 containers:
   registry: <azure_acr>
 
@@ -70,7 +73,7 @@ configuration:
     path: /*
     container:
       image: hello-world
-      tag: latest
+      # tag: latest
       containerPort: 8080
     
     # TODO: Need to test autoscaling settings
@@ -115,10 +118,8 @@ configuration:
     # Specify any Configs to enable for the pod trough Env variables. (optional)
     #
     # config:
-    #   - name: CLOUD_PROVIDER
-    #     value: az
-    #   - name: AZ_LOGGER_LEVEL
-    #     value: INFO
+    #   CLOUD_PROVIDER: "az"
+    #   AZ_LOGGER_LEVEL: "INFO"
 
     ################################################################################
     # Specify any Secrets to enable for the pod trough Env variables. (optional)

@@ -20,34 +20,35 @@
 # Azure Environment Settings
 #
 azure:
-  tenant: 72f988bf-86f1-41af-91ab-2d7cd011db47
-  subscription: c99e2bf3-1777-412b-baba-d823676589c2
-  resourcegroup: Compute-rg-ddmstest9991-nwjgwr
-  identity: osdu-identity-uf7imtpfblitw
-  identity_id: 6d53b853-7e03-4eb6-91e4-2566017d991b
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
   keyvault: 
-    name: kv-uf7imtpfblitw
+    name: <azure_keyvault>
     secrets:
     - key: appinsight.key
       obj: appinsights-key
 
+################################################################################
 # Common Containers Settings
+#
 containers:
-  registry: oepdpdfacr.azurecr.io
+  registry: <azure_acr>
 
 ################################################################################
 # Common Ingress Settings
 #
 ingress:
-  dns: ddmstest9991.oep.ppe.azure-int.net
+  dns: <ingress_dns>
 
 ################################################################################
 # Common Deployment Settings
 #
 deployment:
-  nodePool: internal
   podAnnotations:
-    prometheus.io/path: /api/os-wellbore-ddms/metrics
+    prometheus.io/path: /api/wellbore/metrics
     prometheus.io/port: "8080"
     prometheus.io/scrape: "true"
 
@@ -58,7 +59,6 @@ configuration:
   - service: wellbore
     container:
       image: wellbore-ddms
-      tag: 1.0.58-f608ca1-20220412.8
       containerPort: 8080
     path: /api/wellbore
     probe:
@@ -73,24 +73,15 @@ configuration:
         - "/api/wellbore/docs"
         - "/api/wellbore/openapi.json"
     config:
-      - name: CLOUD_PROVIDER
-        value: az
-      - name: SERVICE_NAME
-        value: wellbore-ddms
-      - name: OPENAPI_PREFIX
-        value: /api/wellbore
-      - name: KEYVAULT_URL
-        value: https://kv-uf7imtpfblitw.vault.azure.net/
-      - name: SERVICE_HOST_STORAGE 
-        value: http://storage.osdu-azure/api/storage
-      - name: SERVICE_HOST_SEARCH
-        value: http://search-service.osdu-azure/api/search
-      - name: SERVICE_HOST_PARTITION
-        value: http://partition.osdu-azure/api/partition
-      - name: USE_PARTITION_SERVICE
-        value: enabled
-      - name: AZ_LOGGER_LEVEL
-        value: INFO
+      CLOUD_PROVIDER: "az"
+      SERVICE_NAME: "wellbore-ddms"
+      OPENAPI_PREFIX: "/api/wellbore"
+      KEYVAULT_URL: "https://<azure_keyvault>.vault.azure.net/"
+      SERVICE_HOST_STORAGE: "http://storage.osdu-azure/api/storage"
+      SERVICE_HOST_SEARCH: "http://search-service.osdu-azure/api/search"
+      SERVICE_HOST_PARTITION: "http://partition.osdu-azure/api/partition"
+      USE_PARTITION_SERVICE: "enabled"
+      AZ_LOGGER_LEVEL: "INFO"
     secrets:
       - name: AZ_AI_INSTRUMENTATION_KEY
         key: appinsight.key
