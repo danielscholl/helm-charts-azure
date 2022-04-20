@@ -55,23 +55,23 @@ configuration:
     container:
       image: <image_name>
       containerPort: 8080
-    path: /api/wellbore
+    path: /api/os-wellbore-ddms
     probe:
       readiness: 
-        path: /api/wellbore/healthz
+        path: /api/os-wellbore-ddms/healthz
       liveness: 
-        path: /api/wellbore/healthz
+        path: /api/os-wellbore-ddms/healthz
     auth:
       disable:
-        - "/api/wellbore/"
-        - "/api/wellbore/about"
-        - "/api/wellbore/ddms/v2/about"
-        - "/api/wellbore/docs"
-        - "/api/wellbore/openapi.json"
+        - "/api/os-wellbore-ddms/"
+        - "/api/os-wellbore-ddms/about"
+        - "/api/os-wellbore-ddms/ddms/v2/about"
+        - "/api/os-wellbore-ddms/docs"
+        - "/api/os-wellbore-ddms/openapi.json"
     config:
       CLOUD_PROVIDER: "az"
       SERVICE_NAME: "wellbore-ddms"
-      OPENAPI_PREFIX: "/api/wellbore"
+      OPENAPI_PREFIX: "/api/os-wellbore-ddms"
       KEYVAULT_URL: "https://<azure_keyvault>.vault.azure.net/"
       SERVICE_HOST_STORAGE: "http://storage.osdu-azure/api/storage"
       SERVICE_HOST_SEARCH: "http://search-service.osdu-azure/api/search"
