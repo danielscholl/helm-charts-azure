@@ -58,7 +58,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .service }}
-          image: {{ $.Values.containers.registry }}/{{ .container.image }}:{{ .container.tag | default $version }}
+          image: {{ $.Values.azure.acr }}/{{ .container.image }}:{{ .container.tag | default $version }}
           imagePullPolicy: "Always"
           ports:
             - name: http

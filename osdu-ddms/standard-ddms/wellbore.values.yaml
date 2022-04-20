@@ -25,17 +25,12 @@ azure:
   resourcegroup: <azure_resourcegroup>
   identity: <azure_identity>
   identity_id: <azure_identity_id>
+  acr: <azure_acr>
   keyvault: 
     name: <azure_keyvault>
     secrets:
     - key: appinsight.key
       obj: appinsights-key
-
-################################################################################
-# Common Containers Settings
-#
-containers:
-  registry: <azure_acr>
 
 ################################################################################
 # Common Ingress Settings
@@ -58,7 +53,7 @@ deployment:
 configuration:
   - service: wellbore
     container:
-      image: wellbore-ddms
+      image: <image_name>
       containerPort: 8080
     path: /api/wellbore
     probe:
@@ -69,6 +64,7 @@ configuration:
     auth:
       disable:
         - "/api/wellbore/"
+        - "/api/wellbore/about"
         - "/api/wellbore/ddms/v2/about"
         - "/api/wellbore/docs"
         - "/api/wellbore/openapi.json"
