@@ -1,7 +1,9 @@
 install
 config.yaml
+!**/templates/config.yaml
 *_custom_values.yaml
 environments
 .envrc
 *.env
 .idea
+**/.vscode

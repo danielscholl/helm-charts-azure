@@ -1,0 +1,83 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+################################################################################
+# Azure Environment Settings
+#
+azure:
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  identity: <azure_identity>
+  identity_id: <azure_identity_id>
+  acr: <azure_acr>
+  keyvault: 
+    name: <azure_keyvault>
+    secrets:
+    - key: appinsight.key
+      obj: appinsights-key
+
+################################################################################
+# Common Ingress Settings
+#
+ingress:
+  dns: <ingress_dns>
+
+################################################################################
+# Common Deployment Settings
+#
+deployment:
+  podAnnotations:
+    prometheus.io/path: /api/wellbore/metrics
+    prometheus.io/port: "8080"
+    prometheus.io/scrape: "true"
+
+################################################################################
+# DDMS Service Specific Configuration
+#
+configuration:
+  - service: wellbore
+    container:
+      image: <image_name>
+      containerPort: 8080
+    path: /api/os-wellbore-ddms
+    probe:
+      readiness: 
+        path: /api/os-wellbore-ddms/healthz
+      liveness: 
+        path: /api/os-wellbore-ddms/healthz
+    auth:
+      disable:
+        - "/api/os-wellbore-ddms/"
+        - "/api/os-wellbore-ddms/about"
+        - "/api/os-wellbore-ddms/ddms/v2/about"
+        - "/api/os-wellbore-ddms/docs"
+        - "/api/os-wellbore-ddms/openapi.json"
+    config:
+      CLOUD_PROVIDER: "az"
+      SERVICE_NAME: "wellbore-ddms"
+      OPENAPI_PREFIX: "/api/os-wellbore-ddms"
+      KEYVAULT_URL: "https://<azure_keyvault>.vault.azure.net/"
+      SERVICE_HOST_STORAGE: "http://storage.osdu-azure/api/storage"
+      SERVICE_HOST_SEARCH: "http://search-service.osdu-azure/api/search"
+      SERVICE_HOST_PARTITION: "http://partition.osdu-azure/api/partition"
+      USE_PARTITION_SERVICE: "enabled"
+      AZ_LOGGER_LEVEL: "INFO"
+    secrets:
+      - name: AZ_AI_INSTRUMENTATION_KEY
+        key: appinsight.key
