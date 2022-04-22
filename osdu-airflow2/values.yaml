@@ -14,6 +14,7 @@ azure:
 # Specify the azure environment specific values
 #
 appinsightstatsd:
+  enabled: <airflow_appinsightstatsd_enabled>
   aadpodidbinding: "osdu-airflow2-identity"
   image:
     repository: msosdu.azurecr.io

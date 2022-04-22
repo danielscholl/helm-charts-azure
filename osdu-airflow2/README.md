@@ -67,6 +67,8 @@ azure:
 # Specify the azure environment specific values
 #
 appinsightstatsd:
+  # Enable StatsD internal metrics to Application Insights - true/false
+  enabled: true
   aadpodidbinding: "osdu-airflow2-identity"
   image:
     repository: $AZURE_ACR
