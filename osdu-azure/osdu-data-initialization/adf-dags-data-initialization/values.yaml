@@ -1,0 +1,21 @@
+global:  
+  azure:
+    resourcegroup: <azure_resourcegroup>
+    subscription: <azure_subscription>
+    identity_id: <azure_identity_id>
+    tenant_id: <azure_tenant_id>
+    enable_msi: <azure_enable_msi>
+
+  config:
+    backoff_limit: 3
+
+  ingress:
+    dns: <ingress_dns>
+
+  image:
+    repository: <azure_acr>
+
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
+  data_factory_name: <data_factory_name>
+  airflow_web_url: <airflow_web_url>
