@@ -1,3 +1,4 @@
+{{ if .Values.appinsightstatsd.enabled }}
 {{- $isEnabled := .Values.airflow.isDataPartitionDeployment | default false -}}
 {{- if $isEnabled }}
 apiVersion: v1
@@ -57,4 +58,4 @@ spec:
         - name: config-volume
           configMap: 
             name: airflow-appinsight-statsd-config
-        
+{{ end }}

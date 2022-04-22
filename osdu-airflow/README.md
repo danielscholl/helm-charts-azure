@@ -55,6 +55,8 @@ cat > osdu_airflow_custom_values.yaml << EOF
 # Specify appinsight statsd config
 #
 appinsightstatsd:
+  # Enable StatsD internal metrics to Application Insights - true/false
+  enabled: true
   aadpodidbinding: "osdu-identity"
   
 #################################################################################
