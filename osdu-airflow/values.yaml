@@ -3,7 +3,7 @@
 # Specify appinsight statsd config
 #
 appinsightstatsd:
-  enabled: <airflow_appinsightstatsd_enabled>
+  enabled: false
   aadpodidbinding: "osdu-identity"
   
 #################################################################################
