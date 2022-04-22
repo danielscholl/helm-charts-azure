@@ -14,7 +14,7 @@ spec:
   type: {{ $serviceType }}
   ports:
     - port: {{ $servicePort }}
-      targetPort: {{ $targetPort }}
+      targetPort: http
       protocol: TCP
       name: http
   selector:
