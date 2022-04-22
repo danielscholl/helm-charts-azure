@@ -3,6 +3,7 @@
 # Specify appinsight statsd config
 #
 appinsightstatsd:
+  enabled: false
   aadpodidbinding: "osdu-identity"
   
 #################################################################################
