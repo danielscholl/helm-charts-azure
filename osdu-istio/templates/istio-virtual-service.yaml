@@ -56,7 +56,6 @@ spec:
         host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
-    timeout: 300s
   - match:
     - uri:
         prefix: /api/search/v2/query
