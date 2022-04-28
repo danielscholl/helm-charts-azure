@@ -62,15 +62,15 @@ spec:
             effect: "NoSchedule"
           nodeSelector:
             agentpool: {{ $nodepoolPrefix }}{{ trimPrefix "_" $index }}
-        containers:
-        - name: elasticsearch
-          env:
-          - name: ES_JAVA_OPTS
-            value: "-Xms{{ div $memLimit 2 }}g -Xmx{{ div $memLimit 2 }}g"
-          resources:
-            requests:
-              cpu: {{ $cpuReq }}
-            limits:
-              memory: {{ $memLimit }}Gi
-              cpu: {{ $cpuLimit }}
+          containers:
+          - name: elasticsearch
+            env:
+            - name: ES_JAVA_OPTS
+              value: "-Xms{{ div $memLimit 2 }}g -Xmx{{ div $memLimit 2 }}g"
+            resources:
+              requests:
+                cpu: {{ $cpuReq }}
+              limits:
+                memory: {{ $memLimit }}Gi
+                cpu: {{ $cpuLimit }}
 {{- end}}
