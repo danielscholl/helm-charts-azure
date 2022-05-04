@@ -14,6 +14,7 @@ azure:
 # Specify the azure environment specific values
 #
 appinsightstatsd:
+  enabled: true
   aadpodidbinding: "osdu-airflow2-identity"
   image:
     repository: msosdu.azurecr.io
@@ -252,7 +253,7 @@ airflow:
     users: null
     image:
       repository: msosdu.azurecr.io/airflow2-docker-image
-      tag: v2.2.4-20220329-1
+      tag: v2.2.4-v0.14-20220427-1
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
