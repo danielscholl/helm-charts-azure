@@ -14,7 +14,7 @@ spec:
     - uri:
         exact: "/"
     rewrite:
-      uri: /api/partition/v1/swagger-ui.html
+      uri: /api/partition/v1/api-docs
     route:
     - destination:
         host: partition.{{ .Values.global.namespace }}.svc.cluster.local
