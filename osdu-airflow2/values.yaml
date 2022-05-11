@@ -77,7 +77,6 @@ keda:
 # Specify the airflow configuration
 #
 airflow:
-  isDataPartitionDeployment: true
   version_1_Installed: true
   pgbouncer:
     ## if the pgbouncer Deployment is created
@@ -109,7 +108,7 @@ airflow:
         # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
         # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
         # The certificate name needs to be changed if the namespace or the secret name change.
-        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-azure-osdu-certificate"
+        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
         cert-manager.io/acme-challenge-type: http01
       path: "/airflow2"
       host: <airflow_ingress_web_host>
