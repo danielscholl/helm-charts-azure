@@ -24,7 +24,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
   name: {{ .service }}-ratelimit
-  namespace: osdu
+  namespace: osdu-azure
 spec:
   workloadSelector:
     labels:
