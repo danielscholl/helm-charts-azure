@@ -173,6 +173,8 @@ airflow:
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
+    nodeSelector:
+      agentpool: "internal"
     autoscale:
       enabled: false
       minReplicas: 2
@@ -197,6 +199,8 @@ airflow:
         memory: "5Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
+    nodeSelector:
+      agentpool: "internal"
     podAnnotations:
       sidecar.istio.io/inject: "false"
     # Use replicas when auto scaling is not enabled
@@ -234,6 +238,8 @@ airflow:
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
+    nodeSelector:
+      agentpool: "internal"
     autoscale:
       enabled: false
       minReplicas: 2
