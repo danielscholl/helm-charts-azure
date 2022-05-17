@@ -51,6 +51,9 @@ spec:
   - match:
     - uri:
         prefix: "/api/indexer/v2"
+    retries:
+      attempts: {{ $retryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
     route:
     - destination:
         host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
