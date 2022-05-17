@@ -254,7 +254,7 @@ airflow:
     image:
       repository: <azure_acr>/airflow2-docker-image
       tag: <airflow_image_tag>
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
@@ -374,8 +374,8 @@ airflow:
         value: "airflow.api.auth.backend.basic_auth"
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
-        "apache-airflow[statsd,kubernetes,password]==2.1.2",
-        "apache-airflow-providers-microsoft-azure==3.1.1",
+        "apache-airflow[statsd,kubernetes,password]==2.2.4",
+        "apache-airflow-providers-microsoft-azure==3.6.0",
         "google-cloud-storage",
         "python-keycloak==0.24.0",
         "msal==1.9.0",
@@ -391,8 +391,8 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==2.0.2"
-      ]
+        "apache-airflow-providers-cncf-kubernetes==3.0.2"
+    ]
     extraVolumeMounts:
       - name: azure-keyvault
         mountPath: "/mnt/azure-keyvault"

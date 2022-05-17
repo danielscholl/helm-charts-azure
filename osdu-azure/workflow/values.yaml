@@ -172,20 +172,17 @@ configuration:
       - name: OSDU_AIRFLOW_VERSION2_ENABLED
         value: "{{ .Values.global.ingestion.airflowVersion2Enabled }}"
       - name: postgres_name
-        valueFrom:
-          secretKeyRef:
-            name: postgres
-            key: postgres-name
+        secret:
+          name: postgres
+          key: postgres-name
       - name: postgres_username
-        valueFrom:
-          secretKeyRef:
-            name: postgres
-            key: postgres-username
+        secret:
+          name: postgres
+          key: postgres-username
       - name: postgres_password
-        valueFrom:
-          secretKeyRef:
-            name: postgres
-            key: postgres-password
+        secret:
+          name: postgres
+          key: postgres-password
       - name: postgres_port
         value: "5432"
       - name: postgres_db

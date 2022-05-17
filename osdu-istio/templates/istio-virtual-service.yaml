@@ -250,7 +250,7 @@ spec:
     - destination:
         port:
           number: 8080
-        host: airflow2-web.airflow.svc.cluster.local
+        host: airflow2-web.airflow2.svc.cluster.local
   - match:
     - uri:
         prefix: /petrel-ds/api/v1/
