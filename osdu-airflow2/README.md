@@ -472,6 +472,12 @@ airflow:
       podLabels:
         aadpodidbinding: "osdu-airflow2-identity"
 
+    ###################################
+    # Airflow - Comply with security policies
+    ###################################
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+
 EOF
 ```
 
