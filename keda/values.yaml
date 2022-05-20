@@ -1,0 +1,3 @@
+image:
+  keda: msosdu.azurecr.io/kedacore/keda:1.5.0
+  metricsAdapter: msosdu.azurecr.io/kedacore/keda-metrics-adapter:1.5.0

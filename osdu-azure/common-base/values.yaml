@@ -81,7 +81,7 @@ configuration:
   ##  DEFAULT SERVICE
   #
   - service: default
-    repository: neilpeterson/aks-helloworld
+    repository: msosdu.azurecr.io/neilpeterson/aks-helloworld
     tag: v1
     path: /*
     probe: /
