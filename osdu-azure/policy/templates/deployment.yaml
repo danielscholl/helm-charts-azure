@@ -15,9 +15,9 @@ metadata:
   name: {{ .service }}
   namespace: {{ $namespace }}
 spec:
-{{ - if not $isHpaEnabled }}
+{{- if not $isHpaEnabled }}
   replicas: {{ .replicaCount | default $replicaCount }}
-{{ - end }}
+{{- end }}
   selector:
     matchLabels:
       app: {{ .service }}

@@ -20,9 +20,9 @@ metadata:
   annotations:
     secret.reloader.stakater.com/reload: {{ $kubernetesSecrets | quote}}
 spec:
-{{ - if not $isHpaEnabled }}
+{{- if not $isHpaEnabled }}
   replicas: {{ .replicaCount | default $replicaCount }}
-{{ - end }}
+{{- end }}
   selector:
     matchLabels:
       app: {{ .service }}
