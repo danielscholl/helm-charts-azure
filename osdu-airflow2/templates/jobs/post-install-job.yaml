@@ -25,7 +25,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: post-install-job
-        image: python:3.6.12-slim-buster
+        image: msosdu.azurecr.io/python:3.6.12-slim-buster
         command: ['sh','-c','pip install --user -r /post-install-scripts/requirements.txt && python /post-install-scripts/create_default_user.py']
         volumeMounts:
         - name: config-volume
