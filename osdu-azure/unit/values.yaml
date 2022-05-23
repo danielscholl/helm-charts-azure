@@ -22,6 +22,16 @@ global:
   defaultNodepool: internal
   isAutoscalingEnabled: false
 
+  ################################################################################
+  # Specify the auto scale specific values
+  #
+  autoscale:
+    enabled: <azure_autoscale_enabled>
+    cpu:
+      enabled: <autoscale_cpu_enabled>
+    rps:
+      enabled: <autoscale_rps_enabled>
+
 ################################################################################
 # Specify the azure environment specific values
 #

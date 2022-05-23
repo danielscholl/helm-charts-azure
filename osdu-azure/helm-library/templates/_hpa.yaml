@@ -1,0 +1,68 @@
+{{- define "helm-library.hpa" -}}
+
+{{- $namespace := .Release.Namespace }}
+{{- $release := .Release.Name }}
+{{- $minReplicas := .Values.global.autoscale.minReplicas | default "2" }}
+{{- $maxReplicas := .Values.global.autoscale.maxReplicas | default "20" }}
+{{- $scaleDownStablizationWindow := .Values.global.autoscale.scaleDownStabilizationSeconds | default "300" }}
+{{- $scaleDownSelectionPolicy := .Values.global.autoscale.scaleDownPolicy | default "Min" }}
+{{- $scaleUpStablizationWindow := .Values.global.autoscale.scaleUpStabilizationSeconds | default "120" }}
+{{- $scaleUpSelectionPolicy := .Values.global.autoscale.scaleUpPolicy | default "Max" }}
+{{- $cpuAvgUtilization := .Values.global.autoscale.cpu.averageUtilization | default "60" }}
+{{- $rpsAvgValue := .Values.global.autoscale.rps.averageValue | default "60" }}
+{{- if .Values.global.autoscale.enabled }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $release }}
+  namespace: {{ $namespace }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $release }}
+  minReplicas: {{ $minReplicas }}
+  maxReplicas: {{ $maxReplicas }}
+  metrics:
+    {{- if .Values.global.autoscale.cpu.enabled }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $cpuAvgUtilization }}
+    {{- end }}
+    {{- if .Values.global.autoscale.rps.enabled }}
+    - type: Pods
+      pods:
+        metric:
+          name: http_server_requests_per_second
+        target:
+            averageValue: {{ $rpsAvgValue }}
+            type: AverageValue
+    {{- end }}
+  behavior:
+    scaleDown:
+      selectPolicy: {{ $scaleDownSelectionPolicy }}
+      policies:
+        {{- if .Values.global.autoscale.scaleDownPolicies }}
+        {{- range .Values.global.autoscale.scaleDownPolicies }}
+        - type: {{ .type }}
+          value: {{ .value }}
+          periodSeconds: {{ .periodSeconds }}
+        {{- end }}
+        {{- end }}
+      stabilizationWindowSeconds: {{ $scaleDownStablizationWindow }}
+    scaleUp:
+      selectPolicy: {{ $scaleUpSelectionPolicy }}
+      policies:
+        {{- if .Values.global.autoscale.scaleUpPolicies }}
+        {{- range .Values.global.autoscale.scaleUpPolicies }}
+        - type: {{ .type }}
+          value: {{ .value }}
+          periodSeconds: {{ .periodSeconds }}
+        {{- end }}
+        {{- end }}
+      stabilizationWindowSeconds: {{ $scaleUpStablizationWindow }}
+{{- end }}
+{{- end }}

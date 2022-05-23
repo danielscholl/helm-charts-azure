@@ -18,3 +18,8 @@ type: application
 description: Installs the OSDU on Azure Core System Services
 version: 1.13.0
 appVersion: 0.13.0
+dependencies:
+  - name: "helm-library"
+    version: "0.1.0"
+    repository: file://../helm-library
+    enabled: true
