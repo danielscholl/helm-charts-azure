@@ -21,20 +21,24 @@ dependencies:
 - condition: ds-instance-init.enabled
   name: ds-instance-init
   version: 1.0.0
-  repository: "<arc-name>"
+  repository: "<acr-name>"
 - condition: ds-static-init.enabled
   name: ds-static-init
   version: 1.0.0
-  repository: "<arc-name>"
+  repository: "<acr-name>"
 - condition: ds-schema-init.enabled
   name: ds-schema-init
   version: 1.0.0
-  repository: "<arc-name>"
+  repository: "<acr-name>"
 - condition: ds-helper-services.enabled
   name: ds-helper-services
   version: 1.0.0
-  repository: "<arc-name>"
+  repository: "<acr-name>"
 - condition: ds-dags-init.enabled
   name: ds-dags-init
   version: 1.0.0
-  repository: "<arc-name>"
+  repository: "<acr-name>"
+- condition: ds-adf-dags-init.enabled
+  name: ds-adf-dags-init
+  version: 1.0.0
+  repository: "<acr-name>"
