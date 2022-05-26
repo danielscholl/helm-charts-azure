@@ -25,7 +25,7 @@ data:
         airflow_pass =os.environ.get('AIRFLOW_ADMIN_PASS','')
         airflow_rbac_create_user = os.environ.get('AIRFLOW_RBAC_CREATE_USER','')
         airflow_rbac_enabled = os.environ.get('AIRFLOW_RBAC_ENABLED','')
-        retry = 6
+        retry = 20
         retry_window = 10
         if not airflow_admin or not airflow_pass or not server or not database or not database_login_name or not database_login_pass:
             print('missed required environment variables')
@@ -43,7 +43,7 @@ data:
         else:
             print('rbac user not created')
 
-        retry=6
+        retry=20
         while retry>0:
             time.sleep(retry_window)
             if check(server,database,database_login_name,database_login_pass,"database") and check(server,database,database_login_name,database_login_pass,"table"):
