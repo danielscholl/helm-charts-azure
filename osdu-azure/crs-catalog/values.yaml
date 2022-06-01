@@ -69,6 +69,8 @@ configuration:
     path: /api/crs/catalog/*
     probe: /api/crs/catalog/swagger-ui.html
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/"

@@ -81,6 +81,8 @@ configuration:
     probeInitialDelaySeconds: 100 
     livenessPeriodSeconds: 10
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/"

@@ -1,0 +1,25 @@
+{{- define "helm-library.pdb" -}}
+{{- range .Values.configuration }}
+{{- if .podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .service }}-pdb
+spec:
+{{- if or .podDisruptionBudget.maxUnavailable .podDisruptionBudget.minAvailable -}}
+  {{- if .podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  {{- if .podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .podDisruptionBudget.minAvailable }}
+  {{- end }}
+{{- else }}
+  # Default PDB settings if not overriden from values file
+  maxUnavailable: 1
+{{- end }}
+  selector:
+    matchLabels:
+      app: {{ .service }}
+{{- end }}
+{{- end }}
+{{- end -}}

@@ -17,7 +17,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 1
+  replicaCount: 2
   nodepool: services
   isAutoscalingEnabled: false
 
@@ -75,6 +75,8 @@ configuration:
     path: /api/policy/v1/*
     probe: /api/policy/v1/health
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/"
