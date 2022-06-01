@@ -17,7 +17,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 1
+  replicaCount: 2
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
@@ -92,6 +92,8 @@ configuration:
   - service: indexer-queue
     repository: <azure_acr>/indexer-queue
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     env:
     - name: spring_application_name
       value: indexer-queue

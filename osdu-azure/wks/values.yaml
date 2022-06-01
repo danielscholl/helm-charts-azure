@@ -97,6 +97,8 @@ configuration:
     servicebusSubscription: eg_sb_wkssubscription
     servicebusTopic: recordstopiceg
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     env:
     - name: spring_application_name
       value: wks
