@@ -28,6 +28,9 @@ global:
     enabled: <azure_autoscale_enabled>
     cpu:
       enabled: <autoscale_cpu_enabled>
+    rps:
+      enabled: false
+
 
   ################################################################################
   # Specify KEDA configuration

@@ -6,6 +6,7 @@
 {{- $nodepool := .Values.global.nodepool}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
+{{- $isHpaEnabled := .Values.global.autoscale.enabled}}
 {{- range .Values.configuration }}
 apiVersion: apps/v1
 kind: Deployment
@@ -13,7 +14,9 @@ metadata:
   name: {{ .service }}
   namespace: {{ $namespace }}
 spec:
+{{- if not $isHpaEnabled }}
   replicas: {{ .replicaCount | default $replicaCount }}
+{{- end }}
   selector:
     matchLabels:
       app: {{ .service }}
