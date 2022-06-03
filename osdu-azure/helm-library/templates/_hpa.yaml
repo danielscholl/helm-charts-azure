@@ -9,7 +9,7 @@
 {{- $scaleUpStablizationWindow := .Values.global.autoscale.scaleUpStabilizationSeconds | default "120" }}
 {{- $scaleUpSelectionPolicy := .Values.global.autoscale.scaleUpPolicy | default "Max" }}
 {{- $cpuAvgUtilization := .Values.global.autoscale.cpu.averageUtilization | default "60" }}
-
+{{- $rpsAvgValue := .Values.global.autoscale.rps.averageValue | default "60" }}
 {{- if .Values.global.autoscale.enabled }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
@@ -31,6 +31,15 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ $cpuAvgUtilization }}
+    {{- end }}
+    {{- if .Values.global.autoscale.rps.enabled }}
+    - type: Pods
+      pods:
+        metric:
+          name: http_server_requests_per_second
+        target:
+            averageValue: {{ $rpsAvgValue }}
+            type: AverageValue
     {{- end }}
   behavior:
     scaleDown:
