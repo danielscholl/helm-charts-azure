@@ -77,6 +77,8 @@ configuration:
     path: /api/os-wellbore-ddms/*
     probe: /api/os-wellbore-ddms/healthz
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/api/os-wellbore-ddms/"
