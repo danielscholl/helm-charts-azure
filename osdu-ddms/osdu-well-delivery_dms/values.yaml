@@ -79,6 +79,8 @@ configuration:
     path: /api/well-delivery/*
     probe: /api/well-delivery/_ah/warmup
     keyvault: true
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "*/swagger"
