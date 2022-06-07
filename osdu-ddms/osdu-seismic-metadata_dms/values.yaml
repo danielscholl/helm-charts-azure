@@ -76,6 +76,8 @@ configuration:
     repository: <azure_acr>/seimsic-metadata
     path: /seismic-file-metadata/api/v1
     probe: /seismic-file-metadata/api/v1/svcstatus
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/"

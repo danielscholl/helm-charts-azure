@@ -77,6 +77,8 @@ configuration:
     repository: <azure_acr>/sdms
     path: /seistore-svc/api/v3/*
     probe: /seistore-svc/api/v3/svcstatus
+    podDisruptionBudget:
+      enabled: true
     auth:
       disable:
         - "/"
