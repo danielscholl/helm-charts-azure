@@ -67,7 +67,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .probe }}
-              port: http
+              port: 80
             initialDelaySeconds: 20
           {{- end }}
           resources:
