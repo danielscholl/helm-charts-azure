@@ -10,15 +10,12 @@ metadata:
   namespace: {{ $namespace }}
   labels:
     app: {{ .service }}
+    chart: {{ .Values.image.tag }}
+    release: {{ .Release.Name }}
 spec:
-  type: {{ $serviceType }}
   ports:
-    - port: {{ $servicePort }}
-      targetPort: http
-      protocol: TCP
-      name: http
+    - protocol: TCP
+      port: {{ $servicePort }}
+      targetPort: 8000
   selector:
     app: {{ .service }}
-
----
-{{- end }}

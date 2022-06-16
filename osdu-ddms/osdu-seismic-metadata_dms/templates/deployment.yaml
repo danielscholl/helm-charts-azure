@@ -52,15 +52,29 @@ spec:
           {{- end }}
           imagePullPolicy: {{ $pullPolicy | default "Always" }}
           ports:
-            - name: http
+            - protocol: TCP
               containerPort: {{ $servicePort }}
-              protocol: TCP
           {{- if .probe }}
+          livenessProbe:
+            httpGet:
+              path: /seismic-file-metadata/api/v1/service-status
+              port: 8000
+              httpHeaders:
+                - name: X-Api-Key
+                  value: ""
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 60
           readinessProbe:
             httpGet:
-              path: {{ .probe }}
-              port: 80
-            initialDelaySeconds: 20
+              path: /seismic-file-metadata/api/v1/service-status
+              port: 8000
+              httpHeaders:
+                - name: X-Api-Key
+                  value: ""
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 60
           {{- end }}
           resources:
           {{- if .request }}
