@@ -161,7 +161,7 @@ airflow:
   # Airflow - WebUI Configs
   ###################################
   web:
-    replicas: 1
+    replicas: 2
     livenessProbe:
       timeoutSeconds: 60
     resources:
@@ -175,6 +175,9 @@ airflow:
       aadpodidbinding: "osdu-airflow2-identity"
     nodeSelector:
       agentpool: "internal"
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
     autoscale:
       enabled: false
       minReplicas: 2
@@ -203,6 +206,9 @@ airflow:
       agentpool: "internal"
     podAnnotations:
       sidecar.istio.io/inject: "false"
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
     replicas: 6
     autoscale:
@@ -240,6 +246,9 @@ airflow:
       aadpodidbinding: "osdu-airflow2-identity"
     nodeSelector:
       agentpool: "internal"
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
     autoscale:
       enabled: false
       minReplicas: 2
