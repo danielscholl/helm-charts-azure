@@ -13,7 +13,7 @@ azure:
   principalsecret: <azure_principal_secret>
   clientid: <azure_client_id>
   appinsightsinstrumentationkey: <azure_appinsights_key>
-
+  domain: <domain_name>
 image:
   repository: <azure_acr>
   tag: <image_version>
