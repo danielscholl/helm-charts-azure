@@ -173,6 +173,8 @@ airflow:
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
+    nodeSelector:
+      agentpool: "internal"
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
@@ -242,6 +244,8 @@ airflow:
         memory: "1Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
+    nodeSelector:
+      agentpool: "internal"
     podDisruptionBudget:
       enabled: true
       maxUnavailable: 1
