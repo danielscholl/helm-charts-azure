@@ -458,6 +458,9 @@ airflow:
       - name: remote-log-config
         mountPath: /opt/airflow/config
         readOnly: true
+      - mountPath: /opt/airflow/plugins/dag_runs_stats_plugin.py
+        name: dag-runs-stats-plugin
+        subPath: dag_runs_stats_plugin
     extraVolumes:
       - name: azure-keyvault
         csi:
@@ -468,6 +471,9 @@ airflow:
       - name: remote-log-config
         configMap:
           name: airflow-remote-log-config
+      - configMap:
+          name: airflow-dag-runs-stats-plugin
+        name: dag-runs-stats-plugin
     dbMigrations:
       podLabels:
         aadpodidbinding: "osdu-airflow2-identity"
