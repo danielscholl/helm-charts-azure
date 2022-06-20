@@ -205,6 +205,14 @@ spec:
           number: 80
   - match:
     - uri:
+        prefix: "/seismic-file-metadata/api/v1"
+    route:
+    - destination:
+        host: /seismic-file-metadata.ddms-seismic-metadata.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
         prefix: "/api/ingestion"
     route:
     - destination:
