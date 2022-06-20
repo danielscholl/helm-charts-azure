@@ -31,18 +31,27 @@ spec:
         paths:
           {{- range .Values.ingress.flower.precedingPaths }}
           - path: {{ .path }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ .serviceName }}
-              servicePort: {{ .servicePort }}
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
           {{- end }}
           - path: {{ .Values.ingress.flower.path }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ include "airflow.fullname" . }}-flower
-              servicePort: flower
+              service:
+                name: {{ include "airflow.fullname" . }}-flower
+                port:
+                  name: flower
           {{- range .Values.ingress.flower.succeedingPaths }}
           - path: {{ .path }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ .serviceName }}
-              servicePort: {{ .servicePort }}
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
           {{- end }}
 {{- end }}
