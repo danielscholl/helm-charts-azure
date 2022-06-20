@@ -77,7 +77,6 @@ configuration:
   - service: well-delivery-ddms
     repository: <azure_acr>/well-delivery-ddms
     path: /api/well-delivery/*
-    pathType: ImplementationSpecific
     probe: /api/well-delivery/_ah/warmup
     keyvault: true
     podDisruptionBudget:

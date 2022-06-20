@@ -75,7 +75,6 @@ configuration:
   - service: seismic-file-metadata
     repository: <azure_acr>/seimsic-metadata
     path: /seismic-file-metadata/api/v1
-    pathType: ImplementationSpecific
     probe: /seismic-file-metadata/api/v1/service-status
     podDisruptionBudget:
       enabled: true

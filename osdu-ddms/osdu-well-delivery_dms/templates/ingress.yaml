@@ -30,7 +30,7 @@ spec:
         paths:
         {{- range .Values.configuration }}
         - path: {{ .path }}
-          pathType: {{ .pathType }}
+          pathType: ImplementationSpecific
           backend:
             service:
               name: {{ .service }}

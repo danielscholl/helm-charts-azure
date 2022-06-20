@@ -148,6 +148,7 @@ spec:
               port:
                 number: 80
           path: /api/entitlements/v2/*
+          pathType: ImplementationSpecific
         - backend:
             service:
               name: well-delivery-ddms

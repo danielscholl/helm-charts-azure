@@ -83,7 +83,6 @@ configuration:
   - service: wellbore-ddms
     repository: <azure_acr>/wellbore-ddms
     path: /api/os-wellbore-ddms/*
-    pathType: ImplementationSpecific
     probe: /api/os-wellbore-ddms/healthz
     keyvault: true
     podDisruptionBudget:
