@@ -14,3 +14,6 @@ data:
   CLOUDPROVIDER: azure
   SDMS_SERVICE_HOST: https://{{ .Values.ingress.dns }}/seistore-svc/api/v3
   PORT: "80"
+
+---
+{{- end }}
