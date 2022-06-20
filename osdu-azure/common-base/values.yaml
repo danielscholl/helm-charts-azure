@@ -84,7 +84,6 @@ configuration:
     repository: msosdu.azurecr.io/neilpeterson/aks-helloworld
     tag: v1
     path: /*
-    pathType: ImplementationSpecific
     probe: /
     replicaCount: 1
     env:
