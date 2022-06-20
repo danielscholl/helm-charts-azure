@@ -76,6 +76,7 @@ configuration:
   - service: seismic-ddms
     repository: <azure_acr>/sdms
     path: /seistore-svc/api/v3/*
+    pathType: ImplementationSpecific
     probe: /seistore-svc/api/v3/svcstatus
     podDisruptionBudget:
       enabled: true

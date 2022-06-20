@@ -30,9 +30,12 @@ spec:
         paths:
         {{- range .Values.configuration }}
         - path: {{ .path }}
+          pathType: {{ .pathType }}
           backend:
-            serviceName: {{ .service }}
-            servicePort: {{ $svcPort }}
+            service:
+              name: {{ .service }}
+              port:
+                number: {{ $svcPort }}
         {{- end }}
         - path: /api/storage/v2/*
           backend:
