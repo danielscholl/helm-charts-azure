@@ -19,3 +19,6 @@ spec:
       targetPort: 8000
   selector:
     app: {{ .service }}
+
+---
+{{- end }}
