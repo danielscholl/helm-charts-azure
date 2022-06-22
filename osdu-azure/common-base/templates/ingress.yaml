@@ -1,7 +1,7 @@
 {{- $namespace := .Release.Namespace }}
 {{- $svcPort := .Values.global.service.port -}}
 {{- $release := .Release.name -}}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: common-ingress
@@ -30,87 +30,150 @@ spec:
         paths:
         {{- range .Values.configuration }}
         - path: {{ .path }}
+          pathType: ImplementationSpecific
           backend:
-            serviceName: {{ .service }}
-            servicePort: {{ $svcPort }}
+            service:
+              name: {{ .service }}
+              port:
+                number: {{ $svcPort }}
         {{- end }}
         - path: /api/storage/v2/*
+          pathType: ImplementationSpecific
           backend:
-            serviceName: storage
-            servicePort: 80
+            service:
+              name: storage
+              port:
+                number: 80
         - backend:
-            serviceName: default
-            servicePort: 80
+            service:
+              name: default
+              port:
+                number: 80
           path: /*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: legal
-            servicePort: 80
+            service:
+              name: legal
+              port:
+                number: 80
           path: /api/legal/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: crs-catalog
-            servicePort: 80
+            service:
+              name: crs-catalog
+              port:
+                number: 80
           path: /api/crs/catalog/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: crs-conversion
-            servicePort: 80
+            service:
+              name: crs-conversion
+              port:
+                number: 80
           path: /api/crs/converter/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: unit
-            servicePort: 80
+            service:
+              name: unit
+              port:
+                number: 80
           path: /api/unit/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: partition
-            servicePort: 80
+            service:
+              name: partition
+              port:
+                number: 80
           path: /api/partition/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: indexer
-            servicePort: 80
+            service:
+              name: indexer
+              port:
+                number: 80
           path: /api/indexer/v2/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: search
-            servicePort: 80
+            service:
+              name: search
+              port:
+                number: 80
           path: /api/search/v2/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: delivery
-            servicePort: 80
+            service:
+              name: delivery
+              port:
+                number: 80
           path: /api/delivery/v2/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: schema
-            servicePort: 80
+            service:
+              name: schema
+              port:
+                number: 80
           path: /api/schema-service/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: register
-            servicePort: 80
+            service:
+              name: register
+              port:
+                number: 80
           path: /api/register/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: file
-            servicePort: 80
+            service:
+              name: file
+              port:
+                number: 80
           path: /api/file/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: workflow
-            servicePort: 80
+            service:
+              name: workflow
+              port:
+                number: 80
           path: /api/workflow/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: notification
-            servicePort: 80
+            service:
+              name: notification
+              port:
+                number: 80
           path: /api/notification/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: entitlements
-            servicePort: 80
+            service:
+              name: entitlements
+              port:
+                number: 80
           path: /api/entitlements/v2/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: well-delivery-ddms
-            servicePort: 80
+            service:
+              name: well-delivery-ddms
+              port:
+                number: 80
           path: /api/well-delivery/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: policy
-            servicePort: 80
+            service:
+              name: policy
+              port:
+                number: 80
           path: /api/policy/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: dataset
-            servicePort: 80
+            service:
+              name: dataset
+              port:
+                number: 80
           path: /api/dataset/v1/*
+          pathType: ImplementationSpecific
         - backend:
-            serviceName: wks
-            servicePort: 80
+            service:
+              name: wks
+              port:
+                number: 80
           path: /api/wks-service/v1/*
+          pathType: ImplementationSpecific
