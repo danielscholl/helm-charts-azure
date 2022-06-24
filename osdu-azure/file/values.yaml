@@ -19,6 +19,7 @@
 global:
   replicaCount: 5
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
   ################################################################################
@@ -89,7 +90,7 @@ configuration:
     readinessPort: 8081
     livenessProbe: /actuator/health
     livenessPort: 8081
-    probeInitialDelaySeconds: 100 
+    probeInitialDelaySeconds: 100
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
@@ -146,6 +147,17 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: SPRING_CONFIG_NAME
       value: "common,application"
+    - name: event_grid_topic_status
+      value: "statuschangedtopic"
+    - name: service_bus_topic_status
+      value: "statuschangedtopic"
+    - name: azure_pubsub_publish
+      value: "true"
+    # Notification v2 not enabled (https://community.opengroup.org/osdu/platform/system/file/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L138)
+    - name: service_bus_enabled_status
+      value: "false"
+    - name: event_grid_enabled_status
+      value: "true"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
@@ -158,3 +170,16 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid

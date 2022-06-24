@@ -19,6 +19,7 @@
 global:
   debug: false
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################

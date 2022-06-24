@@ -18,7 +18,7 @@ appinsightstatsd:
   aadpodidbinding: "osdu-airflow2-identity"
   image:
     repository: msosdu.azurecr.io
-    tag: "1.0.0-OSDU"
+    tag: "v2.1.2-v0.14-20220418-5"
 
 #################################################################################
 # Specify log analytics configuration
