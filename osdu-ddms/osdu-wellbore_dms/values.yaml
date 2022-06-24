@@ -86,7 +86,7 @@ configuration:
     probe: /api/os-wellbore-ddms/healthz
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/api/os-wellbore-ddms/"

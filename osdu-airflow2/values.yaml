@@ -176,7 +176,7 @@ airflow:
     nodeSelector:
       agentpool: "internal"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -207,7 +207,7 @@ airflow:
     podAnnotations:
       sidecar.istio.io/inject: "false"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
     replicas: 6
@@ -247,7 +247,7 @@ airflow:
     nodeSelector:
       agentpool: "internal"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false

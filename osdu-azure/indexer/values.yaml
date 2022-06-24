@@ -107,7 +107,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

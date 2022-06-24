@@ -80,7 +80,7 @@ configuration:
     probe: /api/dataset/v1/info
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

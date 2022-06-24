@@ -78,7 +78,7 @@ configuration:
     path: /seistore-svc/api/v3/*
     probe: /seistore-svc/api/v3/svcstatus
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
