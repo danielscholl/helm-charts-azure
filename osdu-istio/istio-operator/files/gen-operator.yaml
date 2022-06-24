@@ -1,4 +1,13 @@
 ---
+# Source: istio-operator/templates/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-operator
+  labels:
+    istio-operator-managed: Reconcile
+    istio-injection: disabled
+---
 # Source: istio-operator/templates/service_account.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -66,7 +75,9 @@ rules:
   - daemonsets
   - deployments
   - deployments/finalizers
+  - ingresses
   - replicasets
+  - statefulsets
   verbs:
   - '*'
 - apiGroups:
@@ -99,14 +110,6 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - coordination.k8s.io
-  resources:
-  - leases
-  verbs:
-  - get
-  - create
-  - update
-- apiGroups:
   - ""
   resources:
   - configmaps
@@ -115,7 +118,6 @@ rules:
   - namespaces
   - pods
   - pods/proxy
-  - pods/portforward
   - persistentvolumeclaims
   - secrets
   - services
@@ -162,7 +164,6 @@ metadata:
   name: istio-operator
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
       name: istio-operator
@@ -174,7 +175,7 @@ spec:
       serviceAccountName: istio-operator
       containers:
         - name: istio-operator
-          image: msosdu.azurecr.io/istio/operator:1.14.0
+          image: msosdu.azurecr.io/istio/operator:1.11.3
           command:
           - operator
           - server

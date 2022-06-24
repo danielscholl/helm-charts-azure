@@ -57,7 +57,9 @@ rules:
   - daemonsets
   - deployments
   - deployments/finalizers
+  - ingresses
   - replicasets
+  - statefulsets
   verbs:
   - '*'
 - apiGroups:
@@ -90,14 +92,6 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - coordination.k8s.io
-  resources:
-  - leases
-  verbs:
-  - get
-  - create
-  - update
-- apiGroups:
   - ""
   resources:
   - configmaps
@@ -106,7 +100,6 @@ rules:
   - namespaces
   - pods
   - pods/proxy
-  - pods/portforward
   - persistentvolumeclaims
   - secrets
   - services

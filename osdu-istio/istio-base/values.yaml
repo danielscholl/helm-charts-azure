@@ -12,8 +12,6 @@ global:
     enableAnalysis: false
 
   configValidation: true
-  externalIstiod: false
-  remotePilotAddress: ""
 
 base:
   # Used for helm2 to add the CRDs to templates.
@@ -22,8 +20,3 @@ base:
   # Validation webhook configuration url
   # For example: https://$remotePilotAddress:15017/validate
   validationURL: ""
-
-  # For istioctl usage to disable istio config crds in base
-  enableIstioConfigCRDs: true
-
-defaultRevision: "default"
