@@ -93,7 +93,7 @@ configuration:
     repository: <azure_acr>/indexer-queue
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     env:
     - name: spring_application_name
       value: indexer-queue

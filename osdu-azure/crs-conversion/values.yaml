@@ -80,7 +80,7 @@ configuration:
     probe: /api/crs/converter/swagger-ui/index.html
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

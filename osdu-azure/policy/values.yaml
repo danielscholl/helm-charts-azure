@@ -87,7 +87,7 @@ configuration:
     probe: /api/policy/v1/health
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

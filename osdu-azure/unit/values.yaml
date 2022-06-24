@@ -81,7 +81,7 @@ configuration:
     probe: /api/unit/_ah/readiness_check
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

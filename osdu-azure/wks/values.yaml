@@ -98,7 +98,7 @@ configuration:
     servicebusTopic: recordstopiceg
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     env:
     - name: spring_application_name
       value: wks
