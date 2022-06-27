@@ -5,3 +5,5 @@ environments
 .envrc
 *.env
 .idea
+**/.vscode
+**/test.values.yaml

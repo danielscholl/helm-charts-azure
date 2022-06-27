@@ -1,9 +1,10 @@
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
-{{- $servicePort := .Values.service.port -}}
+{{- $targetPort := .Values.service.target }}
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $configMap := .Values.configMap -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
@@ -27,6 +28,9 @@ spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
         nodepool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
 {{- end }}      
       volumes:
       {{- if .keyvault }}
@@ -52,26 +56,21 @@ spec:
           {{- end }}
           imagePullPolicy: {{ $pullPolicy | default "Always" }}
           ports:
-            - protocol: TCP
-              containerPort: {{ $servicePort }}
+            - name: http
+              containerPort: {{ $targetPort }}
+              protocol: TCP
           {{- if .probe }}
           livenessProbe:
             httpGet:
-              path: /seismic-file-metadata/api/v1/service-status
-              port: 8000
-              httpHeaders:
-                - name: X-Api-Key
-                  value: ""
+              path: {{ .probe }}
+              port: http
             initialDelaySeconds: 30
             timeoutSeconds: 30
             periodSeconds: 60
           readinessProbe:
             httpGet:
-              path: /seismic-file-metadata/api/v1/service-status
-              port: 8000
-              httpHeaders:
-                - name: X-Api-Key
-                  value: ""
+              path: {{ .probe }}
+              port: http
             initialDelaySeconds: 30
             timeoutSeconds: 30
             periodSeconds: 60
