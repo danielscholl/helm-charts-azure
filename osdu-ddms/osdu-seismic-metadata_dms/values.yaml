@@ -80,20 +80,9 @@ configuration:
       enabled: false
     auth:
       disable:
-        - "/"
-        - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/api-docs"
-        - "*/swagger"
+        - "*/service-status"
         - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "*/actuator/health"
-        - "*/health"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "/seismic-file-metadata/api/v1/swagger-ui.html"
-        - "/seismic-file-metadata/api/v1/webjars/*"
-        - "/seismic-file-metadata/api/v1/swagger-ui/*"
+        - "*/openapi.json"
     env:
     - name: KEYVAULT_URL
       config:

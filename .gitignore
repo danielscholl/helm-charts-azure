@@ -5,3 +5,4 @@ environments
 .envrc
 *.env
 .idea
+**/.vscode
