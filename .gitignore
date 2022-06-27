@@ -6,3 +6,4 @@ environments
 *.env
 .idea
 **/.vscode
+**/test.values.yaml

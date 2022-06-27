@@ -9,6 +9,7 @@ metadata:
     release: {{ .Release.Name }}
 data:
   DES_SERVICE_HOST: https://{{ .Values.ingress.dns }}
+  ENV_KEYVAULT: https://{{ .Values.azure.keyvault }}.vault.azure.net/
   REDIS_INSTANCE_PORT: "6380"
   APP_ENVIRONMENT_IDENTIFIER: cloud
   CLOUDPROVIDER: azure
