@@ -75,7 +75,7 @@ configuration:
   ##  SEISMIC FILE METADATA SERVICE
   #
   - service: seismic-file-metadata
-    repository: <azure_acr>/seimsic-metadata
+    repository: <azure_acr>/seismic-filemetadata
     path: /seismic-file-metadata/api/v1
     probe: /seismic-file-metadata/api/v1/service-status
     podDisruptionBudget:
