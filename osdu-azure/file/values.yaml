@@ -100,6 +100,7 @@ configuration:
       disable:
         - "/"
         - "*/index.html"
+        - "*/v2/api-docs"
         - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
@@ -108,9 +109,10 @@ configuration:
         - "*/swagger-resources"
         - "/api/file/swagger-resources/*"
         - "/api/file/webjars/*"
+        - "/api/file/swagger-ui/*"
         - "*/actuator/health"
-        - "*/readiness_check"
         - "*/_ah/**"
+        - "/api/file/info"
     env:
     - name: spring_application_name
       value: file
