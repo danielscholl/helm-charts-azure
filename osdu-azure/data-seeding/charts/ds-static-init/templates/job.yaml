@@ -24,8 +24,8 @@ spec:
         imagePullPolicy: Always
         name: "ds-static-init"
         env:
-        - name: ADMIN_ID
-          value: {{ .Values.global.azure.appid }}
+        - name: ADMIN_IDS
+          value: {{ .Values.global.azure.appids }} # comma separated list of admin_ids or app_ids which can be emails or app oids
         - name: OSDU_IDENTITY_ID
           value: {{ .Values.global.azure.identity_id }}
         - name: SUBSCRIPTION

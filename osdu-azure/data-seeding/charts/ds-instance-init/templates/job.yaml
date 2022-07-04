@@ -28,8 +28,8 @@ spec:
         imagePullPolicy: Always
         name: "ds-instance-init"
         env:
-        - name: ADMIN_ID
-          value: {{ .Values.global.azure.appid }}
+        - name: ADMIN_IDS
+          value: {{ .Values.global.azure.appids }}
         - name: OSDU_IDENTITY_ID
           value: {{ .Values.global.azure.identity_id }}
         - name: SERVICE_DOMAIN

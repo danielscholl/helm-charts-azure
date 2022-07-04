@@ -6,7 +6,7 @@ azure:
   resourcegroup: <azure_resourcegroup>
   subscription: <azure_subscription>
   identity_id: <azure_identity_id>
-  appid: <azure_appid> # can be an AAD App OID or a user email
+  appids: <azure_appids> # comma separated list of appids, can be an AAD App OID or a user email
 
 service:
   domain: <service_domain> # eg: contoso.com
