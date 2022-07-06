@@ -59,3 +59,4 @@ global:
   #
   resiliency:
     retry_attempts: 1
+    retry_attempts_file_service : 2
