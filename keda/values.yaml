@@ -1,3 +1,7 @@
 image:
-  keda: msosdu.azurecr.io/kedacore/keda:1.5.0
-  metricsAdapter: msosdu.azurecr.io/kedacore/keda-metrics-adapter:1.5.0
+  keda:
+    repository: msosdu.azurecr.io/kedacore/keda
+    tag: 2.7.0
+  metricsApiServer:
+    repository: msosdu.azurecr.io/kedacore/keda-metrics-apiserver
+    tag: 2.7.0

@@ -17,6 +17,7 @@ spec:
   azureFile:
     secretName: airflow
     shareName: {{ .name }}
+    secretNamespace: {{ $namespace }}
   volumeMode: Filesystem
   mountOptions:
   - dir_mode=0777
