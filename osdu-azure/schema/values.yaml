@@ -83,8 +83,8 @@ global:
   resiliency:
     rateLimit:
       enabled: true
-      max_tokens: 225
-      tokens_per_fill: 225
+      max_tokens: 220
+      tokens_per_fill: 220
       fill_interval: 5s
     
  ################################################################################
