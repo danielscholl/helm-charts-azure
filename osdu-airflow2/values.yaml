@@ -344,6 +344,10 @@ airflow:
           secretKeyRef:
             name: central-logging
             key: appinsights
+      - name: AIRFLOW_VAR_POD_IDENTITY
+        value: "osdu-identity"
+      - name: AIRFLOW_VAR_NAMESPACE     # Namespace used by kubernetes pod operators in dags
+        value: "airflow"
       - name: AIRFLOW_VAR_AZURE_DNS_HOST
         value: <airflow_ingress_web_host>
       - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
