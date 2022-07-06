@@ -33,6 +33,14 @@ global:
       enabled: <autoscale_rps_enabled>
       averageValue: 20
 
+  resiliency:
+    retry_attempts: 2
+    rateLimit:
+      enabled: true
+      max_tokens: 150
+      tokens_per_fill: 150
+      fill_interval: 5s
+
   ################################################################################
   # Specify KEDA configuration
   #
