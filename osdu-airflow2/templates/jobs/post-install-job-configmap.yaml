@@ -43,36 +43,7 @@ data:
         else:
             print('rbac user not created')
 
-        retry=6
-        while retry>0:
-            time.sleep(retry_window)
-            if check(server,database,database_login_name,database_login_pass,"database") and check(server,database,database_login_name,database_login_pass,"table"):
-                create_user(server,database,database_login_name,database_login_pass,airflow_admin,airflow_pass)
-                break
-            else:
-                retry -= 1
-                print(f'wait {retry_window}s for retry') 
         return
-
-
-    def create_user(server,database,db_login_name,db_login_pass,airflow_admin,airflow_pass):
-        conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(server, db_login_name, database, db_login_pass, 'require')
-        password_hash = generate_password_hash(airflow_pass,12)
-        if PY3:
-            password_hash = str(password_hash,'utf-8')
-        conn = None
-        try:
-            conn = psycopg2.connect(conn_string)
-            cursor = conn.cursor()
-            cursor.execute("insert into users(username,email,password,superuser) values(%s,%s,%s,%s) on CONFLICT(username) DO NOTHING;",(airflow_admin,'',password_hash,True))
-            conn.commit()
-            cursor.close()
-            print(f'default user {airflow_admin} was created')
-        except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
-        finally:
-            if conn is not None:
-                conn.close()
 
     def create_rbac_user(server,database,db_login_name,db_login_pass,airflow_admin,airflow_pass):
         emailid="{}@admin.com".format(airflow_admin)
