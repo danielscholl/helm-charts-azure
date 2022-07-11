@@ -52,17 +52,6 @@ ds-dags-init:
     configmapname: <dags_config_map>
 
 
-# This section contains configuration ds-dags-init chart
-################################################################################
-#
-ds-adf-dags-init:
-  enabled: <adf_dags_enabled>
-
-  config:
-    configmapname: <adf_dags_config_map>
-    data_factory_name: <data_factory_name>
-    airflow_web_url: <airflow_web_url>
-
 # This section contains configuration for ds-helper-services chart
 ################################################################################
 #

@@ -20,9 +20,9 @@ metadata:
 spec:
   limits:
     - default:
-        memory: {{ .Values.resourceLimits.defaultMemoryLimits }}
-        cpu: {{ .Values.resourceLimits.defaultCpuLimits }}
+        memory: {{ .Values.global.resourceLimits.defaultMemoryLimits }}
+        cpu: {{ .Values.global.resourceLimits.defaultCpuLimits }}
       defaultRequest:
-        memory: {{ .Values.resourceLimits.defaultMemoryRequests }}
-        cpu: {{ .Values.resourceLimits.defaultCpuRequests }}
+        memory: {{ .Values.global.resourceLimits.defaultMemoryRequests }}
+        cpu: {{ .Values.global.resourceLimits.defaultCpuRequests }}
       type: Container

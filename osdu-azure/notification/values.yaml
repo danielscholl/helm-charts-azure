@@ -19,6 +19,7 @@
 global:
   replicaCount: 2
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 
@@ -86,7 +87,7 @@ configuration:
   - service: notification
     repository: <azure_acr>/notification
     path: /api/notification/v1/*
-    probe: /api/notification/v1/swagger-ui.html
+    probe: /api/notification/v1/swagger-ui/index.html
     keyvault: true
     podDisruptionBudget:
       enabled: true
@@ -130,15 +131,15 @@ configuration:
     - name: LOG_PREFIX
       value: "notification"
     - name: service_bus_enabled
-      value: "false"
+      value: "true"
     - name: event_grid_to_service_bus_enabled
       value: "false"
     - name: event_grid_enabled
-      value: "true"
+      value: "false"
     - name: initial_subscription_manager_delay_seconds
       value: "0"
     - name: consecutive_subscription_manager_delay_seconds
-      value: "1800"
+      value: "120"
     - name: max_concurrent_calls
       value: "3"
     - name: executor_n_threads
@@ -159,3 +160,16 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid
