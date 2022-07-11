@@ -19,6 +19,7 @@
 global:
   replicaCount: 2
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################
@@ -76,7 +77,7 @@ configuration:
   - service: crs-conversion
     repository: <azure_acr>/crs-conversion
     path: /api/crs/converter/*
-    probe: /api/crs/converter/swagger-ui.html
+    probe: /api/crs/converter/swagger-ui/index.html
     keyvault: true
     podDisruptionBudget:
       enabled: true
@@ -115,6 +116,8 @@ configuration:
       value: osdu-db
     - name: ENTITLEMENT_URL
       value: http://entitlements/api/entitlements/v2
+    - name: PARTITION_API
+      value: http://partition/api/partition/v1
     - name: ESRI_DATA_PATH
       value: /crs-conversion-service
     - name: service_domain_name

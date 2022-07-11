@@ -19,7 +19,9 @@
 global:
   replicaCount: 6
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
+
 
   #################################################################################
   # Specify the auto scale specific values
@@ -37,6 +39,15 @@ global:
   keda:
     version_2_enabled: false
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    cb_consecutive5xxErrors: 100
+    cb_interval: 20s
+    cb_base_ejection_time: 3m
+    cb_max_ejection_percent: 20
+    retry_attempts: 1
 
   ################################################################################
   # Specify the azure environment specific values
@@ -169,3 +180,16 @@ configuration:
       secret:
         name: central-logging
         key: appinsights
+    podIdentityEnvs:
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid

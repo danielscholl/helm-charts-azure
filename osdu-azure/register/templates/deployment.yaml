@@ -5,8 +5,10 @@
 {{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
+{{- $podIdentityAuthEnabled := .Values.global.azure.podIdentityAuthEnabled}}
 {{- $isHpaEnabled := .Values.global.autoscale.enabled}}
 {{- range .Values.configuration }}
 apiVersion: apps/v1
@@ -33,8 +35,11 @@ spec:
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
-        nodepool: {{ $nodepool }}
-{{- end }}        
+        agentpool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
+{{- end }}  
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault
@@ -114,6 +119,17 @@ spec:
             - name: {{ .name }}
               {{- if .value }}
               value: "https://{{ $hostName }}{{ .value }}"
+              {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- if not $podIdentityAuthEnabled }}
+            {{- range .podIdentityEnvs }}
+            - name: {{ .name }}
+              {{- if .secret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret.name | quote }}
+                  key: {{ .secret.key | quote }}
               {{- end }}
             {{- end }}
             {{- end }}

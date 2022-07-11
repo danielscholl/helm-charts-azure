@@ -19,6 +19,7 @@
 global:
   replicaCount: 2
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
   ################################################################################
@@ -114,3 +115,16 @@ configuration:
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+    podIdentityEnvs:
+      - name: AZURE_CLIENT_ID
+        secret:
+          name: active-directory
+          key: principal-clientid
+      - name: AZURE_CLIENT_SECRET
+        secret:
+          name: active-directory
+          key: principal-clientpassword
+      - name: AZURE_TENANT_ID
+        secret:
+          name: active-directory
+          key: tenantid

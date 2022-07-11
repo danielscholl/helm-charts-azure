@@ -10,7 +10,7 @@
 {{- $scaleUpSelectionPolicy := .Values.global.autoscale.scaleUpPolicy | default "Max" }}
 {{- $cpuAvgUtilization := .Values.global.autoscale.cpu.averageUtilization | default "60" }}
 {{- $rpsAvgValue := .Values.global.autoscale.rps.averageValue | default "60" }}
-{{- if .Values.global.autoscale.enabled }}
+{{- if eq ( .Values.global.autoscale.enabled | quote ) "true" }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:

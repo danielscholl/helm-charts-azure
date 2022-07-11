@@ -8,7 +8,7 @@ __Add dependency of Helm Library__
 
 Add the helm library dependency in the service chart for which you want to enable HPA as given below.
 
-``` yaml
+```yaml
 dependencies:
   - name: "helm-library"
     version: "0.1.0"

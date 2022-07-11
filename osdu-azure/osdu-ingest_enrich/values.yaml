@@ -17,8 +17,8 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 1
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
   ################################################################################

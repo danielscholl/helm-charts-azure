@@ -2,6 +2,9 @@
 
 | `osdu-*-*`          | app-version  |
 | ------------------- | ----------   |
+| 1.15.0               | 0.15.0        |
+| 1.13.0               | 0.13.0        |
+| 1.12.0               | 0.12.0        |
 | 1.11.0               | 0.11.0        |
 | 1.10.0               | 0.10.0        |
 | 1.9.0               | 0.9.0        |
@@ -18,7 +21,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.11.0
+VERSION=1.15.0
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
