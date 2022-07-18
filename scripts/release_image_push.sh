@@ -4,9 +4,9 @@
 
 az login
 
-declare -a src_img=("crs-catalog-service" "crs-conversion-service" "entitlements" "file" "indexer-service" "ingestion-workflow" "legal" "notification" "partition" "policy" "register" "schema-service" "search-service" "unit-service" "wks" "indexer-queue" "storage")
+declare -a src_img=("crs-catalog-service" "crs-conversion-service" "entitlements" "file" "indexer-service" "ingestion-workflow" "legal" "notification" "partition" "policy-service" "register" "schema-service" "search-service" "unit-service" "wks" "indexer-queue" "storage" "seismic-store-service" "wellbore-domain-services" "well-delivery")
 
-declare -a dest_img=("crs-catalog" "crs-conversion" "entitlements" "file" "indexer" "workflow" "legal" "notification" "partition" "policy" "register" "schema" "search" "unit" "wks" "indexer-queue" "storage")
+declare -a dest_img=("crs-catalog" "crs-conversion" "entitlements" "file" "indexer" "workflow" "legal" "notification" "partition" "policy" "register" "schema" "search" "unit" "wks" "indexer-queue" "storage" "sdms" "wellbore-ddms" "well-delivery-ddms")
 
 declare src_version="-v0.11.0"
 declare dest_version="0.11.0"

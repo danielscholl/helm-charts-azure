@@ -36,7 +36,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v0.20.1"
+AIRFLOW_IMAGE_TAG="v2.2.4-v0.15-20220624-1"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -131,7 +131,7 @@ keda:
 # Specify the airflow configuration
 #
 airflow:
-  version_1_Installed: true
+  version_1_Installed: false
   pgbouncer:
     ## if the pgbouncer Deployment is created
     ##
@@ -324,20 +324,21 @@ airflow:
       AIRFLOW__WEBSERVER__RBAC: "True"
       AIRFLOW__API__AUTH_BACKEND: "airflow.api.auth.backend.default"
       AIRFLOW__CORE__REMOTE_LOGGING: "True"
-      AIRFLOW__CORE__REMOTE_LOG_CONN_ID: "az_log"
-      AIRFLOW__CORE__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
-      AIRFLOW__CORE__LOGGING_CONFIG_CLASS: "log_config.DEFAULT_LOGGING_CONFIG"
-      AIRFLOW__CORE__LOG_FILENAME_TEMPLATE: "{{ run_id }}/{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{% if dag_run.conf is not none and 'correlation_id' in dag_run.conf %}{{ dag_run.conf['correlation_id'] }}{% else %}None{% endif %}/{{ try_number }}.log"
+      AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID: "az_log"
+      AIRFLOW__LOGGING__REMOTE_LOGGING: "True"
+      AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
+      AIRFLOW__LOGGING__LOGGING_CONFIG_CLASS: "log_config.DEFAULT_LOGGING_CONFIG"
+      AIRFLOW__LOGGING__LOGGING_LEVEL: DEBUG
+      AIRFLOW__LOGGING__LOG_FILENAME_TEMPLATE: "{{ run_id }}/{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{% if dag_run.conf is not none and 'correlation_id' in dag_run.conf %}{{ dag_run.conf['correlation_id'] }}{% else %}None{% endif %}/{{ try_number }}.log"
       AIRFLOW__CELERY__SSL_ACTIVE: "True"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
       AIRFLOW__CORE__PLUGINS_FOLDER: "/opt/airflow/plugins"
-      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60
-      AIRFLOW__CORE__LOGGING_LEVEL: DEBUG
+      AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL: 60      
       AIRFLOW__WEBSERVER__WORKERS: 8
       AIRFLOW__WEBSERVER__WORKER_REFRESH_BATCH_SIZE: 0
       AIRFLOW__CORE__STORE_SERIALIZED_DAGS: True #This flag decides whether to serialise DAGs and persist them in DB
       AIRFLOW__CORE__STORE_DAG_CODE: True #This flag decides whether to persist DAG files code in DB
-      AIRFLOW__WEBSERVER__WORKER_CLASS: gevent
+      AIRFLOW__WEBSERVER__WORKER_CLASS: sync
       AIRFLOW__CORE__PARALLELISM: "2000"
       AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG: "2000"
       AIRFLOW__CORE__DAG_CONCURRENCY: "2000"
@@ -421,7 +422,7 @@ airflow:
         value: "http://legal.${OSDU_NAMESPACE}.svc.cluster.local/api/legal/v1"
       - name: AIRFLOW_VAR_CORE__SERVICE__ENTITLEMENTS__URL
         value: "http://entitlements.${OSDU_NAMESPACE}.svc.cluster.local/api/entitlements/v2"
-      ## End -- Ingest Manifest DAG variables      
+      ## End -- Ingest Manifest DAG variables          
       - name: AIRFLOW__API__AUTH_BACKEND
         value: "airflow.api.auth.backend.basic_auth"
       - name: AIRFLOW_VAR_ENV_VARS_ENABLED
@@ -429,8 +430,8 @@ airflow:
 
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
-        "apache-airflow[statsd,kubernetes,password]==2.1.2",
-        "apache-airflow-providers-microsoft-azure==3.1.1",
+        "apache-airflow[statsd,kubernetes,password]==2.2.4",
+        "apache-airflow-providers-microsoft-azure==3.6.0",
         "google-cloud-storage",
         "python-keycloak==0.24.0",
         "msal==1.9.0",
@@ -446,7 +447,7 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==2.0.2"
+        "apache-airflow-providers-cncf-kubernetes==3.0.2"
       ]
     extraVolumeMounts:
       - name: azure-keyvault
@@ -458,6 +459,9 @@ airflow:
       - name: remote-log-config
         mountPath: /opt/airflow/config
         readOnly: true
+      - mountPath: /opt/airflow/plugins/dag_runs_stats_plugin.py
+        name: dag-runs-stats-plugin
+        subPath: dag_runs_stats_plugin
     extraVolumes:
       - name: azure-keyvault
         csi:
@@ -468,9 +472,18 @@ airflow:
       - name: remote-log-config
         configMap:
           name: airflow-remote-log-config
+      - configMap:
+          name: airflow-dag-runs-stats-plugin
+        name: dag-runs-stats-plugin
     dbMigrations:
       podLabels:
         aadpodidbinding: "osdu-airflow2-identity"
+
+    ###################################
+    # Airflow - Comply with security policies
+    ###################################
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
 
 EOF
 ```

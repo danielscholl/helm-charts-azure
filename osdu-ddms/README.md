@@ -4,6 +4,7 @@
 | ------------------- | ----------   |
 | 1.13.0               | 0.13.0       |
 | 1.12.0               | 0.12.0        |
+| 1.15.0               | 0.15.0        |
 | 1.11.0               | 0.11.0        |
 | 1.9.0               | 0.9.0        |
 
@@ -15,7 +16,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-ddms
-VERSION=1.13.0
+VERSION=1.15.0
 
 # Pull Chart
 helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
@@ -78,10 +79,14 @@ Uninstall previously installed versions
 # Seismic
 helm uninstall seismic-store-service
 
+# Seismic File Metadata
+helm uninstall seismic-file-metadata
+
+
 # Wellbore 
 helm uninstall os-wellbore-ddms
 
-# Well Delivery
+# Well delivery
 helm uninstall well-delivery-ddms
 
 ```
@@ -102,6 +107,7 @@ Install the helm chart.
 SDMS_NAMESPACE=ddms-seismic
 WDMS_NAMESPACE=ddms-wellbore
 WDDMS_NAMESPACE=ddms-well-delivery
+
 NAMESPACE=osdu-azure
 
 kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESPACE istio-injection=enabled
@@ -112,4 +118,14 @@ kubectl create namespace $WDDMS_NAMESPACE && kubectl label namespace $WDDMS_NAME
 helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
 helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
 helm install well-delivery-services osdu-ddms/osdu-well-delivery_dms -n $WDDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamespace=$NAMESPACE
+```
+
+__File metadata ddms__
+
+__WARN__ This is not uploaded yet in the msft official helm or docker image repo, you need to build the image.
+
+```shell
+SFMD_NAMESPACE=ddms-seismic-file-metadata
+kubectl create namespace $SFMD_NAMESPACE && kubectl label namespace $SFMD_NAMESPACE istio-injection=enabled
+helm install seismic-metadata-services osdu-ddms/osdu-seismic-metadata_dms -n $SFMD_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE --set configuration.0.repository=<youracr>
 ```

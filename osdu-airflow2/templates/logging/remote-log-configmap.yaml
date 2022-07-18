@@ -111,7 +111,7 @@ data:
                 'filters': ['mask_secrets'],
             },
             'flask_appbuilder': {
-                'handler': ['console'],
+                'handlers': ['console'],
                 'level': FAB_LOG_LEVEL,
                 'propagate': True,
             },
@@ -127,7 +127,7 @@ data:
     if EXTRA_LOGGER_NAMES:
         new_loggers = {
             logger_name.strip(): {
-                'handler': ['console'],
+                'handlers': ['console'],
                 'level': LOG_LEVEL,
                 'propagate': True,
             }
