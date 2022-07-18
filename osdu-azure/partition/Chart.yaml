@@ -16,8 +16,8 @@ apiVersion: v2
 name: partition
 type: application
 description: Installs the OSDU on Azure Partition and Base Components
-version: 1.13.0
-appVersion: 0.13.0
+version: 1.15.0
+appVersion: 0.15.0
 dependencies:
   - name: "helm-library"
     version: "0.1.0"

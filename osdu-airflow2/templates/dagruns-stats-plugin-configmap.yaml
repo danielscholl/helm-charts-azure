@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airflow-dag-runs-stats-plugin
+data:
+  dag_runs_stats_plugin: |
+{{ .Files.Get "plugins/dag_runs_stats_plugin.py" | indent 4}} 
+# Adding extra indent to resolve issue of py file not getting rendered with appropriate spaces
+# https://github.com/helm/helm/issues/2004

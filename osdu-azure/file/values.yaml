@@ -158,6 +158,17 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: SPRING_CONFIG_NAME
       value: "common,application"
+    - name: event_grid_topic_status
+      value: "statuschangedtopic"
+    - name: service_bus_topic_status
+      value: "statuschangedtopic"
+    - name: azure_pubsub_publish
+      value: "true"
+    # Notification v2 not enabled (https://community.opengroup.org/osdu/platform/system/file/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L138)
+    - name: service_bus_enabled_status
+      value: "false"
+    - name: event_grid_enabled_status
+      value: "true"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config

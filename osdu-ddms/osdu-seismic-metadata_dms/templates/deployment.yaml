@@ -1,6 +1,7 @@
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $targetPort := .Values.service.target }}
+{{- $servicePort := .Values.service.port -}}
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}

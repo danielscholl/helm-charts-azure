@@ -146,6 +146,13 @@ configuration:
       value: "api://$(aad_client_id)"
     - name: azure_paas_podIdentity_isEnabled
       value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+    - name: servicebus_topic_name
+      value: "schemachangedtopic"
+    # Not enabled yet notification v2 (https://community.opengroup.org/osdu/platform/system/schema-service/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L122)
+    - name: event_grid_enabled
+      value: "true"
+    - name: service_bus_enabled
+      value: "false"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
