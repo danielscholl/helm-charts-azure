@@ -101,7 +101,3 @@ configuration:
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: AZ_AI_INSTRUMENTATION_KEY
-      secret:
-        name: central-logging
-        key: appinsights
