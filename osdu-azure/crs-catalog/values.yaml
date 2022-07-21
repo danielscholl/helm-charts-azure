@@ -117,6 +117,8 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: PARTITION_API
       value: http://partition/api/partition/v1
+    - name: SEARCH_API
+      value: http://search/api/search/v2
     - name: azure_istioauth_enabled
       value: "true"
     - name: KEYVAULT_URI
