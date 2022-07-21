@@ -49,6 +49,7 @@ global:
     oidAuthEnabled: <azure_oidAuthEnabled>
     corsEnabled: <azure_corsEnabled>
     suthEnvoyFilterEnabled: <azure_suthEnvoyFilterEnabled>
+    service_account_id: <azure_identity_id>
 
 
   ################################################################################

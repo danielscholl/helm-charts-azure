@@ -74,6 +74,7 @@ global:
    oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
    corsEnabled: false # set this to true if you want to enable CORS.
    suthEnabled: false # set this to true if you want to use SAuth identity envoy
+   service_account_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/app-dev-sp-username --query value -otsv)
 
  ingestion:
    airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
