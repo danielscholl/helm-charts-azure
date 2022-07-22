@@ -64,5 +64,11 @@ spec:
         port:
           number: 80
     timeout: 120s
+  - match:
+    - uri:
+        prefix: /api/file/v2/files
+    route:
+    - destination:
+        host: {{ .service }}.{{ $namespace }}.svc.cluster.local
 ---
 {{- end }}
