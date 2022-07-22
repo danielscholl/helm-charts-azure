@@ -5,17 +5,29 @@ metadata:
   name: istio-osdu
 spec:
   hub: msosdu.azurecr.io/istio
-  tag: 1.8.2
+  tag: 1.14.0
   meshConfig:
     defaultConfig:
       extraStatTags:
         - request_url_path
         - request_method
+      proxyStatsMatcher:
+        inclusionRegexps:
+        - .*upstream_rq_retry.*osdu.*
+        - .*upstream_rq_retry_success.*osdu.*
+        - .*upstream_rq_retry_overflow.*osdu.*
+        - .*ejections_detected_consecutive_5xx.*osdu.*
+        - .*ejections_enforced_total.*osdu.*
   profile: default
   values:
     global:
       proxy:
         logLevel: info
+    gateways:
+      istio-ingressgateway:
+        serviceAnnotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        loadBalancerIP: "{{ .Values.global.istio.loadBalancerIP }}"
     telemetry:
       v2:
         prometheus:

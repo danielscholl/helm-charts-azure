@@ -1,0 +1,279 @@
+{{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: istio-api
+  namespace: {{ .Release.Namespace }}
+spec:
+  hosts:
+  - "{{ .Values.global.istio.dns_host }}"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        exact: "/"
+    rewrite:
+      uri: /api/partition/v1/api-docs
+    route:
+    - destination:
+        host: partition.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/partition/v1"
+    route:
+    - destination:
+        host: partition.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/legal/v1"
+    route:
+    - destination:
+        host: legal.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/storage/v2"
+    route:
+    - destination:
+        host: storage.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/indexer/v2"
+    retries:
+      attempts: {{ $retryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /api/search/v2/query
+    retries:
+      attempts: {{ $retryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: search.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
+  - match:
+    - uri:
+        prefix: "/api/search/v2"
+    route:
+    - destination:
+        host: search.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
+  - match:
+    - uri:
+        prefix: "/api/search-extensions/v1alpha"
+    route:
+    - destination:
+        host: search-extensions.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/delivery/v2"
+    route:
+    - destination:
+        host: delivery.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/schema-service/v1"
+    route:
+    - destination:
+        host: schema.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/register/v1"
+    route:
+    - destination:
+        host: register.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/crs/catalog"
+    route:
+    - destination:
+        host: crs-catalog.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/crs/converter"
+    route:
+    - destination:
+        host: crs-conversion.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/unit"
+    route:
+    - destination:
+        host: unit.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/file"
+    route:
+    - destination:
+        host: file.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/workflow"
+    route:
+    - destination:
+        host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/os-wellbore-ddms"
+    route:
+    - destination:
+        host: wellbore-ddms.ddms-wellbore.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/notification/v1"
+    route:
+    - destination:
+        host: notification.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/well-planning"
+    route:
+    - destination:
+        host: well-planning.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/entitlements/v2"
+    route:
+    - destination:
+        host: entitlements.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/seistore-svc/api/v3"
+    route:
+    - destination:
+        host: seismic-ddms.ddms-seismic.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/seismic-file-metadata/api/v1"
+    route:
+    - destination:
+        host: /seismic-file-metadata.ddms-seismic-metadata.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/ingestion"
+    route:
+    - destination:
+        host: ingestion-service.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/well-delivery"
+    route:
+    - destination:
+        host: well-delivery-ddms.ddms-well-delivery.svc.cluster.local
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: "/api/policy/v1"
+    route:
+    - destination:
+        host: policy.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/dataset/v1/"
+    route:
+    - destination:
+        host: dataset.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: /airflow/
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: airflow-web.airflow.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /airflow2/
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: airflow2-web.airflow2.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /petrel-ds/api/v1/
+    route:
+    - destination:
+        port:
+          number: 80
+        host: pds-backend.ddms-petrel.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /petrel-ds/
+    route:
+    - destination:
+        port:
+          number: 80
+        host: pds-frontend.ddms-petrel.svc.cluster.local

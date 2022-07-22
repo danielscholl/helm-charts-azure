@@ -1,0 +1,11 @@
+{{- $namespace := .Release.namespace }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.job.appgw_configmap_name }}
+  namespace: {{ $namespace }}
+data:
+  ENV_SR_GROUP_NAME: {{ .Values.global.azure.srResourceGroupName }}
+  ENV_KEYVAULT_NAME: {{ .Values.global.azure.kvName }}
+  ENV_CLUSTER_NAME: {{ .Values.global.azure.clusterName }}
+  ENV_APPGW_NAME: {{ .Values.global.azure.appGwName }}
