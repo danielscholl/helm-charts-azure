@@ -1,0 +1,125 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+{{- $version := .Chart.AppVersion -}}
+{{- $namespace := .Release.Namespace -}}
+{{- $pullPolicy := .Values.pullPolicy -}}
+{{- $nodePool := .Values.deployment.nodePool -}}
+{{- $podAnnotations := .Values.deployment.podAnnotations -}}
+{{- $replicaCount := .Values.deployment.replicaCount -}}
+{{- $name := include "standard-ddms.name" . }}
+{{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
+{{- $selector := include "standard-ddms.selector-labels" (list $ .) }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .service }}
+  namespace: {{ $namespace }}
+  labels: {{ $labels | nindent 4 }}
+spec:
+{{- if not .autoscale }}
+  replicas: {{ $replicaCount }}
+  selector:
+    matchLabels: {{ $selector | nindent 8 }}
+{{- end }}
+  template:
+    metadata:
+      {{- with $podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels: {{ $labels | nindent 8 }}
+        aadpodidbinding: {{ $name }}-identity
+    spec:
+      {{- if $nodePool }}
+      nodeSelector:
+        agentpool: {{ $nodePool }}
+      {{- end }}
+      {{- if .secrets }}
+      volumes:
+        - name: {{ $name }}-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ $name }}-secrets
+      {{- end }}
+      containers:
+        - name: {{ .service }}
+          image: {{ $.Values.azure.acr }}/{{ .container.image }}:{{ .container.tag | default $version }}
+          imagePullPolicy: "Always"
+          ports:
+            - name: http
+              containerPort: {{ .container.containerPort }}
+              protocol: TCP
+          {{- if .probe }}
+          {{- if .probe.readiness }}
+          readinessProbe:
+            httpGet:
+              path: {{ .probe.readiness.path }}
+              port: http
+            initialDelaySeconds: {{ .probe.readiness.delay | default 30 }}
+          {{- end }}
+          {{- if .probe.liveness }}
+          livenessProbe:
+            httpGet:
+              path: {{ .probe.liveness.path }}
+              port: http
+            initialDelaySeconds: {{ .probe.liveness.delay | default 30 }}
+            periodSeconds: {{ .probe.liveness.seconds | default 15 }}
+          {{- end }}
+          {{- end }}
+          {{- if or .request .limit }}
+          resources:
+            {{- if .request }}
+            requests:
+              {{- if .request.cpu }}
+              cpu: {{ .request.cpu | quote }}
+              {{- end }}
+              {{- if .request.memory }}
+              memory: {{ .request.memory | quote }}
+              {{- end }}
+            {{- end }}
+            {{- if .limit }}
+            limits:
+              {{- if .limit.cpu }}
+              cpu: {{ .limit.cpu | quote }}
+              {{- end }}
+              {{- if .limit.memory }}
+              memory: {{ .limit.memory | quote }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- if .config }}
+          envFrom:
+          - configMapRef:
+              name: {{ .service }}-config
+          {{- end }}
+          {{- if .secrets }}
+          volumeMounts:
+          - name: {{ $name }}-secrets
+            mountPath: "/mnt/{{ $name }}-secrets"
+            readOnly: true
+          env:
+            {{- range .secrets }}
+            - name: {{ .name | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}-secrets
+                  key: {{ .key | quote }}
+            {{- end }}
+          {{- end }}
+{{- end }}

@@ -1,3 +1,5 @@
+# DEPRECATED! 
+Plese use `standard-ddms` helm instead
 # Helm Chart for OSDU on Azure Well Delivery DMS 
 
 | Well Delivery     | app-version  |

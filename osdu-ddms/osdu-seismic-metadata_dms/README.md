@@ -1,3 +1,5 @@
+# DEPRECATED! 
+Plese use `standard-ddms` helm instead
 # Helm Chart for OSDU on Azure Seismic File Metatdata Service
 
 | osdu-seismic-metadata_dms  | app-version  |
