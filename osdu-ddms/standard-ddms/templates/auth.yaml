@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 {{- $namespace := .Release.Namespace -}}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
 {{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
 {{- if .auth }}
 ---
 apiVersion: security.istio.io/v1beta1
@@ -22,7 +22,7 @@ kind: AuthorizationPolicy
 metadata:
   name: {{ .service }}-auth
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
   action: DENY
   rules:

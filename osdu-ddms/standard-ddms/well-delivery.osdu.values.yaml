@@ -1,0 +1,71 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+
+# FIXME: Critical architecture issue. Should be fixed. Specific to OSDU deployment
+azure:
+  keyvault: 
+    secrets:
+    - key: aad.client.id
+      obj: aad-client-id
+
+# FIXME: Specific to OSDU deployment
+ingress:
+  appGateway: 
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
+
+# FIXME: Prometheus instrumentation needs to be implememented for DDMS services
+# deployment:
+#   podAnnotations:
+#     prometheus.io/path: /actuator/prometheus
+#     prometheus.io/port: "8080"
+#     prometheus.io/scrape: "true"
+
+
+configuration:
+  - service: well-delivery-ddms
+    container:
+      image: well-delivery-ddms
+      containerPort: 8080
+    path: /api/well-delivery
+    probe:
+      readiness: 
+        path: /api/well-delivery/_ah/warmup
+      liveness:
+        path: /api/well-delivery/info
+        delay: 30
+        seconds: 15
+    auth:
+      disable:
+        - "/api/well-delivery/swagger*"
+        - "/api/well-delivery/v3/api-docs"
+        - "/api/well-delivery/_ah/warmup"
+        - "/api/well-delivery/info"
+    config:
+      server.servlet.contextPath: "/api/well-delivery/"
+      entitlements_service_endpoint: "http://entitlements.osdu-azure/api/entitlements/v2"
+      entitlements_service_api_key: "OBSOLETE"
+      legal_service_endpoint:  "http://legal.osdu-azure/api/legal/v1"
+      storage_service_endpoint: "http://storage.osdu-azure/api/storage/v2"
+      schema_service_endpoint: "http://schema.osdu-azure/api/schema-service/v1"
+      partition_service_endpoint: "http://partition.osdu-azure/api/partition/v1"
+      azure_activedirectory_session_stateless: "true"
+      azure_istioauth_enabled: "true"
+      KEYVAULT_URI: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
+    
+    # FIXME:  Critical architecture issue. Should be fixed. Specific to OSDU deployment
+    secrets:
+      - name: aad_client_id
+        key: aad.client.id
