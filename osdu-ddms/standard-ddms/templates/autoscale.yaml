@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 {{- $namespace := .Release.Namespace -}}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
 {{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
 {{- if .autoscale }}
 ---
 apiVersion: autoscaling/v2beta2
@@ -22,7 +22,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .service }}-autoscale
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

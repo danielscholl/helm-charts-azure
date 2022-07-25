@@ -12,48 +12,30 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# Default values for osdu-azure.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 
-################################################################################
-# Azure Environment Settings
-#
+# FIXME: Specific to OSDU deployment
 azure:
-  tenant: <azure_tenant>
-  subscription: <azure_subscription>
-  resourcegroup: <azure_resourcegroup>
-  identity: <azure_identity>
-  identity_id: <azure_identity_id>
-  acr: <azure_acr>
   keyvault: 
-    name: <azure_keyvault>
     secrets:
     - key: appinsight.key
       obj: appinsights-key
 
-################################################################################
-# Common Ingress Settings
-#
+# FIXME: Specific to OSDU deployment
 ingress:
-  dns: <ingress_dns>
+  appGateway: 
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
 
-################################################################################
-# Common Deployment Settings
-#
 deployment:
   podAnnotations:
-    prometheus.io/path: /api/wellbore/metrics
+    prometheus.io/path: /api/os-wellbore-ddms/metrics
     prometheus.io/port: "8080"
     prometheus.io/scrape: "true"
 
-################################################################################
-# DDMS Service Specific Configuration
-#
 configuration:
-  - service: wellbore
+  - service: wellbore-ddms
     container:
-      image: <image_name>
+      image: wellbore-ddms
       containerPort: 8080
     path: /api/os-wellbore-ddms
     probe:
@@ -72,12 +54,14 @@ configuration:
       CLOUD_PROVIDER: "az"
       SERVICE_NAME: "wellbore-ddms"
       OPENAPI_PREFIX: "/api/os-wellbore-ddms"
-      KEYVAULT_URL: "https://<azure_keyvault>.vault.azure.net/"
+      KEYVAULT_URL: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
       SERVICE_HOST_STORAGE: "http://storage.osdu-azure/api/storage"
-      SERVICE_HOST_SEARCH: "http://search-service.osdu-azure/api/search"
+      SERVICE_HOST_SEARCH: "http://search.osdu-azure/api/search"
       SERVICE_HOST_PARTITION: "http://partition.osdu-azure/api/partition"
       USE_PARTITION_SERVICE: "enabled"
       AZ_LOGGER_LEVEL: "INFO"
+
+    # FIXME: Specific to OSDU deployment
     secrets:
       - name: AZ_AI_INSTRUMENTATION_KEY
         key: appinsight.key

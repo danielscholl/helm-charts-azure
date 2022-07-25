@@ -18,21 +18,22 @@
 {{- $nodePool := .Values.deployment.nodePool -}}
 {{- $podAnnotations := .Values.deployment.podAnnotations -}}
 {{- $replicaCount := .Values.deployment.replicaCount -}}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
-{{- $selectorLabels := include "standard-ddms.selectorLabels" . | nindent 8 }}
+{{- $name := include "standard-ddms.name" . }}
 {{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
+{{- $selector := include "standard-ddms.selector-labels" (list $ .) }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .service }}
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
 {{- if not .autoscale }}
   replicas: {{ $replicaCount }}
   selector:
-    matchLabels: {{ $selectorLabels }}
+    matchLabels: {{ $selector | nindent 8 }}
 {{- end }}
   template:
     metadata:
@@ -40,8 +41,8 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      labels: {{ $selectorLabels }}
-        aadpodidbinding: {{ .service }}-identity
+      labels: {{ $labels | nindent 8 }}
+        aadpodidbinding: {{ $name }}-identity
     spec:
       {{- if $nodePool }}
       nodeSelector:
@@ -49,12 +50,12 @@ spec:
       {{- end }}
       {{- if .secrets }}
       volumes:
-        - name: azure-keyvault
+        - name: {{ $name }}-secrets
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: {{ .service }}-secrets
+              secretProviderClass: {{ $name }}-secrets
       {{- end }}
       containers:
         - name: {{ .service }}
@@ -77,8 +78,8 @@ spec:
             httpGet:
               path: {{ .probe.liveness.path }}
               port: http
-            initialDelaySeconds: {{ .probe.liveness.delay | default 15 }}
-            periodSeconds: {{ .probe.liveness.seconds | default 5 }}
+            initialDelaySeconds: {{ .probe.liveness.delay | default 30 }}
+            periodSeconds: {{ .probe.liveness.seconds | default 15 }}
           {{- end }}
           {{- end }}
           {{- if or .request .limit }}
@@ -109,16 +110,15 @@ spec:
           {{- end }}
           {{- if .secrets }}
           volumeMounts:
-          - name: azure-keyvault
-            mountPath: "/mnt/azure-keyvault"
+          - name: {{ $name }}-secrets
+            mountPath: "/mnt/{{ $name }}-secrets"
             readOnly: true
           env:
-            {{- $service := .service -}}
             {{- range .secrets }}
             - name: {{ .name | quote }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $service }}-secrets
+                  name: {{ $name }}-secrets
                   key: {{ .key | quote }}
             {{- end }}
           {{- end }}

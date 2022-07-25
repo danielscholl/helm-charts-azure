@@ -16,6 +16,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Following extenral parameters are expected:
+# <azure_tenant>
+# <azure_subscription>
+# <azure_resourcegroup>
+# <azure_identity>
+# <azure_identity_id>
+# <azure_acr>
+# <azure_keyvault>
+# <ingress_dns>
+
 ################################################################################
 # Azure Environment Settings
 #
@@ -29,8 +39,8 @@ azure:
   keyvault: 
     name: <azure_keyvault>
     secrets:
-    - key: appinsight.key
-      obj: appinsights-key
+    # - key: appinsight.key
+    #   obj: appinsights-key
 
 
 ################################################################################
@@ -50,13 +60,13 @@ ingress:
 #
 deployment:
   # nodePool: default
-  replicaCount: 1
+  replicaCount: 2
   
   # List of custom Pod anatations that needs to be added to the Pods.
-  podAnnotations:
-    prometheus.io/path: /actuator/prometheus
-    prometheus.io/port: "8081"
-    prometheus.io/scrape: "true"
+  # podAnnotations:
+  #   prometheus.io/path: /actuator/prometheus
+  #   prometheus.io/port: "8081"
+  #   prometheus.io/scrape: "true"
 
 
 ################################################################################
@@ -85,8 +95,11 @@ configuration:
     # probe:
     #   readiness: 
     #     path: /healthz
+    #     delay: 30
     #   liveness: 
     #     path: /healthz
+    #     delay: 30
+    #     seconds: 15
     
     ################################################################################
     # Specify Pod Resource Allocations (optional)
@@ -110,10 +123,11 @@ configuration:
    
     ################################################################################
     # Specify any Configs to enable for the pod trough Env variables. (optional)
+    # `config` section supports Helm values format
     #
     # config:
-    #   CLOUD_PROVIDER: "az"
-    #   AZ_LOGGER_LEVEL: "INFO"
+    #   MY_STATIC_VAR: "INFO"
+    #   MY_DYNAMIC_VAR: "{{ .Values.ingress.dns }}"
 
     ################################################################################
     # Specify any Secrets to enable for the pod trough Env variables. (optional)

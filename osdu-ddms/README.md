@@ -1,121 +1,74 @@
 # Helm Chart for OSDU DDMS on Azure
+All DDMSs services have been moved to the common K8S architecture and use of common Helm chart (`standad-ddms`).
+Individual DDMSs helm charts are **DEPRECATED!** and will be not supported starting from OSDU M12 (`release/0.15`)
 
-| `ddms-*-*`          | app-version  |
-| ------------------- | ----------   |
-| 1.15.0               | 0.15.0        |
-| 1.11.0               | 0.11.0        |
-| 1.9.0               | 0.9.0        |
+![DDMS K8S deployment](docs/ddms_k8s_deployment.jpeg)
 
 
-__Pull Helm Chart__
-
+## Pulling Helm Chart
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
-
 ```bash
-# Setup Variables
-CHART=osdu-ddms
-VERSION=1.15.0
+CHART="..."
+VERSION="..."
+
+ACR='msosdu.azurecr.io'
+helm repo add $ACR "https://$ACR/helm/v1/repo"
 
 # Pull Chart
-helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
-
-# Export Chart
-helm chart export msosdu.azurecr.io/helm/$CHART:$VERSION
+helm pull "oci://$ACR/helm/$CHART" --version $VERSION
 ```
 
-__Create Helm Chart Values__
-
-Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
-
-_The following commands can help generate a prepopulated custom_values file._
-```bash
-# Setup Variables
-UNIQUE="<your_osdu_unique>"         # ie: demo
-DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
-
-# This logs your local Azure CLI in using the configured service principal.
-az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
-
-GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
-ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
-
-# Translate Values File
-cat > osdu_ddms_custom_values.yaml << EOF
-# This file contains the essential configs for the osdu on azure helm chart
-
-################################################################################
-# Specify the default replica count for each service.
-#
-replicaCount: 2
-
-################################################################################
-# Specify the azure environment specific values
-#
-azure:
-  tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
-  subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-  resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
-  identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-  identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
-  keyvault: $ENV_VAULT
-  appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-
-################################################################################
-# Specify the Ingress Settings
-#
-ingress:
-  issuer: letsencrypt-prod-dns
-  dns: $DNS_HOST
-  enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
-EOF
-```
-__Moving Previously Installed Version__
-
-Uninstall previously installed versions
+## Deploying Services
 
 ```bash
-# Seismic
-helm uninstall seismic-store-service
+function deploy() {
+  local ddms=$1
+  local deployment='osdu'
+  local base_dir='./osdu-ddms/standard-ddms/'
+  local helm_release="$ddms-services"
+  local helm_value_file="${base_dir}${ddms}.${deployment}.values.yaml"
+  local k8s_namespace="ddms-$ddms"
+  
+  # Uninstall if Helm release is not-compatible  
+  # helm uninstall $helm_release -n $k8s_namespace
 
-# Seismic File Metadata
-helm uninstall seismic-file-metadata
+  # Create K8S Namespace with configured Istio sidecar ingejction
+  kubectl create namespace $k8s_namespace && \
+  kubectl label namespace $k8s_namespace istio-injection='enabled'
 
+  helm upgrade -i \
+  $helm_release $base_dir \
+  -n $k8s_namespace \
+  -f $helm_value_file \
+  --set azure.tenant=$azure_tenant \
+  --set azure.subscription=$azure_subscription \
+  --set azure.resourcegroup=$azure_resourcegroup \
+  --set azure.identity=$azure_identity \
+  --set azure.identity_id=$azure_identity_id \
+  --set azure.keyvault.name=$azure_keyvault \
+  --set azure.acr=$azure_acr \
+  --set ingress.dns=$ingress_dns  
+} 
 
-# Wellbore 
-helm uninstall os-wellbore-ddms
-
-# Well delivery
-helm uninstall well-delivery-ddms
-
-```
-
-The folder structure has been updated. Please take the latest pull from gitlab 
-Make sure the new folder is present at root: osdu-ddms
-The following folder should not be present: osdu-azure > osdu-seismic_dms, osdu-wellbore_dms, or osdu-well-delivery-ddms. If present please delete.
-
-__Install Helm Chart__
-
-Install the helm chart.
-
-```bash
 # Ensure your context is set.
-# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
+az account set --subscription '<AKS Subscription ID>'
+az aks get-credentials --resource-group '<AKS Resource Group>' --name '<AKS resource name>'
 
-# DDMS Namespace
-SDMS_NAMESPACE=ddms-seismic
-WDMS_NAMESPACE=ddms-wellbore
-WDDMS_NAMESPACE=ddms-well-delivery
+# This is specific to OSDU instance:
+azure_tenant='...'
+azure_subscription='...'
+azure_resourcegroup='...'
+azure_identity='...'
+azure_identity_id='...'
+azure_keyvault='...'
+azure_acr='...'
+ingress_dns='...'
 
-NAMESPACE=osdu-azure
+# Deploying DDMSs services
+deploy "wellbore"
+deploy "seismic"
+deploy "well-delivery"
 
-kubectl create namespace $SDMS_NAMESPACE && kubectl label namespace $SDMS_NAMESPACE istio-injection=enabled
-kubectl create namespace $WDMS_NAMESPACE && kubectl label namespace $WDMS_NAMESPACE istio-injection=enabled
-kubectl create namespace $WDDMS_NAMESPACE && kubectl label namespace $WDDMS_NAMESPACE istio-injection=enabled
-
-# Install Charts
-helm install seismic-services osdu-ddms/osdu-seismic_dms -n $SDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install wellbore-services osdu-ddms/osdu-wellbore_dms -n $WDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
-helm install well-delivery-services osdu-ddms/osdu-well-delivery_dms -n $WDDMS_NAMESPACE -f osdu_ddms_custom_values.yaml --set coreServicesNamepsace=$NAMESPACE
 ```
 
 __File metadata ddms__
