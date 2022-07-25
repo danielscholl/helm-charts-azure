@@ -31,21 +31,33 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
-Common labels
+DDMSs level labels
 */}}
-{{- define "standard-ddms.labels" -}}
+{{- define "standard-ddms.common-labels" -}}
 helm.sh/chart: {{ include "standard-ddms.chart" . }}
-{{ include "standard-ddms.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
+app.kubernetes.io/name: {{ include "standard-ddms.name" . }}
+app.kubernetes.io/version: {{ .Chart.AppVersion }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+DDMSs services level labels
 */}}
-{{- define "standard-ddms.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "standard-ddms.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "standard-ddms.service-labels" -}}
+{{- $ := index . 0 }}
+{{- with index . 1 }}
+app.kubernetes.io/instance: {{ .service }}
+{{ include "standard-ddms.common-labels" $ }}
+{{- end }}
+{{- end }}
+
+{{/*
+PODs selector labels
+*/}}
+{{- define "standard-ddms.selector-labels" -}}
+{{- $ := index . 0 }}
+{{- with index . 1 }}
+app.kubernetes.io/instance: {{ .service }}
+app.kubernetes.io/version: {{ $.Chart.AppVersion }}
+{{- end }}
 {{- end }}

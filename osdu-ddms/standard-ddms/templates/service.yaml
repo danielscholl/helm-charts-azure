@@ -12,17 +12,18 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+{{- $name := include "standard-ddms.name" . }}
 {{- $namespace := .Release.Namespace }}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
-{{- $selectorLabels := include "standard-ddms.selectorLabels" . | nindent 4 }}
 {{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
+{{- $selector := include "standard-ddms.selector-labels" (list $ .) }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .service }}-service
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
   type: ClusterIP
   ports:
@@ -30,5 +31,5 @@ spec:
       targetPort: {{ .container.containerPort }}
       protocol: TCP
       name: http
-  selector: {{ $selectorLabels }}
+  selector: {{ $selector | nindent 4 }}
 {{- end }}

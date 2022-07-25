@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 {{- $name := include "standard-ddms.name" . }}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
+{{- $labels := include "standard-ddms.common-labels" . }}
 {{- $namespace := .Release.Namespace }}
 {{- $azSub := .Values.azure.subscription }}
 {{- $azRg := .Values.azure.resourcegroup }}
@@ -25,7 +25,7 @@ kind: AzureIdentity
 metadata:
   name: {{ $name }}-identity
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
   type: 0
   resourceID: "/subscriptions/{{ $azSub }}/resourcegroups/{{ $azRg }}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{{ $azIdentity }}"
@@ -36,7 +36,7 @@ kind: AzureIdentityBinding
 metadata:
   name: {{ $name }}-binding
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 spec:
   azureIdentity: {{ $name }}-identity
   selector: {{ $name }}-identity

@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 {{- $namespace := .Release.Namespace }}
-{{- $labels := include "standard-ddms.labels" . | nindent 4 }}
 {{- range .Values.configuration }}
+{{- $labels := include "standard-ddms.service-labels" (list $ .) }}
 {{- if .config }}
 ---
 apiVersion: v1
@@ -22,10 +22,8 @@ kind: ConfigMap
 metadata:
   name: {{ .service }}-config
   namespace: {{ $namespace }}
-  labels: {{ $labels }}
+  labels: {{ $labels | nindent 4 }}
 data:
-  {{- with .config }}
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+  {{- tpl (toYaml .config) $ | nindent 4 }}
 {{- end }}
 {{- end }}
