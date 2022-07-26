@@ -20,6 +20,6 @@ version: 1.15.0
 appVersion: 0.15.0
 dependencies:
   - name: "helm-library"
-    version: "0.1.0"
+    version: "1.15.0"
     repository: file://../helm-library
     enabled: true
