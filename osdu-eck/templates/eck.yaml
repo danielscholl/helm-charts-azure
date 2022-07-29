@@ -87,6 +87,6 @@ spec:
               whenUnsatisfiable: DoNotSchedule
               labelSelector:
                 matchLabels:
-                  elasticsearch.k8s.elastic.co/cluster-name: quickstart
-                  elasticsearch.k8s.elastic.co/statefulset-name: quickstart-es-default
+                  elasticsearch.k8s.elastic.co/cluster-name: elasticsearch
+                  elasticsearch.k8s.elastic.co/statefulset-name: elasticsearch-es-default
 {{- end}}
