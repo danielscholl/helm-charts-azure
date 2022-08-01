@@ -26,6 +26,17 @@ ingress:
     # prometheus.io/port: "80"
     # prometheus.io/scrape: "true"
 
+# Annotation to support the key rotation for redis password in keyvaul
+deployment:
+  deploymentAnnotations:
+    secret.reloader.stakater.com/reload: "{{.Relese.name }}-secret"
+
+azure:
+  keyvault: 
+    secrets:
+    - key: k8.redis.password
+      obj: redis-password
+
 configuration:
   ###################
   # Seismic Service #
@@ -52,6 +63,10 @@ configuration:
       CLOUDPROVIDER: "azure"
       PORT: "8080"
       KEYVAULT_URL: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
+    # Use only for secret rotation
+    secrets:
+      - name: AZ_REDIS_PASSWORD
+        key: k8.redis.password
   
   #################################
   # Seismic File Metadata Service #

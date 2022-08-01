@@ -16,6 +16,7 @@
 {{- $namespace := .Release.Namespace -}}
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $nodePool := .Values.deployment.nodePool -}}
+{{- $deploymentAnnotations := .Values.deployment.deploymentAnnotations -}}
 {{- $podAnnotations := .Values.deployment.podAnnotations -}}
 {{- $replicaCount := .Values.deployment.replicaCount -}}
 {{- $name := include "standard-ddms.name" . }}
@@ -29,6 +30,9 @@ metadata:
   name: {{ .service }}
   namespace: {{ $namespace }}
   labels: {{ $labels | nindent 4 }}
+  {{- with $deploymentAnnotations }}
+  annotations: {{- tpl (toYaml .) $ | nindent 8 }}
+  {{- end }}
 spec:
 {{- if not .autoscale }}
   replicas: {{ $replicaCount }}
@@ -50,12 +54,12 @@ spec:
       {{- end }}
       {{- if .secrets }}
       volumes:
-        - name: {{ $name }}-secrets
+        - name: {{ $name }}-secret
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: {{ $name }}-secrets
+              secretProviderClass: {{ $name }}-secret
       {{- end }}
       containers:
         - name: {{ .service }}
@@ -110,15 +114,15 @@ spec:
           {{- end }}
           {{- if .secrets }}
           volumeMounts:
-          - name: {{ $name }}-secrets
-            mountPath: "/mnt/{{ $name }}-secrets"
+          - name: {{ $name }}-secret
+            mountPath: "/mnt/{{ $name }}-secret"
             readOnly: true
           env:
             {{- range .secrets }}
             - name: {{ .name | quote }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $name }}-secrets
+                  name: {{ $name }}-secret
                   key: {{ .key | quote }}
             {{- end }}
           {{- end }}

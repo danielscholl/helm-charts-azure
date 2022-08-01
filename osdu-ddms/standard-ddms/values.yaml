@@ -42,7 +42,6 @@ azure:
     # - key: appinsight.key
     #   obj: appinsights-key
 
-
 ################################################################################
 # Common Ingress Settings
 #
@@ -54,20 +53,20 @@ ingress:
     # issuer: letsencrypt-prod-dns ### Name of certificat issuer
     # enableKeyvaultCert: false ### Use self-signed cert stored in KeyVault 
 
-
 ################################################################################
 # Common Deployment Settings
 #
 deployment:
   # nodePool: default
   replicaCount: 2
-  
+  # Annotation for the secret reloader to be used by Seismic
+  # deploymentAnnotations:
+  #   secret.reloader.stakater.com/reloader: your-secret-here
   # List of custom Pod anatations that needs to be added to the Pods.
   # podAnnotations:
   #   prometheus.io/path: /actuator/prometheus
   #   prometheus.io/port: "8081"
   #   prometheus.io/scrape: "true"
-
 
 ################################################################################
 # DDMS service specific Configuration
@@ -79,7 +78,6 @@ configuration:
       image: hello-world
       # tag: latest
       containerPort: 8080
-    
     # TODO: Need to test autoscaling settings
     ################################################################################
     # Specify service specific Authoscaling Settings
