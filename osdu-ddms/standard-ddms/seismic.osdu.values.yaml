@@ -29,7 +29,7 @@ ingress:
 # Annotation to support the key rotation for redis password in keyvaul
 deployment:
   deploymentAnnotations:
-    secret.reloader.stakater.com/reload: "{{.Relese.name }}-secret"
+    secret.reloader.stakater.com/reload: "{{.Release.Name }}-secret"
 
 azure:
   keyvault: 
