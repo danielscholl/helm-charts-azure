@@ -6,7 +6,7 @@ metadata:
   namespace: {{ $namespace }}
 data:
   CLOUD_PROVIDER: az
-  OPENAPI_PREFIX: /api/os-well-delivery-ddms
+  OPENAPI_PREFIX: /api/well-delivery-ddms
   SERVICE_HOST_STORAGE: http://storage.{{ .Values.coreServicesNamepsace }}/api/storage
   SERVICE_HOST_SEARCH: http://search-service.{{ .Values.coreServicesNamepsace }}/api/search
   SERVICE_HOST_PARTITION: http://partition.{{ .Values.coreServicesNamepsace }}/api/partition
