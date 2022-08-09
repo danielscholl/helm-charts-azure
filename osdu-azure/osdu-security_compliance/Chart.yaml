@@ -33,5 +33,5 @@ dependencies:
     enabled: true
   - name: "helm-library"
     repository: file://../helm-library
-    version: "1.15.0"
+    version: "0.1.0"
     enabled: true
