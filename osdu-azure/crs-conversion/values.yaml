@@ -116,6 +116,8 @@ configuration:
       value: osdu-db
     - name: ENTITLEMENT_URL
       value: http://entitlements/api/entitlements/v2
+    - name: STORAGE_URL
+      value: http://storage/api/storage/v2
     - name: PARTITION_API
       value: http://partition/api/partition/v1
     - name: ESRI_DATA_PATH
