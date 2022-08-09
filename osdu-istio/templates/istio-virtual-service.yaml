@@ -1,4 +1,5 @@
 {{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+{{- $retryattemptsFileService := .Values.global.resiliency.retry_attempts_file_service | default 2 }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -145,6 +146,44 @@ spec:
     timeout: 300s
   - match:
     - uri:
+        prefix: "/api/file/v2/files/uploadURL"
+    retries:
+      attempts: {{ $retryattemptsFileService }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset,5xx
+    route:
+    - destination:
+        host: file.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
+  - match:
+    - uri:
+        regex: /api/file/v2/files/.*/downloadURL
+    retries:
+      attempts: {{ $retryattemptsFileService }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset,5xx
+    route:
+    - destination:
+        host: file.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
+  - match:
+    - uri:
+        regex: /api/file/v2/files/.*/metadata
+      method: 
+        exact: "GET"
+    retries:
+      attempts: {{ $retryattemptsFileService }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset,5xx
+    route:
+    - destination:
+        host: file.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
+  - match:
+    - uri:
         prefix: "/api/file"
     route:
     - destination:
@@ -208,7 +247,7 @@ spec:
         prefix: "/seismic-file-metadata/api/v1"
     route:
     - destination:
-        host: /seismic-file-metadata.ddms-seismic-metadata.svc.cluster.local
+        host: seismic-file-metadata.ddms-seismic-metadata.svc.cluster.local
         port:
           number: 80
   - match:
