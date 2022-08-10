@@ -33,7 +33,6 @@ ingress:
 #     prometheus.io/port: "8080"
 #     prometheus.io/scrape: "true"
 
-
 configuration:
   - service: well-delivery-ddms
     container:
@@ -52,7 +51,7 @@ configuration:
         - "/api/well-delivery/swagger*"
         - "/api/well-delivery/v3/api-docs"
         - "/api/well-delivery/_ah/warmup"
-        - "/api/well-delivery/info"
+        - "/api/well-delivery/info" 
     config:
       server.servlet.contextPath: "/api/well-delivery/"
       entitlements_service_endpoint: "http://entitlements.osdu-azure/api/entitlements/v2"
