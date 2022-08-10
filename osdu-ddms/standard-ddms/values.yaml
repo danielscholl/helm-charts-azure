@@ -54,6 +54,12 @@ ingress:
     # enableKeyvaultCert: false ### Use self-signed cert stored in KeyVault 
 
 ################################################################################
+# Specify Pod Distribution Budget Setting
+#
+podDisruptionBudget:
+  enabled: true
+
+################################################################################
 # Common Deployment Settings
 #
 deployment:
@@ -108,7 +114,7 @@ configuration:
     # limit:
     #   cpu: 1000m
     #   memory: 1300Mi
-    
+
     ################################################################################
     # Specify if Istio Auth should be enabled with bypass paths.
     #
