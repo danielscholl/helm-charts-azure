@@ -77,6 +77,15 @@ global:
     type: ClusterIP
     port: 80
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    rateLimit:
+      enabled: true
+      max_tokens: 220
+      tokens_per_fill: 220
+      fill_interval: 5s
 
  ################################################################################
  # Specify the OSDU Services to Load
