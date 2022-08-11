@@ -77,7 +77,6 @@ configuration:
   #
   - service: well-delivery-ddms
     repository: <azure_acr>/well-delivery-ddms
-    tag: <tag_name>
     path: /api/well-delivery/*
     probe: /api/well-delivery/_ah/warmup
     keyvault: true
