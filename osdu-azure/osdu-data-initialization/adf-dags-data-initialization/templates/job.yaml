@@ -49,3 +49,5 @@ spec:
             secretKeyRef:
               name: airflow
               key: admin-password
+        - name: ENVIRONMENT
+          value: {{ .Values.config.environment }}
