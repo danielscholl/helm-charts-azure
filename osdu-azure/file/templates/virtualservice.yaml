@@ -70,5 +70,11 @@ spec:
     route:
     - destination:
         host: {{ .service }}.{{ $namespace }}.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /api/file/v2/file-collections
+    route:
+    - destination:
+        host: {{ .service }}.{{ $namespace }}.svc.cluster.local
 ---
 {{- end }}
