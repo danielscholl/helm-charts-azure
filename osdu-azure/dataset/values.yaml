@@ -137,6 +137,8 @@ configuration:
         value: http://file/api/file/v2/files
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+      - name: file_collection_service_endpoint
+        value: http://file/api/file/v2/file-collections
     podIdentityEnvs:
       - name: AZURE_CLIENT_ID
         secret:
@@ -150,5 +152,3 @@ configuration:
         secret:
           name: active-directory
           key: tenantid
-      - name: file_collection_service_endpoint
-        value: http://file/api/file/v2/file-collections
