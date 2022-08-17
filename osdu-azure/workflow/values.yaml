@@ -116,7 +116,7 @@ configuration:
         - "*/_ah/**"
         - "*/v3/api-docs"
         - "*/api-docs"
-        - "/api/workflow/info"
+        - "/api/workflow/v1/info"
     env:
       - name: spring_application_name
         value: workflow
