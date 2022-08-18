@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: remove-uri-pattern-header
+  namespace: istio-system
+spec:
+  priority: -100
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.lua.uri-pattern-matcher
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.lua.remove-uri-pattern-header
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
+          inlineCode: |
+            function envoy_on_request(request_handle)
+              request_handle:headers():remove("x-internal-uri-pattern")
+            end
+            function envoy_on_response(response_handle)
+              response_handle:headers():remove("x-internal-uri-pattern")
+            end

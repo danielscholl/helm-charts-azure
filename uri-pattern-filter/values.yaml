@@ -1,0 +1,3 @@
+service: "secret"
+uriPatterns:
+- "/zample/url/{id}"
