@@ -21,7 +21,7 @@ global:
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
-  kubernetesSecrets: "redis"
+  kubernetesSecrets: "redis,graphdbkey"
 
   ################################################################################
   # Specify the auto scale specific values

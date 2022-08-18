@@ -88,7 +88,7 @@ global:
       max_tokens: 500
       tokens_per_fill: 500
       fill_interval: 5s
-    retry_attempts: 2
+    retry_attempts: 3
 
 ################################################################################
 # Specify the OSDU Services to Load

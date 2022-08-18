@@ -1,4 +1,5 @@
 {{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+{{- $workflowRetryattempts := .Values.global.resiliency.workflow.retry_attempts | default 0 }}
 {{- $retryattemptsFileService := .Values.global.resiliency.retry_attempts_file_service | default 2 }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -191,6 +192,18 @@ spec:
         port:
           number: 80
     timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/workflow/v1"
+    retries:
+      attempts: {{ $workflowRetryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/workflow"
