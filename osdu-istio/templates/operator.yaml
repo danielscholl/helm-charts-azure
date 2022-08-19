@@ -9,7 +9,6 @@ spec:
   meshConfig:
     defaultConfig:
       extraStatTags:
-        - request_url_path
         - request_method
         - request_path
       proxyStatsMatcher:
@@ -37,36 +36,30 @@ spec:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
             outboundSidecar:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
             gateway:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
   components:
