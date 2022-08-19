@@ -28,8 +28,8 @@ function deploy() {
   local helm_release="$ddms-services"
   local helm_value_file="${base_dir}${ddms}.${deployment}.values.yaml"
   local k8s_namespace="ddms-$ddms"
-  
-  # Uninstall if Helm release is not-compatible  
+
+  # Uninstall if Helm release is not-compatible
   # helm uninstall $helm_release -n $k8s_namespace
 
   # Create K8S Namespace with configured Istio sidecar ingejction
@@ -47,8 +47,8 @@ function deploy() {
   --set azure.identity_id=$azure_identity_id \
   --set azure.keyvault.name=$azure_keyvault \
   --set azure.acr=$azure_acr \
-  --set ingress.dns=$ingress_dns  
-} 
+  --set ingress.dns=$ingress_dns
+}
 
 # Ensure your context is set.
 az account set --subscription '<AKS Subscription ID>'
@@ -68,5 +68,5 @@ ingress_dns='...'
 deploy "wellbore"
 deploy "seismic"
 deploy "well-delivery"
-
+deploy "reservoir"
 ```
