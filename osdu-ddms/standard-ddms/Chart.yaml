@@ -18,3 +18,7 @@ type: application
 description: Install standard DDMS service
 version: 1.15.0
 appVersion: 0.15.0
+dependencies:
+  - name: "uri-pattern-filter"
+    version: "0.1.0"
+    repository: file://../../uri-pattern-filter

@@ -33,7 +33,7 @@ deployment:
     prometheus.io/scrape: "true"
 
 configuration:
-  - service: wellbore-ddms
+  - service: &serviceName wellbore-ddms
     container:
       image: wellbore-ddms
       containerPort: 8080
@@ -65,3 +65,49 @@ configuration:
     secrets:
       - name: AZ_AI_INSTRUMENTATION_KEY
         key: appinsight.key
+
+uri-pattern-filter:
+  service: *serviceName
+  uriPatterns:
+  - "/api/os-wellbore-ddms/about"
+  - "/api/os-wellbore-ddms/version"
+  - "/api/os-wellbore-ddms/v1/{type}/{id}/{version}"
+  - "/api/os-wellbore-ddms/storage/v1/{type}/{id}/{version}"
+  - "/api/os-wellbore-ddms/ddms/v3/fastquery/wellbore/{wellboreAttribute}/welllogs"
+  - "/api/os-wellbore-ddms/ddms/v3/fastquery/wellbores"
+  - "/api/os-wellbore-ddms/ddms/v3/fastquery/wellbores/{wellbore_id}/wellboremarkersets"
+  - "/api/os-wellbore-ddms/ddms/v3/fastquery/wellbores/{wellbore_id}/welllogs"
+  - "/api/os-wellbore-ddms/ddms/v3/query/wellbore/{wellboreAttribute}/welllogs"
+  - "/api/os-wellbore-ddms/ddms/v3/query/wellbores"
+  - "/api/os-wellbore-ddms/ddms/v3/query/wellbores/{wellbore_id}/wellboremarkersets"
+  - "/api/os-wellbore-ddms/ddms/v3/query/wellbores/{wellbore_id}/welllogs"
+  - "/api/os-wellbore-ddms/ddms/v3/records/delete"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboremarkersets"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboremarkersets/{wellboremarkersetid}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboremarkersets/{wellboremarkersetid}/versions"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboremarkersets/{wellboremarkersetid}/versions/{version}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellbores"
+  - "/api/os-wellbore-ddms/ddms/v3/wellbores/{wellboreid}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellbores/{wellboreid}/versions"
+  - "/api/os-wellbore-ddms/ddms/v3/wellbores/{wellboreid}/versions/{version}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{record_id}/data"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{record_id}/sessions"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{record_id}/sessions/{session_id}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{record_id}/versions/{version}/data"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{wellboretrajectoryid}"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{wellboretrajectoryid}/versions"
+  - "/api/os-wellbore-ddms/ddms/v3/wellboretrajectories/{wellboretrajectoryid}/versions/{version}"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{record_id}/data"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{record_id}/sessions"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{record_id}/sessions/{session_id}"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{record_id}/versions/{version}/data"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{welllogid}"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{welllogid}/versions"
+  - "/api/os-wellbore-ddms/ddms/v3/welllogs/{welllogid}/versions/{version}"
+  - "/api/os-wellbore-ddms/ddms/v3/wells"
+  - "/api/os-wellbore-ddms/ddms/v3/wells/{well_id}"
+  - "/api/os-wellbore-ddms/ddms/v3/wells/{well_id}/versions"
+  - "/api/os-wellbore-ddms/ddms/v3/wells/{well_id}/versions/{version}"
+  - "/api/os-wellbore-ddms/log-recognition/family"
+  - "/api/os-wellbore-ddms/log-recognition/upload-catalog"
