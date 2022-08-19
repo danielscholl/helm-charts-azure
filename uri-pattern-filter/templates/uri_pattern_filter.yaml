@@ -7,7 +7,7 @@ spec:
   priority: 10
   workloadSelector:
     labels:
-      app: {{.Values.service}}
+      app: {{.Values.appLabel}}
   configPatches:
   - applyTo: HTTP_FILTER
     match:
@@ -21,7 +21,7 @@ spec:
     patch:
       operation: INSERT_BEFORE
       value:
-        name: envoy.lua.uri-pattern-filter-{{.Values.service}}
+        name: envoy.lua.uri-pattern-filter-{{.Values.appLabel}}
         typed_config:
           "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
           inlineCode: |            

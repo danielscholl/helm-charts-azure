@@ -38,10 +38,16 @@ Add this chart as a dependency. In your application's **Chart.yaml**, add this:-
         enabled: true
 
 
-In your application chart's **values.yaml** file, add the configuration for the uri-pattern-filter. Sample Config is below
+In your application chart's **values.yaml** file, add the configuration for the uri-pattern-filter. 
+
+Two Configurations:
+1. **appLabel** - This is the label of the app for which this ENvoyFilter has to be configured.
+2. **uriPatterns** - A list of URL patterns
+
+Sample Config is below
 
     uri-pattern-filter:
-        service: storage
+        appLabel: storage
         uriPatterns:
         - "/api/storage/v2/records/versions/{id}"
         - "/api/storage/v2/records/{id}/{version}"
