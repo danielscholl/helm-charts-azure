@@ -15,23 +15,16 @@
 
 # FIXME: Critical architecture issue. Should be fixed. Specific to OSDU deployment
 azure:
-  keyvault: 
+  keyvault:
     secrets:
     - key: aad.client.id
       obj: aad-client-id
 
 # FIXME: Specific to OSDU deployment
 ingress:
-  appGateway: 
+  appGateway:
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: false
-
-# FIXME: Prometheus instrumentation needs to be implememented for DDMS services
-# deployment:
-#   podAnnotations:
-#     prometheus.io/path: /actuator/prometheus
-#     prometheus.io/port: "8080"
-#     prometheus.io/scrape: "true"
 
 configuration:
   - service: well-delivery-ddms
@@ -39,8 +32,13 @@ configuration:
       image: well-delivery-ddms
       containerPort: 8080
     path: /api/well-delivery
+  # FIXME: Prometheus instrumentation needs to be implememented for DDMS services
+  # podAnnotations:
+  #   prometheus.io/path: /actuator/prometheus
+  #   prometheus.io/port: "8080"
+  #   prometheus.io/scrape: "true"
     probe:
-      readiness: 
+      readiness:
         path: /api/well-delivery/_ah/warmup
       liveness:
         path: /api/well-delivery/info
@@ -51,7 +49,7 @@ configuration:
         - "/api/well-delivery/swagger*"
         - "/api/well-delivery/v3/api-docs"
         - "/api/well-delivery/_ah/warmup"
-        - "/api/well-delivery/info" 
+        - "/api/well-delivery/info"
     config:
       server.servlet.contextPath: "/api/well-delivery/"
       entitlements_service_endpoint: "http://entitlements.osdu-azure/api/entitlements/v2"
@@ -63,7 +61,7 @@ configuration:
       azure_activedirectory_session_stateless: "true"
       azure_istioauth_enabled: "true"
       KEYVAULT_URI: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
-    
+
     # FIXME:  Critical architecture issue. Should be fixed. Specific to OSDU deployment
     secrets:
       - name: aad_client_id

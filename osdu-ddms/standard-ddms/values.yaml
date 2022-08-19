@@ -36,7 +36,7 @@ azure:
   identity: <azure_identity>
   identity_id: <azure_identity_id>
   acr: <azure_acr>
-  keyvault: 
+  keyvault:
     name: <azure_keyvault>
     secrets:
     # - key: appinsight.key
@@ -47,11 +47,13 @@ azure:
 #
 ingress:
   dns: <ingress_dns>
-
+  # Configuration custom ingress annotations
+  # annotations:
+    # appgw.ingress.kubernetes.io/backend-path-prefix: "/"
   # Configuration if AppGateway routing is enable. Default is Istio Gateway
-  # appGateway: 
-    # issuer: letsencrypt-prod-dns ### Name of certificat issuer
-    # enableKeyvaultCert: false ### Use self-signed cert stored in KeyVault 
+  # appGateway:
+    # issuer: letsencrypt-prod-dns ### Name of certificate issuer
+    # enableKeyvaultCert: true ### Use self-signed cert stored in KeyVault
 
 ################################################################################
 # Specify Pod Distribution Budget Setting
@@ -65,14 +67,10 @@ podDisruptionBudget:
 deployment:
   # nodePool: default
   replicaCount: 2
+
   # Annotation for the secret reloader to be used by Seismic
   # deploymentAnnotations:
   #   secret.reloader.stakater.com/reloader: your-secret-here
-  # List of custom Pod anatations that needs to be added to the Pods.
-  # podAnnotations:
-  #   prometheus.io/path: /actuator/prometheus
-  #   prometheus.io/port: "8081"
-  #   prometheus.io/scrape: "true"
 
 ################################################################################
 # DDMS service specific Configuration
@@ -80,10 +78,19 @@ deployment:
 configuration:
   - service: default
     path: /*
+  # List of custom Pod anatations that needs to be added to the Pods.
+  # podAnnotations:
+  #   prometheus.io/path: /actuator/prometheus
+  #   prometheus.io/port: "8081"
+  #   prometheus.io/scrape: "true"
     container:
       image: hello-world
       # tag: latest
       containerPort: 8080
+    ################################################################################
+    # Specify image command
+    # command: "[\"sleep\", \"infinity\"]"
+
     # TODO: Need to test autoscaling settings
     ################################################################################
     # Specify service specific Authoscaling Settings
@@ -97,14 +104,14 @@ configuration:
     # Specify Readiness and Liveness Probes
     #
     # probe:
-    #   readiness: 
+    #   readiness:
     #     path: /healthz
     #     delay: 30
-    #   liveness: 
+    #   liveness:
     #     path: /healthz
     #     delay: 30
     #     seconds: 15
-    
+
     ################################################################################
     # Specify Pod Resource Allocations (optional)
     #
@@ -124,7 +131,7 @@ configuration:
     #     - "*/about"
     #     - "*/index.html"
     #     - "*/swagger-ui.html"
-   
+
     ################################################################################
     # Specify any Configs to enable for the pod trough Env variables. (optional)
     # `config` section supports Helm values format

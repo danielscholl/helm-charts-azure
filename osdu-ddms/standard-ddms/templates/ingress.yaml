@@ -22,7 +22,7 @@
 ---
 # Deprecated.
 # Use Azure AppGateway Ingress Controller and native K8S Ingres to route trafic.
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $name }}-ingress
@@ -33,6 +33,9 @@ metadata:
     appgw.ingress.kubernetes.io/request-timeout: "300"
     appgw.ingress.kubernetes.io/connection-draining: "true"
     appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+    {{-  if .Values.ingress.annotations }}
+      {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- end }}
     {{- if $enableKvCert }}
     appgw.ingress.kubernetes.io/appgw-ssl-certificate: "appgw-ssl-cert"
     {{- else }}
@@ -53,9 +56,12 @@ spec:
         {{- range .Values.configuration }}
         {{- if .path }}
         - path: {{ .path }}/*
+          pathType: Prefix
           backend:
-            serviceName: {{ .service }}-service
-            servicePort: 80
+            service:
+              name: {{ .service }}-service
+              port:
+                number: 80
         {{- end }}
         {{- end }}
 {{- else }}

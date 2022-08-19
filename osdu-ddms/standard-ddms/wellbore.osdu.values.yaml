@@ -15,22 +15,16 @@
 
 # FIXME: Specific to OSDU deployment
 azure:
-  keyvault: 
+  keyvault:
     secrets:
     - key: appinsight.key
       obj: appinsights-key
 
 # FIXME: Specific to OSDU deployment
 ingress:
-  appGateway: 
+  appGateway:
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: false
-
-deployment:
-  podAnnotations:
-    prometheus.io/path: /api/os-wellbore-ddms/metrics
-    prometheus.io/port: "8080"
-    prometheus.io/scrape: "true"
 
 configuration:
   - service: wellbore-ddms
@@ -38,10 +32,14 @@ configuration:
       image: wellbore-ddms
       containerPort: 8080
     path: /api/os-wellbore-ddms
+    podAnnotations:
+      prometheus.io/path: /api/os-wellbore-ddms/metrics
+      prometheus.io/port: "8080"
+      prometheus.io/scrape: "true"
     probe:
-      readiness: 
+      readiness:
         path: /api/os-wellbore-ddms/healthz
-      liveness: 
+      liveness:
         path: /api/os-wellbore-ddms/healthz
     auth:
       disable:
