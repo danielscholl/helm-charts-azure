@@ -57,3 +57,14 @@ Sample Config is below
 For URIs that don't have a pattern i.e., if they are static without any placeholders, then there is no need to add them to the uriPatterns list; the filter adds the full URI if it is unable to match it against any configured pattern.
 
 That's it.
+
+## Testing - How to run and write unit tests for the Lua script used for the filter
+In the folder **Lua**, the file *.test.lua contains the unit tests. To run the unit tests, follow the below steps:
+
+1. Install Lua, LuaJIT, LuaRocks and LuaUnit
+   1. To do This, follow this guide for Lua, LuaJIT and LuaRocks - https://github.com/lua-rocks/install-lua
+   2. Afte the above steps, install LuaUnit by runing the following commands:
+      1. sudo luarocks install luaunit
+
+2. Navigate to the folder containing the *.test.lua files
+3. run "lua uripattern.test.lua"
