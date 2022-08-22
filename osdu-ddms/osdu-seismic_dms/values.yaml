@@ -64,7 +64,25 @@ service:
 # Specify the Config Map
 #
 configMap: seistore-svc-config
+pullPolicy: IfNotPresent
 
+
+################################################################################
+# Side Car Configuration
+#
+configEnv: 
+  sidecarUrl: "https://localhost:7138"
+  sidecarEnableInsert: "false"
+  sidecarEnableGet: "false"
+  sidecarEnableDelete: "false"
+  sidecarEnableQuery: "true"
+  sidecarEnvironment: Development
+  sidecarUrls: "https://+:7138;http://+:5160"
+
+
+sidecarImage:
+  repo: <azure_acr>/sdms-sidecar
+  tag: 1.1
 ################################################################################
 # Specify the OSDU Services to Load
 #
