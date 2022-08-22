@@ -131,6 +131,12 @@ configuration:
     #     - "*/about"
     #     - "*/index.html"
     #     - "*/swagger-ui.html"
+    
+    ################################################################################
+    # Specify Resiliency settings for service retries
+    #
+    # resiliency:
+    #   retry_attempts: 1
 
     ################################################################################
     # Specify any Configs to enable for the pod trough Env variables. (optional)
