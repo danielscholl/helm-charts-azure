@@ -3,6 +3,8 @@
 {{- $servicePort := .Values.service.port -}}
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
+{{- $sidecarImage := .Values.sidecarImage.repo}}
+{{- $sidecarTag := .Values.sidecarImage.tag}}
 {{- $nodepool := .Values.global.nodepool}}
 {{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $configMap := .Values.configMap -}}
@@ -51,6 +53,26 @@ spec:
             claimName: {{ .name }}-pvc
       {{- end }}
       containers:
+        - name: sidecar
+          image: {{ $sidecarImage }}:{{ $sidecarTag }}
+          livenessProbe:
+            tcpSocket:
+              port: 7138
+            initialDelaySeconds: 20
+            timeoutSeconds: 30
+            periodSeconds: 60
+          readinessProbe:
+            tcpSocket:
+              port: 7138
+            initialDelaySeconds: 20
+            timeoutSeconds: 30
+            periodSeconds: 60  
+          ports:
+            - protocol: TCP
+              containerPort: 7138
+          envFrom:
+            - configMapRef:
+                name: seistore-svc-sidecar-properties
         - name: {{ .service }}
           {{- if hasPrefix "<azure_acr>/" .repository }}
           {{- $repo := .repository | replace "<azure_acr>/" "msosdu.azurecr.io/" }}
@@ -67,7 +89,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .probe }}
-              port: http
+              port: 80
             initialDelaySeconds: 20
           {{- end }}
           resources:
