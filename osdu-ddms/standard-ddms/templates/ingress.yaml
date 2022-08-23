@@ -15,6 +15,7 @@
 {{- $name := include "standard-ddms.name" . }}
 {{- $labels := include "standard-ddms.common-labels" . }}
 {{- $namespace := .Release.Namespace }}
+{{- $retryattempts := .Values.resiliency.retry_attempts | default 0 }}
 {{- $dns := .Values.ingress.dns -}}
 {{- if .Values.ingress.appGateway }}
 {{- $enableKvCert := .Values.ingress.appGateway.enableKeyvaultCert -}}
@@ -84,6 +85,13 @@ spec:
         port:
           number: 80
     timeout: 300s
+    {{- if $retryattempts }}
+    retries:
+      attempts: {{ $retryattempts }}
+      perTryTimeout: 2s
+      retryOn: refused-stream,gateway-error,connect-failure,reset,502,503
+    {{- end }}
   {{- end }}
   {{- end }}
 {{- end }}
+---
