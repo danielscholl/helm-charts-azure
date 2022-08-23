@@ -13,11 +13,11 @@ There are instance specific parameters within Helm chart:
 | <azure_keyvault>      | Name of KeyVault in Compute RG with platform secrets  |
 | <azure_appid>         | ...                                                   |
 | <azure_acr>           | Name of Azure Container Registry with Images to use   |
-| <ingress_dns>         | DNS name assosiated with the Instance                 |
+| <ingress_dns>         | DNS name associated with the Instance                 |
 
 
 ## Install Process
-Following instructiong show general process of using Standard Helm for deployment of particular services.
+Following instruction show general process of using Standard Helm for deployment of particular services.
 
 ```bash
 ddms='ddms name'
@@ -30,6 +30,10 @@ azure_identity_id='...'
 azure_keyvault='...'
 azure_acr='...'
 ingress_dns='...'
+
+# Make sure you are on the correct subscription and connected to the right AKS.
+az account set --subscription $azure_subscription
+az aks get-credentials --resource-group $azure_resourcegroup --name <azure_kubernetese_service>
 
 # Create K8S Namespace with configured Istio sidecar ingejction
 kubectl create namespace $namespace && \
@@ -47,3 +51,13 @@ helm upgrade -i $ddms . -n $namespace \
 --set azure.acr=$azure_acr \
 --set ingress.dns=$ingress_dns
 ```
+
+Each service has its own specific value files that can be used for the deployment.
+
+| DDMS                  | Specific Value File to use                            |
+| --------------------- | ----------------------------------------------------- |
+| Seismic               | `seismic.osdu.values.yaml`                            |
+| Wellbore              | `wellbore.osdu.values.yaml`                           |
+| Well Delivery         | `well-delivery.osdu.values.yaml`                      |
+
+The information about how and what to set for each value files are documented inside both `Values.yaml` and all three specific value files above. Make sure to set all the proper values and flags for your deployment.
