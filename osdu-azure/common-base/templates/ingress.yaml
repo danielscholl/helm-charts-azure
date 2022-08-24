@@ -177,3 +177,17 @@ spec:
                 number: 80
           path: /api/wks-service/v1/*
           pathType: ImplementationSpecific
+        - backend:
+            service:
+              name: secret
+              port:
+                number: 80
+          path: /api/secret/v1/*
+          pathType: ImplementationSpecific
+        - backend:
+            service:
+              name: eds-dms
+              port:
+                number: 80
+          path: /api/eds/v1/*
+          pathType: ImplementationSpecific

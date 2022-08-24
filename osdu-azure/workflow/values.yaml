@@ -93,7 +93,7 @@ configuration:
     readinessPort: 8081
     livenessProbe: /actuator/health
     livenessPort: 8081
-    probeInitialDelaySeconds: 100
+    probeInitialDelaySeconds: 120
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
