@@ -19,6 +19,9 @@ description: Installs the OSDU Dataflow Ingestion and Enrichment Services
 version: 1.15.0
 appVersion: 0.15.0
 dependencies:
+  - name: "eds-dms"
+    repository: file://../eds-dms
+    version: "1.16.0"
   - name: "wks"
     repository: file://../wks
     version: "1.15.0"
@@ -30,4 +33,6 @@ dependencies:
   - name: "helm-library"
     repository: file://../helm-library
     version: "0.1.0"
-    enabled: true
+  - name: "osdu-helm-library"
+    repository: file://../../osdu-helm-library
+    version: ~0.2.0

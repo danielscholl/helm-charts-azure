@@ -37,6 +37,7 @@ stages:
         chart_name=$(helm show chart ${helm_dir} | awk '/^name/{print $2}')
         echo "[INFO] Helm package dir: $helm_dir | Name: ${chart_name}"
         echo "[INFO] version: $helm_version      | appVersion: $helm_app_version"
+        _osdu-azure-package
           
         helm package --dependency-update --version ${helm_version} --destination ${helm_dir} ${helm_dir} || helm package --version ${helm_version} --destination ${helm_dir} ${helm_dir}
         packaged_file=$(find $helm_dir -name "$chart_name*.tgz")
@@ -64,7 +65,14 @@ stages:
             fi;
           find $helm_dir -name "$chart_name*.tgz" -exec rm -v {} \;
           helm_release_version=$(echo $AZ_VER | sed 's/^0./1./')
-          helm package --dependency-update --version ${helm_release_version} --app-version ${AZ_VER} --destination ${helm_dir} ${helm_dir} || helm package --version ${helm_release_version} --app-version ${AZ_VER} --destination ${helm_dir} ${helm_dir}            
+          if  [[ $helm_dir == "osdu-azure" ]]; then
+            find $helm_dir \( -name "*.tgz" -o -name "Chart.lock" \) -exec rm -v {} \;
+            echo "[INFO] Release detected, parsing osdu-azure charts"
+            find  $helm_dir/ osdu-helm-library/ -name "Chart.ya*" \
+              -exec sed -i -e "/appVersion/s/\"\?0.*$/${AZ_VER}/" -e "/version/s/\"\?[0-1].*$/${helm_release_version}/" {} \;
+            _osdu-azure-package
+          fi
+          helm package --dependency-update --version ${helm_release_version} --app-version ${AZ_VER} --destination ${helm_dir} ${helm_dir} || helm package --version ${helm_release_version} --app-version ${AZ_VER} --destination ${helm_dir} ${helm_dir}
           release_packaged_file=$(find $helm_dir -name "$chart_name*.tgz")
           helm push $release_packaged_file oci://${AZURE_REGISTRY}.azurecr.io/helm/release-${AZ_VER}/${helm_chart_section}
           echo "[INFO] Publishing in msosdu"
@@ -72,13 +80,15 @@ stages:
           helm show chart oci://msosdu.azurecr.io/helm/${chart_name} --version ${helm_release_version} | head -20
         fi
       }
-      if [[ $helm_dir == "osdu-azure" ]]; then
-        echo "[INFO] osdu-azure dir, building dependencies..."
-        for ch in osdu-core_services osdu-security_compliance osdu-reference_helper osdu-partition_base osdu-ingest_enrich; do
-          echo "[INFO] Building dep: $ch"
-          helm dependency update osdu-azure/${ch}
-        done
-      fi
+      function _osdu-azure-package() {
+        if [[ $helm_dir == "osdu-azure" ]]; then
+          echo "[INFO] osdu-azure dir, building dependencies..."
+          for ch in osdu-core_services osdu-security_compliance osdu-reference_helper osdu-partition_base osdu-ingest_enrich; do
+            echo "[INFO] Building dep: $ch"
+            helm dependency update osdu-azure/${ch}
+          done
+        fi
+      }
   script:
     - _helm_package_and_push
 

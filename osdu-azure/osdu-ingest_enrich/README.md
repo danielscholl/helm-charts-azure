@@ -2,6 +2,7 @@
 
 | osdu-ingest_enrich  | app-version  |
 | ------------------- | ----------   |
+| 1.15.0               | 0.15.0        |
 | 1.13.0               | 0.13.0        |
 | 1.12.0               | 0.12.0        |
 | 1.11.0               | 0.11.0        |
@@ -14,6 +15,6 @@
 | 1.0.0               | 0.4.3        |
 
 __Supported OSDU Services__
-
+- [External Data Sources Data Management Service](https://community.opengroup.org/osdu/platform/data-flow/ingestion/external-data-sources/eds-dms)
 - [WKS Service](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks)
 - [Ingest Workflow Service](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow)

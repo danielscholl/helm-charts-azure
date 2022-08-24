@@ -286,6 +286,24 @@ spec:
     timeout: 300s
   - match:
     - uri:
+        prefix: "/api/secret/v1/"
+    route:
+    - destination:
+        host: secret.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/eds/v1/"
+    route:
+    - destination:
+        host: eds-dms.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 300s
+  - match:
+    - uri:
         prefix: /airflow/
     route:
     - destination:

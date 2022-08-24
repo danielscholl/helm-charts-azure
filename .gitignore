@@ -8,3 +8,4 @@ environments
 .idea
 **/.vscode
 Chart.lock
+osdu-azure/**/*.tgz

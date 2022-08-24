@@ -1,0 +1,162 @@
+#  Copyright © Microsoft Corporation
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# Default values for osdu-azure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  replicaCount: 1
+  nodepool: services
+  defaultNodepool: internal
+  isAutoscalingEnabled: false
+
+  ################################################################################
+  # Specify the auto scale specific values
+  #
+  autoscale:
+    enabled: <azure_autoscale_enabled>
+    cpu:
+      enabled: <autoscale_cpu_enabled>
+    rps:
+      enabled: <autoscale_rps_enabled>
+
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: <azure_tenant>
+    mstenant: <azure_mstenant>
+    subscription: <azure_subscription>
+    resourcegroup: <azure_resourcegroup>
+    identity: <azure_identity>
+    identity_id: <azure_identity_id>
+    appid: <azure_appid>
+    acr: <azure_acr>
+    corsEnabled: false
+
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    dns: <ingress_dns>
+    issuer: letsencrypt-prod-dns
+    enableKeyvaultCert: false
+
+  ################################################################################
+  # Specify the Pod Identity
+  #
+  identity:
+    name: osdu-identity
+
+  ################################################################################
+  # Specify the Service Settings
+  #
+  service:
+    type: ClusterIP
+    port: 80
+
+################################################################################
+# Specify the OSDU Services to Load
+#
+configuration:
+
+  ########################
+  ##  EDS-DMS SERVICE
+  #
+  - service: eds-dms
+    repository: <azure_acr>/eds-dms
+    path: /api/eds/v1
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 120
+    livenessPeriodSeconds: 10
+    keyvault: true
+    podDisruptionBudget:
+      enabled: false
+    auth:
+      disable:
+        - "*/v1/api-docs"
+        - "*/api-docs"
+        - "/api/eds/v1/swagger-resources/*"
+        - "/api/eds/v1/webjars/*"
+        - "/api/eds/v1/swagger-ui/*"
+    env:
+    - name: spring_application_name
+      value: eds
+    - name: server.servlet.contextPath
+      value: /api/eds/v1/
+    - name: server_port
+      value: 80
+    - name: ACCEPT_HTTP
+      value: true
+    - name: cosmosdb_database
+      value: osdu-db
+    - name: SECRET_API
+      value: http://secret/api/secret/v1
+    - name: AUTHORIZE_API
+      value: http://entitlements/api/entitlements/v2
+    - name: entitlements_service_api_key
+      value: "OBSOLETE"
+    - name: STORAGE_API
+      value: http://storage/api/storage/v2
+    - name: PARTITION_API
+      value: http://partition/api/partition/v1
+    - name: azure_istioauth_enabled
+      value: "true"
+    - name: azure_activedirectory_AppIdUri
+      value: "api://$(aad_client_id)"
+    - name: SPRING_CONFIG_NAME
+      value: "common,application"
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
+    - name: azure_istio_auth_enabled
+      value: "true"
+    - name: REDIS_DATABASE
+      config:
+        name: osdu-svc-config
+        key: REDIS_DB_EDS  
+    - name: KEY_VAULT_URL
+      config:
+        name: osdu-svc-config
+        key: ENV_KEYVAULT
+    - name: aad_client_id
+      secret:
+        name: active-directory
+        key: application-appid
+    - name: appinsights_key
+      secret:
+        name: central-logging
+        key: appinsights
+    podIdentityEnvs:
+    - name: AZURE_CLIENT_ID
+      secret:
+        name: active-directory
+        key: principal-clientid
+    - name: AZURE_CLIENT_SECRET
+      secret:
+        name: active-directory
+        key: principal-clientpassword
+    - name: AZURE_TENANT_ID
+      secret:
+        name: active-directory
+        key: tenantid

@@ -35,7 +35,8 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     oidAuthEnabled: <azure_oidAuthEnabled>
-
+    keyvaultNew:
+      name: <azure_keyvault>
 
   ################################################################################
   # Specify the Ingress Settings
