@@ -6,7 +6,25 @@ TestUriPatternFilter = {}
   function TestUriPatternFilter:TestSimpleMatch()
     local uriPatternList = { "/api/storage/v2/records/versions/{id}"}
     local pattern = getPattern("/api/storage/v2/records/versions/123:456:789", uriPatternList)
-    lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id}")    
+    lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id}")
+  end
+
+  function TestUriPatternFilter:TestSimpleMatchWithQueryParams()
+    local uriPatternList = { "/api/storage/v2/records/versions/{id}"}
+    local pattern = getPattern("/api/storage/v2/records/versions/123:456:789?abc=123123", uriPatternList)
+    lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id}")
+  end
+
+  function TestUriPatternFilter:TestSimpleMatchWithMultipleQueryParams()
+    local uriPatternList = { "/api/storage/v2/records/versions/{id}"}
+    local pattern = getPattern("/api/storage/v2/records/versions/123:456:789?abc=123123&q=123123", uriPatternList)
+    lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id}")
+  end
+
+  function TestUriPatternFilter:TestSimpleMatchWithSpecialCharacters()
+    local uriPatternList = { "/api/storage/v2/records/versions/{id}"}
+    local pattern = getPattern("/api/storage/v2/records/versions/%2F%2A123$$$$\\:456:'%789", uriPatternList)
+    lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id}")
   end
 
   function TestUriPatternFilter:Test_MustReturnOriginalUri_when_NoMathchingPattern()
@@ -22,7 +40,7 @@ TestUriPatternFilter = {}
   end
 
   function TestUriPatternFilter:Test_MultiplePatternMatches()
-    local uriPatternList = { "/api/storage/v2/records/versions/{id}", "/api/storage/v2/records/{id}/{version}"}    
+    local uriPatternList = { "/api/storage/v2/records/versions/{id}", "/api/storage/v2/records/{id}/{version}"}
     local pattern = getPattern("/api/storage/v2/records/versions/123:456:789", uriPatternList)    
     lu.assertEquals(pattern, "/api/storage/v2/records/versions/{id},/api/storage/v2/records/{id}/{version}")
   end
