@@ -19,3 +19,5 @@ config:
   configmapname: ~~CONFIG_MAP_NAME~~
   data_factory_name: <data_factory_name>
   airflow_web_url: <airflow_web_url>
+  namespace: <osdu_services_namespace>
+  environment: <execution_environment>
