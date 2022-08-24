@@ -1,0 +1,34 @@
+{{- if .Values.uriPatterns}}
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: uri-pattern-filter-{{.Values.service}}
+spec:
+  priority: 10
+  workloadSelector:
+    labels:
+      app: {{.Values.service}}
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.filters.http.router
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.lua.uri-pattern-filter-{{.Values.service}}
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
+          inlineCode: |            
+            uriPatternList = {
+                {{- range $idx, $uripattern := .Values.uriPatterns }}
+                  "{{$uripattern}}",
+                {{- end }}
+            }
+            {{ $.Files.Get "lua/uripattern.lua" | nindent 12 }}  
+{{- end }}
