@@ -44,6 +44,8 @@ spec:
           value: {{ .Values.config.configmapname }}
         - name: AIRFLOW_WEB_URL
           value: {{ .Values.config.airflow_web_url }}
+        - name: WORKFLOW_SERVICE_NAMESPACE
+          value: {{ .Values.config.namespace }}
         - name: AIRFLOW_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
