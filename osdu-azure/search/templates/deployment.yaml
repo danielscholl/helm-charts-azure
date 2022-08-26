@@ -12,6 +12,7 @@
 {{- $podIdentityAuthEnabled := .Values.global.azure.podIdentityAuthEnabled}}
 {{- $isHpaEnabled := .Values.global.autoscale.enabled}}
 {{- range .Values.configuration }}
+{{- $kubernetesConfigMaps := .Values.global.kubernetesConfigMaps -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +20,7 @@ metadata:
   namespace: {{ $namespace }}
   annotations:
     secret.reloader.stakater.com/reload: {{ $kubernetesSecrets | quote}}
+    configmap.reloader.stakater.com/reload: {{ $kubernetesConfigMaps | quote}}
 spec:
 {{- if not $isHpaEnabled }}
   replicas: {{ .replicaCount | default $replicaCount }}

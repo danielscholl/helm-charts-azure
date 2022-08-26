@@ -22,6 +22,7 @@ global:
   defaultNodepool: internal
   isAutoscalingEnabled: false
   kubernetesSecrets: "redis"
+  kubernetesConfigMaps: "es-primary-secondary-user-pwd-changed-flag"
 
 
   #################################################################################
