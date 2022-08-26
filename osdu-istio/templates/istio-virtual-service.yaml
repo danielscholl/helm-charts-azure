@@ -202,14 +202,6 @@ spec:
     timeout: 300s
   - match:
     - uri:
-        prefix: "/api/os-wellbore-ddms"
-    route:
-    - destination:
-        host: wellbore-ddms.ddms-wellbore.svc.cluster.local
-        port:
-          number: 80
-  - match:
-    - uri:
         prefix: "/api/notification/v1"
     route:
     - destination:
@@ -217,14 +209,6 @@ spec:
         port:
           number: 80
     timeout: 300s
-  - match:
-    - uri:
-        prefix: "/api/well-planning"
-    route:
-    - destination:
-        host: well-planning.{{ .Values.global.namespace }}.svc.cluster.local
-        port:
-          number: 80
   - match:
     - uri:
         prefix: "/api/entitlements/v2"
@@ -236,34 +220,10 @@ spec:
     timeout: 300s
   - match:
     - uri:
-        prefix: "/seistore-svc/api/v3"
-    route:
-    - destination:
-        host: seismic-ddms.ddms-seismic.svc.cluster.local
-        port:
-          number: 80
-  - match:
-    - uri:
-        prefix: "/seismic-file-metadata/api/v1"
-    route:
-    - destination:
-        host: seismic-file-metadata.ddms-seismic-metadata.svc.cluster.local
-        port:
-          number: 80
-  - match:
-    - uri:
         prefix: "/api/ingestion"
     route:
     - destination:
         host: ingestion-service.{{ .Values.global.namespace }}.svc.cluster.local
-        port:
-          number: 80
-  - match:
-    - uri:
-        prefix: "/api/well-delivery"
-    route:
-    - destination:
-        host: well-delivery-ddms.ddms-well-delivery.svc.cluster.local
         port:
           number: 80
   - match:
@@ -318,19 +278,3 @@ spec:
         port:
           number: 8080
         host: airflow2-web.airflow2.svc.cluster.local
-  - match:
-    - uri:
-        prefix: /petrel-ds/api/v1/
-    route:
-    - destination:
-        port:
-          number: 80
-        host: pds-backend.ddms-petrel.svc.cluster.local
-  - match:
-    - uri:
-        prefix: /petrel-ds/
-    route:
-    - destination:
-        port:
-          number: 80
-        host: pds-frontend.ddms-petrel.svc.cluster.local
