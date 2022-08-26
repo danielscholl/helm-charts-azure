@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## App version 0.16 (2022-08)
+
+* AKS upgrade (1.24) as well as helm version to (3.9.x) [Supported Versions Skew](https://helm.sh/docs/topics/version_skew/#supported-version-skew) __1.24.x - 1.21.x__
+
 ## App Version 0.11 (2021-9-13)
 
 __Infrastructure Version:__ [tag/v0.10.0](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/tree/release/0.10)

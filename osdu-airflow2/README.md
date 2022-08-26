@@ -2,10 +2,11 @@
 
 __Version Tracking__
 
-| Helm Chart Version | airflow     | statsd  |
-| ------------------ | ----------- |-------- |
-| `1.1.15`           | `8.5.2`     | `1.0.0` |
-| `1.0.x`            | `8.5.2`     | `1.0.0` |
+| Helm Chart Version | airflow     | statsd  | osdu-lib  |
+| ------------------ | ----------- |-------- |-----------|
+| `1.16.0`           | `8.5.2`     | `1.0.0` | `0.16.0`  |
+| `1.15.0`           | `8.5.2`     | `1.0.0` | `0.15.0`  |
+| `1.0.x`            | `8.5.2`     | `1.0.0` |           |
 
 
 __Pull Helm Chart__
@@ -16,13 +17,9 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow2
-VERSION=1.0.9
+VERSION=1.16.0
 
-# Pull Chart
-helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
-
-# Export Chart
-helm chart export msosdu.azurecr.io/helm/$CHART:$VERSION
+helm show chart oci://msosdu.azurecr.io/helm/$CHART --version $VERSION
 ```
 
 __Create Helm Chart Values__
@@ -35,9 +32,9 @@ _The following commands can help generate a prepopulated custom_values file._
 UNIQUE="<your_osdu_unique>"               # ie: demo
 DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
-ENABLE_KEDA_2_X="<true/false>"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
+ENABLE_KEDA_2_X="true"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v2.2.4-v0.15-20220624-1"
+AIRFLOW_IMAGE_TAG="v2.2.4-v0.16-20220818-1"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -428,6 +425,12 @@ airflow:
         value: "airflow.api.auth.backend.basic_auth"
       - name: AIRFLOW_VAR_ENV_VARS_ENABLED
         value: "true"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_SIZE
+        value: "500"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_COUNT
+        value: "5"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_ENABLED
+        value: "true"
 
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
@@ -489,7 +492,6 @@ airflow:
 EOF
 ```
 
-
 __Install Helm Chart__
 
 Install the helm chart.
@@ -497,6 +499,9 @@ Install the helm chart.
 ```bash
 # Ensure your context is set.
 # az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
+
+CHART=osdu-airflow2
+VERSION=1.16.0
 
 # Create Namespace
 NAMESPACE=airflow2
@@ -507,7 +512,7 @@ POD_OPERATOR_NAMESPACE=airflow
 kubectl create namespace $POD_OPERATOR_NAMESPACE
 
 # Install Charts
-helm install airflow2 osdu-airflow2 -n $NAMESPACE -f osdu_airflow2_custom_values.yaml --wait --timeout 10m0s
+helm upgrade -i airflow2 oci://msosdu.azurecr.io/helm/$CHART --version $VERSION -n $NAMESPACE -f osdu_airflow2_custom_values.yaml --wait --timeout 10m
 ```
 
 
