@@ -1,5 +1,7 @@
 nodepoolNamePrefix: <nodepool_name_prefix>
 dataPartitions: <dataPartition_names>
+primaryUserName: <primary_user_name>
+secondaryUserName: <secondary_user_name>
 resources:
   limits:
     cpu: 2

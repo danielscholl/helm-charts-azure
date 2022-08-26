@@ -21,6 +21,7 @@ global:
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
+  kubernetesConfigMaps: "es-primary-secondary-user-pwd-changed-flag"
 
 
   #################################################################################
