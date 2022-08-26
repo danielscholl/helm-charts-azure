@@ -2,6 +2,7 @@
 
 | `osdu-*-*`          | app-version  |
 | ------------------- | ----------   |
+| 1.16.0               | 0.16.0        |
 | 1.15.0               | 0.15.0        |
 | 1.13.0               | 0.13.0        |
 | 1.12.0               | 0.12.0        |
@@ -21,13 +22,10 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.15.0
+VERSION=1.16.0
 
 # Pull Chart
-helm chart pull msosdu.azurecr.io/helm/$CHART:$VERSION
-
-# Export Chart
-helm chart export msosdu.azurecr.io/helm/$CHART:$VERSION
+helm pull oci://msosdu.azurecr.io/helm/$CHART --version $VERSION --untar
 ```
 
 __Create Helm Chart Values__
@@ -39,7 +37,7 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
-OSDU_AIRFLOW_VERSION2_ENABLED="<true_or_false>"  # false to target airflow 1.10.12 or true to airflow2
+OSDU_AIRFLOW_VERSION2_ENABLED="true"  # false to target airflow 1.10.12 or true to airflow2
 # this point to the URL for the airflow installation
 OSDU_AIRFLOW_URL="<airflow_url>"    # ie: "http://airflow-web.airflow.svc.cluster.local:8080/airflow" for airflow1
 AIRFLOW_DB="<airflow_db>"           # ie: airflow
@@ -54,42 +52,43 @@ ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 cat > osdu_azure_custom_values.yaml << EOF
 # This file contains the essential configs for the osdu on azure helm chart
 global:
-################################################################################
-# Specify the default replica count for each service.
-#
- replicaCount: 2
+  ################################################################################
+  # Specify the default replica count for each service.
+  #
+  replicaCount: 2
 
- ################################################################################
- # Specify the azure environment specific values
- #
- azure:
-   tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
-   subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-   resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
-   identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-   identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
-   keyvault: $ENV_VAULT
-   appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
-   podIdentityAuthEnabled: false
-   oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
-   corsEnabled: false # set this to true if you want to enable CORS.
-   suthEnabled: false # set this to true if you want to use SAuth identity envoy
+  ################################################################################
+  # Specify the azure environment specific values
+  #
+  azure:
+    tenant: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
+    subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
+    resourcegroup: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
+    identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
+    identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+    keyvault: $ENV_VAULT
+    appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
+    podIdentityAuthEnabled: false
+    oidAuthEnabled: false # set this to true if you want to use oid instead of unique_name and upn
+    corsEnabled: false # set this to true if you want to enable CORS.
+    suthEnabled: false # set this to true if you want to use SAuth identity envoy
 
- ingestion:
-   airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
-   osduAirflowURL: $OSDU_AIRFLOW_URL
-   airflowDbName: $AIRFLOW_DB
+  ingestion:
+    airflowVersion2Enabled: $OSDU_AIRFLOW_VERSION2_ENABLED
+    osduAirflowURL: $OSDU_AIRFLOW_URL
+    airflowDbName: $AIRFLOW_DB
 
- ################################################################################
- # Specify the Ingress Settings
- #
- ingress:
-   issuer: letsencrypt-prod-dns
-   dns: $DNS_HOST
-   enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
+  ################################################################################
+  # Specify the Ingress Settings
+  #
+  ingress:
+    issuer: letsencrypt-prod-dns
+    dns: $DNS_HOST
+    enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
+  configuration: null
+
 EOF
 ```
-
 
 __Install Helm Chart__
 
@@ -104,11 +103,11 @@ NAMESPACE=osdu-azure
 kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-injection=enabled
 
 # Install Charts
-helm install partition-services osdu-azure/osdu-partition_base -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install security-services osdu-azure/osdu-security_compliance -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
-helm install ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm upgrade -i partition-services osdu-azure/osdu-partition_base -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm upgrade -i security-services osdu-azure/osdu-security_compliance -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm upgrade -i core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm upgrade -i reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
+helm upgrade -i ingest-services osdu-azure/osdu-ingest_enrich -n $NAMESPACE -f osdu_azure_custom_values.yaml
 ```
 
 __DDMS Moved__

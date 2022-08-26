@@ -8,23 +8,38 @@ Individual DDMSs helm charts are **DEPRECATED!** and will be not supported start
 ## Pulling Helm Chart
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 ```bash
-CHART="..."
-VERSION="..."
+CHART="standard-ddms"
+VERSION="1.16.0"
 
 ACR='msosdu.azurecr.io'
-helm repo add $ACR "https://$ACR/helm/v1/repo"
 
 # Pull Chart
-helm pull "oci://$ACR/helm/$CHART" --version $VERSION
+helm pull "oci://$ACR/helm/$CHART" --version $VERSION --untar
 ```
 
 ## Deploying Services
 
 ```bash
+az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
+
+UNIQUE=<uniquename>
+ingress_dns=<youringress>
+GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
+ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
+
+azure_tenant=$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/tenant-id --query value -otsv)
+azure_subscription=$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
+azure_resourcegroup=$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
+azure_identity=$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
+azure_identity_id=$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+azure_keyvault=${ENV_VAULT}
+azure_acr=msosdu.azurecr.io
+
+
 function deploy() {
   local ddms=$1
   local deployment='osdu'
-  local base_dir='./osdu-ddms/standard-ddms/'
+  local base_dir="./standard-ddms/"
   local helm_release="$ddms-services"
   local helm_value_file="${base_dir}${ddms}.${deployment}.values.yaml"
   local k8s_namespace="ddms-$ddms"
@@ -35,6 +50,7 @@ function deploy() {
   # Create K8S Namespace with configured Istio sidecar ingejction
   kubectl create namespace $k8s_namespace && \
   kubectl label namespace $k8s_namespace istio-injection='enabled'
+  echo "helm upgrade -i $helm_release $base_dir -n $k8s_namespace -f $helm_value_file"
 
   helm upgrade -i \
   $helm_release $base_dir \

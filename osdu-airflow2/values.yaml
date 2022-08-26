@@ -387,6 +387,12 @@ airflow:
       ## End -- Ingest Manifest DAG variables
       - name: AIRFLOW__API__AUTH_BACKEND
         value: "airflow.api.auth.backend.basic_auth"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_SIZE
+        value: "500"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_COUNT
+        value: "5"
+      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_ENABLED
+        value: "true"
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
         "apache-airflow[statsd,kubernetes,password]==2.2.4",

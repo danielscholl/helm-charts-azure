@@ -1,9 +1,15 @@
 # Helm Charts for installing OSDU on Azure
 
+Helm supported version: __3.9.x__ for kubeclient __1.24.x - 1.21.x__ (More info in [Supported Versions Skew](https://helm.sh/docs/topics/version_skew/#supported-version-skew))
+
 __Version Tracking__
 
 | [osdu-base]  | [osdu-istio]   | [osdu-airflow]   | [osdu-azure]   |  [infrastucture]  |   [osdu-ddms]     |
 | ------------ | -------------- | ---------------- | -------------- | ----------------- | ----------------- |
+|  1.0.0       |  1.1.6         | airflow2 - 1.16.0 | 1.16.0         | 0.16.0 __AKS 1.24__ | 1.16.0 |
+|  1.0.0       |  1.1.5         | airflow1-1.0.11 , airflow2- 1.10.1 | 1.15.0         | 0.15.0            | 1.15.0 |
+|  1.0.0       |  1.1.5         | airflow1-1.0.11 , airflow2- 1.10.1 | 1.13.0         | 0.13.0            | 1.13.0 |
+|  1.0.0       |  1.1.4         | 1.0.10           | 1.12.0         | 0.12.0            | 1.12.0
 |  1.0.0       |  1.1.3         | 1.0.9            | 1.11.0         | 0.11.0            | 1.11.0             |
 |  1.0.0       |  1.1.3         | 1.0.8            | 1.10.0         | 0.10.0            |                   |
 |  1.0.0       |  1.1.2         | 1.0.7            | 1.9.0          | 0.9.0             |                   |
