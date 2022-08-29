@@ -166,9 +166,9 @@ configuration:
       value: "true"
     # Notification v2 not enabled (https://community.opengroup.org/osdu/platform/system/file/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L138)
     - name: service_bus_enabled_status
-      value: "false"
-    - name: event_grid_enabled_status
       value: "true"
+    - name: event_grid_enabled_status
+      value: "false"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config
