@@ -10,8 +10,9 @@
 {{- $release := .Release.Name }}
 {{- $podIdentityAuthEnabled := .Values.global.azure.podIdentityAuthEnabled}}
 {{- $isHpaEnabled := .Values.global.autoscale.enabled}}
-{{- range .Values.configuration }}
 {{- $kubernetesConfigMaps := .Values.global.kubernetesConfigMaps -}}
+{{- range .Values.configuration }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
