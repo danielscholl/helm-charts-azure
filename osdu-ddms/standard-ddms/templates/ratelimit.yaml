@@ -13,6 +13,7 @@
 #  limitations under the License.
 #  Rate limit document for reference : https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/
 
+{{- if .Values.enabled -}}
 {{- $namespace := .Release.Namespace }}
 {{- $name := include "standard-ddms.name" . }}
 {{- $labels := include "standard-ddms.common-labels" . }}
@@ -63,3 +64,4 @@ spec:
                     key: x-local-rate-limit
                     value: 'true'
 {{ end }}
+{{- end -}}

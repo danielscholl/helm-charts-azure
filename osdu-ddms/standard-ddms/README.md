@@ -61,3 +61,30 @@ Each service has its own specific value files that can be used for the deploymen
 | Well Delivery         | `well-delivery.osdu.values.yaml`                      |
 
 The information about how and what to set for each value files are documented inside both `Values.yaml` and all three specific value files above. Make sure to set all the proper values and flags for your deployment.
+
+## Deploying Using Feature Flag
+
+In order to help customizing DDMS for customers a feature flag is added to the standard helm charts. This flag is located in the `Values.yaml` file:
+
+```yaml
+enable: true/false
+```
+
+If `enable` flag is set to true, Helm Chart release will contain all Kubernetes objects for particular DDMS. If it is set to false, Helm Release should produce an `Empty` release of DDMS.
+
+The mechanism of `enabling` DDMS for the specific customer is following:
+
+- Using Helm CLI get the Values file that was used to Release particular DDMS and run:
+
+```cli
+helm get values seismic-services -n ddms-seismic
+```
+
+- Update the value for a specific DDMS to `true`
+- Do another Helm release using update Values e.g. :
+
+```cli
+helm update -i seismic-services -n ddms-seismic -f <Specific_Value_file.yaml>
+```
+
+The information about how and what to set for each value files are documented inside both `Values.yaml` and all three specific value files above. Make sure to set all the proper values and flags for your deployment.
