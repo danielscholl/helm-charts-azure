@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+{{- if .Values.enabled }}
 {{- $name := include "standard-ddms.name" . }}
 {{- $labels := include "standard-ddms.common-labels" . }}
 {{- $namespace := .Release.Namespace }}
@@ -40,3 +41,4 @@ metadata:
 spec:
   azureIdentity: {{ $name }}-identity
   selector: {{ $name }}-identity
+{{- end }}

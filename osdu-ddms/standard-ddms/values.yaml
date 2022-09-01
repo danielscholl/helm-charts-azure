@@ -16,6 +16,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+################################################################################
+# DDMS Feature Flag controlling if DDMS should be released.
+# Enabled by defailt
+#
+enabled: true
+
 # Following extenral parameters are expected:
 # <azure_tenant>
 # <azure_subscription>
@@ -41,6 +47,7 @@ azure:
     secrets:
     # - key: appinsight.key
     #   obj: appinsights-key
+
 
 ################################################################################
 # Common Ingress Settings
