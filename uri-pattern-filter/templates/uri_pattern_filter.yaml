@@ -1,13 +1,15 @@
-{{- if .Values.uriPatterns}}
+{{- range .Values.configuration }}
+{{- if .service}}
+{{- if .uriPatterns}}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
-  name: uri-pattern-filter-{{.Values.service}}
+  name: uri-pattern-filter-{{.service}}
 spec:
   priority: 10
   workloadSelector:
     labels:
-      app: {{.Values.service}}
+      app: {{.service}}
   configPatches:
   - applyTo: HTTP_FILTER
     match:
@@ -21,14 +23,16 @@ spec:
     patch:
       operation: INSERT_BEFORE
       value:
-        name: envoy.lua.uri-pattern-filter-{{.Values.service}}
+        name: envoy.lua.uri-pattern-filter-{{.service}}
         typed_config:
           "@type": "type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua"
           inlineCode: |            
             uriPatternList = {
-                {{- range $idx, $uripattern := .Values.uriPatterns }}
+                {{- range $idx, $uripattern := .uriPatterns }}
                   "{{$uripattern}}",
                 {{- end }}
             }
             {{ $.Files.Get "lua/uripattern.lua" | nindent 12 }}  
+{{- end }}
+{{- end }}
 {{- end }}
