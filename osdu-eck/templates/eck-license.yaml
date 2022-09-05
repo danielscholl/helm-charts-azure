@@ -1,0 +1,25 @@
+{{- $licenseValue := .Values.licenseValue}}
+{{- $licenseType := .Values.licenseType}}
+
+{{ if eq $licenseType "Enterprise" }}
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    license.k8s.elastic.co/scope: operator
+  name: eck-license
+  namespace: "elastic-system"
+type: Opaque
+data:
+  license: {{ $licenseValue | b64enc | quote }}
+{{ else if eq $licenseType "Trial" }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: eck-trial-license
+  namespace: elastic-system
+  labels:
+    license.k8s.elastic.co/type: enterprise_trial
+  annotations:
+    elastic.co/eula: accepted
+{{ end }}

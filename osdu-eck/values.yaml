@@ -1,5 +1,7 @@
 nodepoolNamePrefix: <nodepool_name_prefix>
 dataPartitions: <dataPartition_names>
+licenseType: <license_type>
+licenseValue: <license_value>
 resources:
   limits:
     cpu: 2
