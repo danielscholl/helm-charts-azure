@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+{{- if .Values.enabled }}
 {{- $version := .Chart.AppVersion -}}
 {{- $namespace := .Release.Namespace -}}
 {{- $pullPolicy := .Values.pullPolicy -}}
@@ -128,4 +129,5 @@ spec:
                   key: {{ .key | quote }}
             {{- end }}
           {{- end }}
+{{- end }}
 {{- end }}
