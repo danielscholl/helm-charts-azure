@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+{{- if .Values.enabled }}
 {{- $name := include "standard-ddms.name" . }}
 {{- $namespace := .Release.Namespace }}
 {{- range .Values.configuration }}
@@ -32,4 +33,5 @@ spec:
       protocol: TCP
       name: http
   selector: {{ $selector | nindent 4 }}
+{{- end }}
 {{- end }}
