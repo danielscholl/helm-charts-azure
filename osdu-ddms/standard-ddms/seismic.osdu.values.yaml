@@ -129,3 +129,14 @@ uri-pattern-filter:
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/binaryHeaders"
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/rawTraceHeaders"
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/scaledTraceHeaders"
+  - service: seismic-file-metadata
+    uriPatterns:
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/service-status"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/revision"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/is3D"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/traceHeaderFieldCount"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/textualHeader"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/extendedTextualHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/binaryHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/rawTraceHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/scaledTraceHeaders"
