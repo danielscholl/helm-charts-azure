@@ -11,7 +11,7 @@ metadata:
   namespace: "elastic-system"
 type: Opaque
 data:
-  license: {{ $licenseValue | b64enc | quote }}
+  license: {{ $licenseValue | quote }}
 {{ else if eq $licenseType "Trial" }}
 apiVersion: v1
 kind: Secret
