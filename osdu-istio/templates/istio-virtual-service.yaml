@@ -14,11 +14,13 @@ spec:
   - match:
     - uri:
         exact: "/"
-    rewrite:
-      uri: /api/partition/v1/api-docs
+    - uri:
+        exact: "/static/default.css"
+    - uri:
+        exact: "/static/acs.png"
     route:
     - destination:
-        host: partition.{{ .Values.global.namespace }}.svc.cluster.local
+        host: default.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
     timeout: 300s
