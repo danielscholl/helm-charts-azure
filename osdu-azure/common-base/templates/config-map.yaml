@@ -17,3 +17,21 @@ data:
   REDIS_DB_FILE: "9"
   REDIS_DB_SDMS: "10"
   REDIS_DB_EDS: "12"
+---
+# Adding config map for compatibility with devops/azure/charts templates
+# It can be dropped if planning to migrate to helm-charts-azure templates
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-configmap
+  namespace: {{ $namespace }}
+data:
+  airflow: "1"
+  partition: "2"
+  entitlements-azure: "3"
+  legal: "4"
+  storage: "5"
+  indexer-service: "6"
+  search-service: "7"
+  entitlements: "8"
+  seismic-dms: "9"
