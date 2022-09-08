@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: gateway-access-log
+  namespace: istio-system
+spec:
+  configPatches:
+  - applyTo: NETWORK_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.filters.network.http_connection_manager"
+    patch:
+      operation: MERGE
+      value:
+        typed_config:
+          "@type": "type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager"
+          access_log:
+          - name: envoy.access_loggers.file
+            typed_config:
+              "@type": "type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog"
+              path: /dev/stdout
+              format: |
+                [%START_TIME%] MTHD="%REQ(:METHOD)%" PATH="%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%" P="%PROTOCOL%" CR="%REQ(CORRELATION-ID)%" REQID="%REQ(X-REQUEST-ID)%" RC="%RESPONSE_CODE%" RF="%RESPONSE_FLAGS%" RC="%RESPONSE_CODE_DETAILS%" CTD="%CONNECTION_TERMINATION_DETAILS%" UP_FAIL="%UPSTREAM_TRANSPORT_FAILURE_REASON%" B_RECD="%BYTES_RECEIVED%" B_SENT="%BYTES_SENT%" DUR="%DURATION%" UPSTREAM_SVC_TIME="%RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)%" FWF="%REQ(X-FORWARDED-FOR)%" UA="%REQ(USER-AGENT)%" ATH="%REQ(:AUTHORITY)%" UPSTREAM_HOST="%UPSTREAM_HOST%" UPSTREAM_CLUSTER="%UPSTREAM_CLUSTER%" UPSTREAM_ADDR="%UPSTREAM_LOCAL_ADDRESS%" DOWNSTREAM_ADDR_LOCAL="%DOWNSTREAM_LOCAL_ADDRESS%" DOWNSTREAM_ADDR_REMOTE="%DOWNSTREAM_REMOTE_ADDRESS%" %REQUESTED_SERVER_NAME% %ROUTE_NAME%
+            filter:
+              extension_filter:
+                name: not_hc
+                typed_config:
+                  "@type": "type.googleapis.com/envoy.extensions.access_loggers.filters.cel.v3.ExpressionFilter"
+                  expression: "request.url_path != '/api/partition/v1/api-docs'"
