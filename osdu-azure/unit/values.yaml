@@ -98,15 +98,11 @@ configuration:
         - "/api/unit/swagger-resources/*"
         - "/api/unit/swagger-ui/*"
         - "/api/unit/webjars/*"
-    pvc:
-      - name: unit
-        volume: shared-data
-    mount:
-      - name: shared-data
-        path: /mnt/unit_catalogs
     env:
     - name: spring_application_name
-      value: unit-service
+      value: unit
+    - name: UNIT_CATALOG_FILENAME
+      value: /data/unit_catalog_v2.json      
     - name: server.servlet.contextPath
       value: /api/unit/
     - name: server_port

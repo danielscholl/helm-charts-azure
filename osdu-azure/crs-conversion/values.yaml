@@ -97,15 +97,9 @@ configuration:
         - "/api/crs/converter/swagger-resources/*"
         - "/api/crs/converter/webjars/*"
         - "/api/crs/converter/swagger-ui/*"
-    pvc:
-      - name: crs-conversion
-        volume: shared-data
-    mount:
-      - name: shared-data
-        path: /mnt/crs_conversion
     env:
     - name: spring_application_name
-      value: crs-conversion-service
+      value: crs-conversion
     - name: server.servlet.contextPath
       value: /api/crs/converter/
     - name: server_port
@@ -122,10 +116,10 @@ configuration:
       value: /crs-conversion-service
     - name: service_domain_name
       value: contoso.com
-    - name: SIS_DATA
-      value: /mnt/crs_conversion/apachesis_setup/SIS_DATA
     - name: azure_istioauth_enabled
       value: "true"
+    - name: SIS_DATA
+      value: /apachesis_setup/SIS_DATA      
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
