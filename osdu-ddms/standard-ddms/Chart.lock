@@ -1,6 +1,0 @@
-dependencies:
-- name: uri-pattern-filter
-  repository: file://../../uri-pattern-filter
-  version: 0.1.0
-digest: sha256:22f9737ae7354ddd3ec7671449ae20400f42fd8263f8a8aad56fcfc36af0b5d4
-generated: "2022-08-23T13:32:00.409328-07:00"
