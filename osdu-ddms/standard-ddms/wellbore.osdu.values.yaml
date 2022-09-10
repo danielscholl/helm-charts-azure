@@ -68,7 +68,10 @@ configuration:
 
 uri-pattern-filter:
   configuration:
-  - service: *serviceName
+  - name: *serviceName
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: *serviceName
     uriPatterns:
     - "/api/os-wellbore-ddms/about"
     - "/api/os-wellbore-ddms/version"
