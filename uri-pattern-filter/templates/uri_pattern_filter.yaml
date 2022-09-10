@@ -1,6 +1,7 @@
 {{- range .Values.configuration }}
 {{- if .name}}
 {{- if .uriPatterns}}
+{{- if .workloadSelector}}
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -31,6 +32,7 @@ spec:
                 {{- end }}
             }
             {{ $.Files.Get "lua/uripattern.lua" | nindent 12 }}  
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
