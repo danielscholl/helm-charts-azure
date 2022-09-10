@@ -91,7 +91,10 @@ configuration:
 
 uri-pattern-filter:
   configuration:
-  - service: seismic-ddms
+  - name: seismic-ddms
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: seismic-ddms
     uriPatterns:
     - "/seistore-svc/api/v3/svcstatus"
     - "/seistore-svc/api/v3/svcstatus/access"
@@ -129,7 +132,10 @@ uri-pattern-filter:
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/binaryHeaders"
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/rawTraceHeaders"
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/scaledTraceHeaders"
-  - service: seismic-file-metadata
+  - name: seismic-file-metadata
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: seismic-file-metadata
     uriPatterns:
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/service-status"
     - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/revision"

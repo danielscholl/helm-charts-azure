@@ -71,7 +71,10 @@ configuration:
 
 uri-pattern-filter:
   configuration:
-  - service: *serviceName
+  - name: *serviceName
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: *serviceName
     uriPatterns:
     - "/api/well-delivery/storage/v1/{type}/{id}/{version}"
     - "/api/well-delivery/storage/v1/{type}"
