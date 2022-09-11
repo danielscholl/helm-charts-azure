@@ -96,6 +96,10 @@ configuration:
         - "*/actuator/health"
         - "*/readiness_check"
         - "*/_ah/**"
+        - /api/dataset/v1/swagger-ui/*
+        - '*/v1/api-docs'
+        - /api/dataset/v1/swagger-resources/*
+        - /api/dataset/v1/webjars/*
     env:
       - name: spring.application.name
         value: dataset
