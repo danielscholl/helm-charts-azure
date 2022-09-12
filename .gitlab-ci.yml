@@ -4,7 +4,99 @@
 # AZURE_REGISTRY            (Protected Branch)
 
 stages:
+  - build
+  - test
   - publish
+
+.helm_validate: &helm_validate
+  tags: ["osdu-small"]
+  image: mcr.microsoft.com/azure-cli:2.38.0
+  stage: build
+  before_script:
+    - |
+      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -- --version v3.9.1
+  script:
+    - |
+      helm dependency update ${helm_dir} || echo "[WARN] Failed to update helm deps, skipping"
+      helm lint ${helm_dir}
+
+      if [[ -z $helm_values_file ]]; then
+        echo "[INFO] helm template ${helm_dir}"
+        helm template ${helm_dir} --debug
+      else
+        echo "[INFO] helm template ${helm_dir} -f ${helm_values_file}"
+        helm template  ${helm_dir} -f ${helm_values_file} --debug
+      fi
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - changes:
+        - ${helm_dir}/*
+
+# Needed vars
+# helm_dir -> Chart on which are the helm templates and chart definition
+# helm_cli_opts -> (Optional) If other options are needed for helm chart
+.helm_test: &helm_test
+  tags: ['osdu-medium']
+  image: mcr.microsoft.com/azure-cli:2.38.0
+  stage: test
+  before_script:
+    - |
+      apk add docker-cli
+      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      curl -Lo /usr/bin/kind https://kind.sigs.k8s.io/dl/v0.15.0/kind-linux-amd64 && chmod +x /usr/bin/kind
+      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -- --version v3.9.1
+      cat <<EOF >> cluster-config.yaml
+      kind: Cluster
+      apiVersion: kind.x-k8s.io/v1alpha4
+      nodes:
+      - role: control-plane
+        image: kindest/node:v1.24.4@sha256:adfaebada924a26c2c9308edd53c6e33b3d4e453782c0063dc0028bdebaddf98
+      - role: worker
+        image: kindest/node:v1.24.4@sha256:adfaebada924a26c2c9308edd53c6e33b3d4e453782c0063dc0028bdebaddf98
+      - role: worker
+        image: kindest/node:v1.24.4@sha256:adfaebada924a26c2c9308edd53c6e33b3d4e453782c0063dc0028bdebaddf98
+      EOF
+      kind create cluster --name $CI_JOB_ID --wait 180s --config cluster-config.yaml
+      CONTAINER_ID=$(docker ps -q -f "label=com.gitlab.gitlab-runner.job.id=$CI_JOB_ID" -f "label=com.gitlab.gitlab-runner.type=build")
+      docker network connect kind ${CONTAINER_ID}
+      CONTROL_PLANE_IP=$(docker inspect  $(docker ps -q -f "label=io.x-k8s.kind.cluster=${CI_JOB_ID}" -f "label=io.x-k8s.kind.role=control-plane") | jq  -r .[0].NetworkSettings.Networks.kind.IPAddress)
+      kind get kubeconfig --name $CI_JOB_ID --internal > $HOME/.kube/config
+      kubectl cluster-info
+      kubectl taint nodes --all node-role.kubernetes.io/master- || echo "[WARN] Not all nodes had this taint"
+    # Installing dependencies
+    - |
+      echo "[INFO] Installing azure-osdu charts: cert-manager, csi-secret, pod-identity, keda"
+      pushd /tmp
+      helm install cert-manager --repo https://charts.jetstack.io --namespace cert-manager --version v1.8.2 --create-namespace --generate-name --set installCRDs=true
+      helm install keda --repo https://kedacore.github.io/charts --version 2.7.2 --generate-name --create-namespace --namespace keda
+      helm install csi-secrets-store-provider-azure --repo https://azure.github.io/secrets-store-csi-driver-provider-azure/charts --version 1.0.1 --generate-name -n kube-system
+      helm install aad-pod-identity --repo https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts --version "4.1.5" -n kube-system --generate-name
+      popd
+      random_value=$(echo $RANDOM | md5sum | head -c 20; echo;)
+      echo "[INFO] Installing osdu dependencies: osdu-base, istio-base, istio-operator"
+      helm install osdu-base --generate-name --set ingress.admin=${random_value}@azure.com
+      helm install osdu-istio/istio-base --namespace istio-system --create-namespace --generate-name
+      helm install osdu-istio/istio-operator --namespace istio-system --create-namespace --generate-name
+      kubectl create ns osdu-azure && kubectl label namespace osdu-azure istio-injection=enabled && kubectl create ns airflow
+      chart_name=$(helm show chart ${helm_dir} | awk '/^name/{print $2}' | sed 's/\_/\-/g')
+      echo "[INFO] Chart name: $chart_name | rvalue: $random_value"
+      helm dependency update ${helm_dir} || echo "[WARN] Failed to update helm deps, skipping"
+      echo "[INFO] Extra helm opts => ${helm_cli_opts}"
+  script:    
+    - >-
+      helm upgrade -i ${chart_name} ./${helm_dir} --debug -n osdu-azure --create-namespace
+      --set global.ingress.dns=${random_value}.ingress.local
+      --set global.replicaCount=1
+      --set ingress.dns=${random_value}.ingress.local
+      --set deployment.replicaCount=1
+      --set airflow.ingress.web.host=${random_value}.ingress.local
+      ${helm_cli_opts}
+    - kubectl get all -n osdu-azure
+    - kubectl get events -n osdu-azure
+  after_script:
+    - kind delete cluster --name $CI_JOB_ID
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 # Helm build and push to glab ACR/helm
 # helm_dir is required, it will take the specified Chart version
@@ -108,3 +200,39 @@ acr_publish:
         helm_version: 1.0.0
       - helm_dir: osdu-istio
         helm_version: 1.1.6
+
+helm_validate:
+  <<: *helm_validate
+  parallel:
+    matrix:
+      - helm_dir: osdu-base
+      - helm_dir: osdu-istio
+      - helm_dir: osdu-airflow2
+      - helm_dir: osdu-azure/osdu-partition_base
+      - helm_dir: osdu-azure/osdu-security_compliance
+      - helm_dir: osdu-azure/osdu-core_services
+      - helm_dir: osdu-azure/osdu-reference_helper
+      - helm_dir: osdu-azure/osdu-ingest_enrich
+      - helm_dir: osdu-ddms/standard-ddms
+
+# Istio base istio operators and osdu-base are being always installed as those are prerequirements
+helm_test:
+  <<: *helm_test
+  parallel:
+    matrix:
+      - helm_dir: osdu-istio
+      - helm_dir: osdu-airflow2
+        helm_cli_opts: "--set airflow.airflow.extraVolumes= --set airflow.airflow.extraVolumeMounts= --no-hooks"
+      - helm_dir: osdu-azure/osdu-partition_base
+      - helm_dir: osdu-azure/osdu-security_compliance
+      - helm_dir: osdu-azure/osdu-core_services
+      - helm_dir: osdu-azure/osdu-reference_helper
+      - helm_dir: osdu-azure/osdu-ingest_enrich
+      - helm_dir: osdu-ddms/standard-ddms
+        helm_cli_opts: "-f osdu-ddms/standard-ddms/reservoir.osdu.values.yaml"
+      - helm_dir: osdu-ddms/standard-ddms
+        helm_cli_opts: "-f osdu-ddms/standard-ddms/seismic.osdu.values.yaml"
+      - helm_dir: osdu-ddms/standard-ddms
+        helm_cli_opts: "-f osdu-ddms/standard-ddms/well-delivery.osdu.values.yaml"
+      - helm_dir: osdu-ddms/standard-ddms
+        helm_cli_opts: "-f osdu-ddms/standard-ddms/wellbore.osdu.values.yaml"

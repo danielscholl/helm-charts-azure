@@ -46,6 +46,7 @@ DDMSs services level labels
 {{- define "standard-ddms.service-labels" -}}
 {{- $ := index . 0 }}
 {{- with index . 1 }}
+app: {{ .service }}
 app.kubernetes.io/instance: {{ .service }}
 {{ include "standard-ddms.common-labels" $ }}
 {{- end }}
