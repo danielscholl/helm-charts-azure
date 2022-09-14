@@ -156,7 +156,7 @@ airflow:
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: null
+        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
         # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
         # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
         # The certificate name needs to be changed if the namespace or the secret name change.
