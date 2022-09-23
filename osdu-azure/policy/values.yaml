@@ -17,7 +17,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  replicaCount: 2
+  replicaCount: 1
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
@@ -71,7 +71,7 @@ global:
   service:
     type: ClusterIP
     port: 80
-
+    targetPort: 8080
 
 ################################################################################
 # Specify the OSDU Services to Load
@@ -84,8 +84,13 @@ configuration:
   - service: policy
     repository: <azure_acr>/policy
     path: /api/policy/v1/*
-    probe: /api/policy/v1/health
     keyvault: true
+    readinessProbe: /api/policy/v1/health
+    readinessPort: 8080
+    livenessProbe: /api/policy/v1/health
+    livenessPort: 8080
+    probeInitialDelaySeconds: 60
+    livenessPeriodSeconds: 10
     podDisruptionBudget:
       enabled: true
     auth:

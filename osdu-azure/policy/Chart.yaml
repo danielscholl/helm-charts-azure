@@ -15,11 +15,10 @@
 apiVersion: v2
 name: policy
 type: application
-description: Installs the OSDU Platform Security and Compliance Services
-version: 1.15.0
-appVersion: 0.13.0
+description: Installs the OSDU Policy service
+version: 1.17.0
+appVersion: 0.17.0
 dependencies:
-  - name: "helm-library"
-    version: "0.15.0"
-    repository: file://../helm-library
-    enabled: true
+  - name: "osdu-helm-library"
+    version: "0.2.0"
+    repository: file://../../osdu-helm-library
