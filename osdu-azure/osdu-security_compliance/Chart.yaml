@@ -29,7 +29,7 @@ dependencies:
     enabled: true
   - name: "policy"
     repository: file://../policy
-    version: "1.15.0"
+    version: "1.17.0"
     enabled: true
   - name: "secret"
     repository: file://../secret
