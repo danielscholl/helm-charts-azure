@@ -1,0 +1,37 @@
+{{- $serviceName := .Values.serviceName}}
+{{- $namespace := .Release.Namespace }}
+{{- $storageAccount := .Values.azure.configStorageAccount }}
+{{- $partitions := .Values.opa.partitions }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $serviceName }}-policy-config
+  namespace: {{ $namespace }}
+data:
+  opa-config.yaml: |
+    services:
+      blob:
+        url: "https://${STORAGE_ACCOUNT}.blob.core.windows.net/policy-bundles"
+        headers:
+          x-ms-version: "2020-04-08"
+        response_header_timeout_seconds: 5
+        credentials:
+          azure_managed_identity: {}
+
+    bundles:
+      osdu/instance:
+        service: blob
+        resource: bundle.tar.gz
+        persist: true
+        polling:
+          min_delay_seconds: 10
+          max_delay_seconds: 30
+      {{- range $partitions }}
+      osdu/partition/{{ . }}:
+        service: blob
+        resource: bundle-{{ . }}.tar.gz
+        persist: true
+        polling:
+          min_delay_seconds: 10
+          max_delay_seconds: 30
+      {{- end }}

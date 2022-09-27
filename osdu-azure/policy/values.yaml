@@ -89,26 +89,18 @@ configuration:
     readinessPort: 8080
     livenessProbe: /api/policy/v1/health
     livenessPort: 8080
-    probeInitialDelaySeconds: 60
+    probeInitialDelaySeconds: 20
     livenessPeriodSeconds: 10
     podDisruptionBudget:
       enabled: true
     auth:
       disable:
-        - "/"
         - "*/index.html"
-        - "*/v2/api-docs"
         - "*/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "*/swagger"
-        - "*/health"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/legal/v1/swagger-resources/*"
-        - "/api/legal/v1/webjars/*"
-        - "*/actuator/health"
-        - "*/_ah/**"
+        - "*/docs/"
+        - "*/docs"
+        - "/api/policy/v1/docs/*"
+        - '*/health'
     env:
       - name: OPA_URL
         value: "http://opa:8181"
@@ -120,6 +112,20 @@ configuration:
         value: "/api/entitlements/v2/groups"
       - name: azure_paas_podIdentity_isEnabled
         value: "{{ .Values.global.azure.podIdentityAuthEnabled }}"
+      - name: CONTAINER_NAME
+        value: "policy-bundles"
+      - name: USE_BUNDLES
+        value: "yes"
+      - name: CLOUD_PROVIDER
+        value: "azure"
+      - name: STORAGE_ACCOUNT
+        secret:
+          name: airflow
+          key: storage-account
+      - name: KEYVAULT_URI
+        config:
+          name: osdu-svc-config
+          key: ENV_KEYVAULT
     podIdentityEnvs:
       - name: AZURE_CLIENT_ID
         secret:

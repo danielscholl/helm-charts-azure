@@ -53,4 +53,9 @@ service:
   type: ClusterIP
   port: 80
 
+################################################################################
+# Specific opa values
 serviceName: opa
+opa:
+  partitions:
+    - opendes
