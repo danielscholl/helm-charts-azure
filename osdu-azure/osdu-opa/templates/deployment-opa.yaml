@@ -16,11 +16,14 @@ spec:
     metadata:
       labels:
         app: {{ $serviceName }}
+        aadpodidbinding: osdu-identity
       name: {{ $serviceName }}
+      annotations:
+        checksum/config-opa: {{ include (print $.Template.BasePath "/configmap-opa.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ $serviceName }}
-        image: openpolicyagent/opa:0.33.1
+        image: openpolicyagent/opa:0.44.0
         ports:
         - name: http
           containerPort: 8181
@@ -28,11 +31,39 @@ spec:
         - "run"
         - "--ignore=.*"  # exclude hidden dirs created by Kubernetes
         - "--server"
-        - "/policies"
+        - "--config-file"
+        - "/policies/opa-config.yaml"
         volumeMounts:
         - mountPath: /policies
-          name: {{ $serviceName }}-policy
+          name: {{ $serviceName }}-policy-config
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            scheme: HTTP              # assumes OPA listens on localhost:8181
+            port: 8181
+          initialDelaySeconds: 5      # tune these periods for your environemnt
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health?bundle=true  # Include bundle activation in readiness
+            scheme: HTTP
+            port: 8181
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: STORAGE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: airflow
+              key: storage-account
+        - name: ENTITLEMENTS_BASE_URL
+          value: "http://entitlements"
+        - name: LEGAL_BASE_URL
+          value: "http://legal"
       volumes:
-      - name: {{ $serviceName }}-policy
-        persistentVolumeClaim:
-            claimName: {{ $serviceName }}-policy
+      - name: {{ $serviceName }}-policy-config
+        configMap:
+          name: {{ $serviceName }}-policy-config
+          items:
+          - key: opa-config.yaml
+            path: opa-config.yaml
