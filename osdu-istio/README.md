@@ -50,12 +50,6 @@ cat > osdu_istio_custom_values.yaml << EOF
 global:
   namespace: ${OSDU_NAMESPACE}
 
-    ################################################################################
-  # Specify the azure environment specific values
-  #
-  azure:
-
-
   ################################################################################
   # Specify the azure environment specific values
   #
@@ -71,7 +65,7 @@ global:
     podIdentity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
     commonPodIdentity: <azure_commonPodIdentity>
 
-  ################################################################################
+  #################################
   # Specify the istio specific values
   # based64 encoded username and password
   #
