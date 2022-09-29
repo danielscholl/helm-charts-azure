@@ -11,29 +11,34 @@ resources:
 
 # 0.xx.0-r versions means latests ones with incremental patches
 parameters:
-  - name: 'osdu-base'
+  - name: osduBaseVersion
+    displayName: Osdu Base Version
     default: '1.0.0'
     type: string
     values:
     - '1.0.0'
-  - name: 'osdu-istio'
+  - name: osduIstioVersion
+    displayName: Osdu Istio Version
     default: '1.1.6'
     type: string
     values:
     - '1.1.6'
-  - name: 'osdu-airflow2'
+  - name: osduAirflow2Version
+    displayName: Osdu Airflow Version
     default: '1.16.0'
     type: string
     values:
     - '1.16.0'
     - '1.15.0'
-  - name: 'osdu-azure'
+  - name: osduAzureVersion
+    displayName: Osdu Istio Version
     default: '1.16.0'
     type: string
     values:
     - '1.16.0'
     - '1.15.0'
-  - name: 'osdu-standad-dms'
+  - name: ddmsVersion
+    displayName: Osdu Standard DMS Version
     default: '1.16.0'
     type: string
     values:
@@ -52,7 +57,8 @@ stages:
       checkoutRepo: HelmChartsAzure
       helmVersion: $(HELM_VERSION)
       environments:
-        - demo
+        - name: demo
+          dnsHostName: demo-env.mydnshostname.contoso.com
       # Already setup by default releases to fully install osdu helm-charts-azure OR
       # Setup your custom releases
       releases:

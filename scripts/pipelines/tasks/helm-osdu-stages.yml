@@ -2,7 +2,11 @@ parameters:
   - name: environments
     displayName: Environment list on which to install
     type: object
-    default: []
+    default: {}
+  # Description: Environment parameters
+  # environments:
+  #   - name: demo
+  #     dnsHostName: <dns-host-name>
   - name: releases
     displayName: Release properties to be installed
     type: object
@@ -31,14 +35,11 @@ parameters:
 stages:
   - ${{ each environment in parameters.environments }}:
     - ${{ each release in parameters.releases }}:
-      - stage: "Deploy_${{ environment }}_${{ replace(release.releaseName,'-','') }}"
-        variables:
-          - group: '${{ parameters.provider }} Target Env - ${{ environment }}'
-          - group: '${{ parameters.provider }} Target Env Secrets - ${{ environment }}'
+      - stage: "Deploy_${{ environment.name }}_${{ replace(release.releaseName,'-','') }}"
         jobs:
           - deployment: Deploy
             displayName: "Helm deploy - ${{ release.releaseName }}"
-            environment: ${{ environment }}
+            environment: ${{ environment.name }}
             strategy:
               runOnce:
                 deploy:
@@ -52,23 +53,6 @@ stages:
                       inputs:
                         helmVersionToInstall: ${{ parameters.helmVersion }}
 
-                    # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-cli?view=azure-devops
-                    - task: AzureCLI@2
-                      displayName: 'AKS Login'
-                      env:
-                        BASE_NAME_RG: $(base-name-sr)
-                      inputs:
-                        azureSubscription: '$(SERVICE_CONNECTION_NAME)'
-                        addSpnToEnvironment: true
-                        scriptType: 'bash'
-                        scriptLocation: inlineScript
-                        inlineScript: |
-                          #!/usr/bin/env bash
-                          echo "[INFO] Logging in to AKS"
-                          sudo az aks install-cli
-                          AKS_NAME=$(az aks list --resource-group $BASE_NAME_RG-rg --query '[].{name:name}' -otsv)
-                          az aks get-credentials -g $BASE_NAME_RG-rg -n $AKS_NAME
-
                     - ${{ if not(release.subCharts) }}:
                       - task: AzureCLI@2
                         retryCountOnTaskFailure: 1
@@ -77,7 +61,8 @@ stages:
                           EXTRA_HELM_OPT: "${{ release.extraHelmOpts }}"
                           OSDU_NAMESPACE: osdu-azure
                           OSDU_ACR: msosdu.azurecr.io
-                          UNIQUE: ${{ environment }}
+                          UNIQUE: ${{ environment.name }}
+                          DNS_HOST: ${{ environment.dnsHostName }}
                         inputs:
                           azureSubscription: '$(SERVICE_CONNECTION_NAME)'
                           addSpnToEnvironment: true
@@ -97,7 +82,8 @@ stages:
                             EXTRA_HELM_OPT: "${{ release.extraHelmOpts }}"
                           OSDU_NAMESPACE: osdu-azure
                           OSDU_ACR: msosdu.azurecr.io
-                          UNIQUE: ${{ environment }}
+                          UNIQUE: ${{ environment.name }}
+                          DNS_HOST: ${{ environment.dnsHostName }}
                         inputs:
                           azureSubscription: '$(SERVICE_CONNECTION_NAME)'
                           addSpnToEnvironment: true
