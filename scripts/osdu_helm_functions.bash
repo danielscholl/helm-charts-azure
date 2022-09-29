@@ -14,6 +14,7 @@
 function _check_default_values() {
   if [[ -z $ENV_VAULT ]]; then echo "[ERROR] Not var (ENV_VAULT) defined"; exit 1; fi
   if [[ -z $DNS_HOST ]]; then echo "[ERROR] Not var (DNS_HOST) defined"; exit 1; fi
+  if [[ -z $ISTIO_DNS_HOST ]]; then export ISTIO_DNS_HOST=$DNS_HOST; echo "[WARN] No ISTIO_DNS_HOST env, using default => $DNS_HOST"; fi
   if [[ -z $OSDU_ACR ]]; then export OSDU_ACR=msosdu.azurecr.io; echo "[WARN] No OSDU_ACR env, using default => $OSDU_ACR"; fi
   if [[ -z $OSDU_NAMESPACE ]]; then export OSDU_NAMESPACE=osdu-azure; echo "[WARN] No OSDU_NAMESPACE env, using default => $OSDU_NAMESPACE"; fi
   if [[ -z $HOSDU_BASE_VERSION ]]; then export HOSDU_BASE_VERSION=1.0.0; echo "[WARN] No HOSDU_BASE_VERSION env, using default => $HOSDU_BASE_VERSION"; fi

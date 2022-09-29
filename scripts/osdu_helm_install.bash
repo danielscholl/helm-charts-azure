@@ -47,6 +47,7 @@ function Help()
   echo
 }
 
+# Function will login in aks cluster
 source $( find . -name 'osdu_helm_functions.bash' -type f )
 _check_default_values
 WORKDIR=$(mktemp -d)
