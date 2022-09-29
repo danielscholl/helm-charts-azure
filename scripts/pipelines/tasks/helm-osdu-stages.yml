@@ -1,0 +1,110 @@
+parameters:
+  - name: environments
+    displayName: Environment list on which to install
+    type: object
+    default: []
+  - name: releases
+    displayName: Release properties to be installed
+    type: object
+    default: {}
+  # Description: Release object should follow next convention
+  # releases:
+  #  # Base install
+  #  - releaseName: osdu-base
+  #    chartVersion: ${{ parameters.osduBaseVersion }}
+  #    ociRepo: oci://msosdu.azurecr.io/helm/osdu-base
+  #    namespace: default
+  #    extraHelmOpts: $(HELM_OPTS)
+  #    subCharts:   # Only if applicable
+  #      - releaseName: istio-base
+  #       chartPath: istio-base
+  - name: checkoutRepo
+    type: string
+    default: HelmChartsAzure
+  - name: provider
+    type: string
+    default: Azure
+  - name: helmVersion
+    type: string
+    default: 3.9.1
+
+stages:
+  - ${{ each environment in parameters.environments }}:
+    - ${{ each release in parameters.releases }}:
+      - stage: "Deploy_${{ environment }}_${{ replace(release.releaseName,'-','') }}"
+        variables:
+          - group: '${{ parameters.provider }} Target Env - ${{ environment }}'
+          - group: '${{ parameters.provider }} Target Env Secrets - ${{ environment }}'
+        jobs:
+          - deployment: Deploy
+            displayName: "Helm deploy - ${{ release.releaseName }}"
+            environment: ${{ environment }}
+            strategy:
+              runOnce:
+                deploy:
+                  steps:
+                    - checkout: ${{ parameters.checkoutRepo }}
+                      path: $(Build.Repository.Name)
+                      persistCredentials: true
+
+                    - task: "HelmInstaller@1"
+                      displayName: 'Download Helm'
+                      inputs:
+                        helmVersionToInstall: ${{ parameters.helmVersion }}
+
+                    # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/deploy/azure-cli?view=azure-devops
+                    - task: AzureCLI@2
+                      displayName: 'AKS Login'
+                      env:
+                        BASE_NAME_RG: $(base-name-sr)
+                      inputs:
+                        azureSubscription: '$(SERVICE_CONNECTION_NAME)'
+                        addSpnToEnvironment: true
+                        scriptType: 'bash'
+                        scriptLocation: inlineScript
+                        inlineScript: |
+                          #!/usr/bin/env bash
+                          echo "[INFO] Logging in to AKS"
+                          sudo az aks install-cli
+                          AKS_NAME=$(az aks list --resource-group $BASE_NAME_RG-rg --query '[].{name:name}' -otsv)
+                          az aks get-credentials -g $BASE_NAME_RG-rg -n $AKS_NAME
+
+                    - ${{ if not(release.subCharts) }}:
+                      - task: AzureCLI@2
+                        retryCountOnTaskFailure: 1
+                        displayName: 'Helm Install ${{ release.releaseName }}'                      
+                        env:
+                          EXTRA_HELM_OPT: "${{ release.extraHelmOpts }}"
+                          OSDU_NAMESPACE: osdu-azure
+                          OSDU_ACR: msosdu.azurecr.io
+                          UNIQUE: ${{ environment }}
+                        inputs:
+                          azureSubscription: '$(SERVICE_CONNECTION_NAME)'
+                          addSpnToEnvironment: true
+                          scriptType: 'bash'
+                          scriptLocation: 'scriptPath'
+                          scriptPath: '$(Build.SourcesDirectory)/scripts/osdu_helm_install.bash'
+                          arguments: '-r ${{ release.releaseName }} -n ${{ release.namespace }} -c ${{ release.ociRepo }} -v ${{ release.chartVersion }}'
+
+                    - ${{ each subChart in release.subCharts }}:
+                      - task: AzureCLI@2
+                        retryCountOnTaskFailure: 1
+                        displayName: 'HelmSubInstall ${{ release.releaseName }}/${{ subChart.releaseName }}'                     
+                        env:
+                          ${{ if subChart.extraHelmOpts }}:
+                            EXTRA_HELM_OPT: "${{ subChart.extraHelmOpts }}"
+                          ${{ else }}:
+                            EXTRA_HELM_OPT: "${{ release.extraHelmOpts }}"
+                          OSDU_NAMESPACE: osdu-azure
+                          OSDU_ACR: msosdu.azurecr.io
+                          UNIQUE: ${{ environment }}
+                        inputs:
+                          azureSubscription: '$(SERVICE_CONNECTION_NAME)'
+                          addSpnToEnvironment: true
+                          scriptType: 'bash'
+                          scriptLocation: 'scriptPath'
+                          scriptPath: '$(Build.SourcesDirectory)/scripts/osdu_helm_install.bash'
+                          ${{ if subChart.namespace }}:
+                            arguments: '-r ${{ subChart.releaseName }} -n ${{ subChart.namespace }} -c ${{ release.ociRepo }} -v ${{ release.chartVersion }} -s ${{ subChart.chartPath }}'
+                          ${{ else }}:
+                            arguments: '-r ${{ subChart.releaseName }} -n ${{ release.namespace }} -c ${{ release.ociRepo }} -v ${{ release.chartVersion }} -s ${{ subChart.chartPath }}'

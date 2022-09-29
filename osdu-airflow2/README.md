@@ -34,7 +34,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="true"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v2.2.4-v0.16-20220818-1"
+AIRFLOW_IMAGE_TAG="v2.2.4-v0.16-20220906-2"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -390,11 +390,6 @@ airflow:
         value: $AZURE_ACR
       - name: PYTHONPATH
         value: "/opt/celery"
-      # Needed for installing python osdu python sdk. In future this will be changed
-      - name: CI_COMMIT_TAG
-        value: "v0.12.0"
-      - name: BUILD_TAG
-        value: "v0.12.0"
       ## Begin -- Ingest Manifest DAG variables
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"

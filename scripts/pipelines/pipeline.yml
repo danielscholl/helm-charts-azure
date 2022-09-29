@@ -1,0 +1,124 @@
+name: helm-charts-azure-install
+
+# Only on demand trigger
+trigger: none
+
+resources:
+  repositories:
+  - repository: HelmChartsAzure
+    type: git
+    name: helm-charts-azure
+
+# 0.xx.0-r versions means latests ones with incremental patches
+parameters:
+  - name: 'osdu-base'
+    default: '1.0.0'
+    type: string
+    values:
+    - '1.0.0'
+  - name: 'osdu-istio'
+    default: '1.1.6'
+    type: string
+    values:
+    - '1.1.6'
+  - name: 'osdu-airflow2'
+    default: '1.16.0'
+    type: string
+    values:
+    - '1.16.0'
+    - '1.15.0'
+  - name: 'osdu-azure'
+    default: '1.16.0'
+    type: string
+    values:
+    - '1.16.0'
+    - '1.15.0'
+  - name: 'osdu-standad-dms'
+    default: '1.16.0'
+    type: string
+    values:
+    - '1.16.0'
+
+variables:
+  - group: 'Azure - OSDU'
+  - group: 'Azure - OSDU secrets'
+
+  - name: HELM_VERSION
+    value: 3.9.1
+
+stages:
+  - template: /scripts/pipelines/tasks/helm-osdu-stages.yml
+    parameters:
+      checkoutRepo: HelmChartsAzure
+      helmVersion: $(HELM_VERSION)
+      environments:
+        - demo
+      # Already setup by default releases to fully install osdu helm-charts-azure OR
+      # Setup your custom releases
+      releases:
+        # Base install
+        - releaseName: osdu-base
+          chartVersion: ${{ parameters.osduBaseVersion }}
+          ociRepo: oci://msosdu.azurecr.io/helm/osdu-base
+          namespace: default
+          extraHelmOpts: $(HELM_OPTS)
+        # Istio install
+        - releaseName: istio
+          chartVersion: ${{ parameters.osduIstioVersion }}
+          ociRepo: oci://msosdu.azurecr.io/helm/osdu-istio
+          namespace: istio-system
+          extraHelmOpts: $(HELM_OPTS)
+          subCharts:
+            - releaseName: istio-base
+              chartPath: istio-base
+            - releaseName: istio-operator
+              chartPath: istio-operator
+            - releaseName: osdu-istio
+              chartPath: '.'
+        # Airflow2
+        - releaseName: airflow2
+          chartVersion: ${{ parameters.osduAirflow2Version }}
+          ociRepo: oci://msosdu.azurecr.io/helm/osdu-airflow2
+          namespace: airflow2
+          extraHelmOpts: $(HELM_OPTS)
+        # Osdu-azure
+        - releaseName: osdu-azure
+          chartVersion: ${{ parameters.osduAzureVersion }}
+          ociRepo: oci://msosdu.azurecr.io/helm/osdu-azure
+          namespace: osdu-azure
+          extraHelmOpts: $(HELM_OPTS)
+          subCharts:
+            - releaseName: partition-services
+              chartPath: osdu-partition_base
+            - releaseName: security-services
+              chartPath: osdu-security_compliance
+            - releaseName: core-services
+              chartPath: osdu-core_services
+            - releaseName: reference-services
+              chartPath: osdu-reference_helper
+            - releaseName: ingest-services
+              chartPath: osdu-ingest_enrich
+        # DDMS's
+        # Namespace and helm ops will be overwritten if specified at subChart level
+        - releaseName: standard-ddms
+          chartVersion: ${{ parameters.ddmsVersion }}
+          ociRepo: oci://msosdu.azurecr.io/helm/standard-ddms
+          namespace: "default"
+          extraHelmOpts: ""
+          subCharts:
+            - releaseName: wellbore-services
+              chartPath: '.'
+              extraHelmOpts: "-f standard-ddms/wellbore.osdu.values.yaml -f osdu_ddms_custom_values.yaml --debug"
+              namespace: ddms-wellbore
+            - releaseName: seismic-services
+              chartPath: '.'
+              extraHelmOpts: "-f standard-ddms/seismic.osdu.values.yaml -f osdu_ddms_custom_values.yaml --debug"
+              namespace: ddms-seismic
+            - releaseName: well-delivery-services
+              chartPath: '.'
+              extraHelmOpts: "-f standard-ddms/well-delivery.osdu.values.yaml -f osdu_ddms_custom_values.yaml --debug"
+              namespace: ddms-well-delivery
+            - releaseName: reservoir-services
+              chartPath: '.'
+              extraHelmOpts: "-f standard-ddms/reservoir.osdu.values.yaml -f osdu_ddms_custom_values.yaml --debug"
+              namespace: ddms-reservoir

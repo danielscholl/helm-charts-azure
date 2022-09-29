@@ -59,6 +59,7 @@ Each service has its own specific value files that can be used for the deploymen
 | Seismic               | `seismic.osdu.values.yaml`                            |
 | Wellbore              | `wellbore.osdu.values.yaml`                           |
 | Well Delivery         | `well-delivery.osdu.values.yaml`                      |
+| Reservoir             | `reservoir.osdu.values.yaml`                          |
 
 The information about how and what to set for each value files are documented inside both `Values.yaml` and all three specific value files above. Make sure to set all the proper values and flags for your deployment.
 
