@@ -8,7 +8,7 @@ metadata:
     app: {{ $serviceName }}
   namespace: {{ $namespace }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.global.replicaCount }}
   selector:
     matchLabels:
       app: {{ $serviceName }}
