@@ -1,6 +1,5 @@
 {{- $serviceName := .Values.serviceName}}
 {{- $namespace := .Release.Namespace }}
-{{- $storageAccount := .Values.azure.configStorageAccount }}
 {{- $partitions := .Values.opa.partitions }}
 apiVersion: v1
 kind: ConfigMap
@@ -25,7 +24,7 @@ data:
         persist: true
         polling:
           min_delay_seconds: 10
-          max_delay_seconds: 30
+          max_delay_seconds: 120
       {{- range $partitions }}
       osdu/partition/{{ . }}:
         service: blob
@@ -33,5 +32,5 @@ data:
         persist: true
         polling:
           min_delay_seconds: 10
-          max_delay_seconds: 30
+          max_delay_seconds: 120
       {{- end }}
