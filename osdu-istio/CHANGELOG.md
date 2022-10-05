@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.6] - 2022-09
+
+- Merged `azure/m12-master` branch to master for `osdu-istio/templates`.
+- Added custom specs for hpa and k8s resources in istiooperator, we were facing failures in glab and noticed that integration tests (Mostly for storage) were failing and istio gateway stopped to respond to the appgw, even when autoscaling was happening.
+  - Scaled up `maxReplicas` for istiogw
+  - Add `resiliency` option to storage service
+  - [GatewaySpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#GatewaySpec)
+  - [ResourceSpec](https://istio.io/latest/docs/reference/config/istio.operator.v1alpha1/#KubernetesResourcesSpec)
+  - [Performance Summary](https://istio.io/latest/docs/ops/deployment/performance-and-scalability/#performance-summary-for-istio-hahahugoshortcode-s0-hbhb)
+
 ## [1.1.2] - 2021-02-1
 
 - Removed Envoy Filters for Identity Providers to relocate to osdu-azure chart.

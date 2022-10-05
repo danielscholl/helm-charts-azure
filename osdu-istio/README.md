@@ -13,8 +13,7 @@ __Version Tracking__
 | `1.1.0`            | `1.1.0`      | `1.7.0`         |
 | `1.0.0`            | `1.1.0`      | `1.7.0`         |
 
-
-__Pull Helm Chart__
+## Pull Helm Chart
 
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 
@@ -27,11 +26,12 @@ VERSION=1.1.6
 helm pull oci://msosdu.azurecr.io/helm/$CHART --version $VERSION --untar
 ```
 
-__Create Helm Chart Values__
+## Create Helm Chart Values
 
 Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
 
 _The following commands can help generate a prepopulated custom_values file._
+
 ```bash
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
@@ -76,7 +76,7 @@ global:
 EOF
 ```
 
-__Install Helm Chart__
+## Install Helm Chart
 
 Install the helm chart.
 

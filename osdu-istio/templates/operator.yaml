@@ -9,8 +9,8 @@ spec:
   meshConfig:
     defaultConfig:
       extraStatTags:
-        - request_url_path
         - request_method
+        - request_path
       proxyStatsMatcher:
         inclusionRegexps:
         - .*upstream_rq_retry.*osdu.*
@@ -36,40 +36,56 @@ spec:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
             outboundSidecar:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
             gateway:
               metrics:
                 - name: requests_total
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
                 - name: request_duration_milliseconds
                   dimensions:
-                    request_url_path: request.url_path
                     request_method: request.method
+                    request_path: response.headers['x-internal-uri-pattern']
   components:
    ingressGateways:
    - name: istio-ingressgateway
      enabled: true
      k8s:
       replicaCount: 2
+      resources:
+        requests:
+          cpu: 350m
+          memory: 1G
+        limits:
+          cpu: "1"
+          memory: 2G
       hpaSpec:
         minReplicas: 2
+        maxReplicas: 10
+        metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+        # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior
    pilot:
     k8s:
       replicaCount: 2

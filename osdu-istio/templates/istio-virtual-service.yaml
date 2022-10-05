@@ -1,4 +1,5 @@
 {{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+{{- $workflowRetryattempts := .Values.global.resiliency.workflow.retry_attempts | default 0 }}
 {{- $retryattemptsFileService := .Values.global.resiliency.retry_attempts_file_service | default 2 }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -13,11 +14,9 @@ spec:
   http:
   - match:
     - uri:
-        exact: "/"
+        exact: /
     - uri:
-        exact: "/static/default.css"
-    - uri:
-        exact: "/static/acs.png"
+        prefix: /static/
     route:
     - destination:
         host: default.{{ .Values.global.namespace }}.svc.cluster.local
@@ -45,12 +44,15 @@ spec:
   - match:
     - uri:
         prefix: "/api/storage/v2"
+    retries:
+      attempts: {{ $retryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset,5xx
     route:
     - destination:
         host: storage.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
-    timeout: 300s
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/indexer/v2"
@@ -193,6 +195,18 @@ spec:
         port:
           number: 80
     timeout: 300s
+  - match:
+    - uri:
+        prefix: "/api/workflow/v1"
+    retries:
+      attempts: {{ $workflowRetryattempts }}
+      retryOn: refused-stream,gateway-error,connect-failure,reset
+    route:
+    - destination:
+        host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 120s
   - match:
     - uri:
         prefix: "/api/workflow"
