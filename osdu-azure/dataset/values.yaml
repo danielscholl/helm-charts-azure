@@ -44,6 +44,15 @@ global:
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
 
+  ################################################################################
+  # Specify the auto scale specific values
+  #
+  autoscale:
+    enabled: false
+    cpu:
+      enabled: <autoscale_cpu_enabled>
+    rps:
+      enabled: <autoscale_rps_enabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -77,7 +86,12 @@ configuration:
   - service: dataset
     repository: <azure_acr>/dataset
     path: /api/dataset/*
-    probe: /api/dataset/v1/info
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 200 
+    livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
       enabled: true

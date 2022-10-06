@@ -1,0 +1,5 @@
+{{- include "osdu-helm-library.authpolicy" . }}
+{{- include "osdu-helm-library.deployment" . }}
+{{- include "osdu-helm-library.service" . }}
+{{- include "osdu-helm-library.hpa" . }}
+{{- include "osdu-helm-library.pdb" . }}
