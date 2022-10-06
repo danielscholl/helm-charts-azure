@@ -78,7 +78,12 @@ configuration:
   - service: crs-catalog
     repository: <azure_acr>/crs-catalog
     path: /api/crs/catalog/*
-    probe: /api/crs/catalog/swagger-ui/index.html
+    readinessProbe: /api/crs/catalog/swagger-ui/index.html
+    readinessPort: http
+    livenessProbe: /api/crs/catalog/swagger-ui/index.html
+    livenessPort: http
+    probeInitialDelaySeconds: 200 
+    livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
       enabled: true

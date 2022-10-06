@@ -77,7 +77,12 @@ configuration:
   - service: crs-conversion
     repository: <azure_acr>/crs-conversion
     path: /api/crs/converter/*
-    probe: /api/crs/converter/swagger-ui/index.html
+    readinessProbe: /api/crs/converter/swagger-ui/index.html
+    readinessPort: http
+    livenessProbe: /api/crs/converter/swagger-ui/index.html
+    livenessPort: http
+    probeInitialDelaySeconds: 200 
+    livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
       enabled: true

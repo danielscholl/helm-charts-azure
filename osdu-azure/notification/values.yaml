@@ -87,7 +87,12 @@ configuration:
   - service: notification
     repository: <azure_acr>/notification
     path: /api/notification/v1/*
-    probe: /api/notification/v1/swagger-ui/index.html
+    readinessProbe: /actuator/health
+    readinessPort: 8081
+    livenessProbe: /actuator/health
+    livenessPort: 8081
+    probeInitialDelaySeconds: 200 
+    livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
       enabled: true

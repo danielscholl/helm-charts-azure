@@ -2,6 +2,7 @@
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.global.pullPolicy -}}
 {{- $servicePort := .Values.global.service.port -}}
+{{- $hostName := .Values.global.ingress.dns -}}
 {{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
@@ -81,6 +82,15 @@ spec:
               port: {{ .livenessPort }}
             initialDelaySeconds: {{ .probeInitialDelaySeconds }}
             periodSeconds: {{ .livenessPeriodSeconds }}
+          resources:
+          {{- if .request }}
+            requests:
+              cpu: {{ .request.cpu | quote }}
+          {{- end }}
+          {{- if .limit }}
+            limits:
+              cpu: {{ .limit.cpu | quote }}
+          {{- end }}
           volumeMounts:
           {{- if .keyvault }}
           - name: azure-keyvault
@@ -111,6 +121,14 @@ spec:
                   name: {{ .secret.name | quote }}
                   key: {{ .secret.key | quote }}
               {{- end }}
+            {{- end }}
+            {{- if .env_with_dns }}
+            {{- range .env_with_dns }}
+            - name: {{ .name }}
+              {{- if .value }}
+              value: "https://{{ $hostName }}{{ .value }}"
+              {{- end }}
+            {{- end }}
             {{- end }}
             {{- if not $podIdentityAuthEnabled }}
             {{- range .podIdentityEnvs }}

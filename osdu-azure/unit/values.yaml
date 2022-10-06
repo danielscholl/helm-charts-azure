@@ -78,7 +78,12 @@ configuration:
   - service: unit
     repository: <azure_acr>/unit
     path: /api/unit/*
-    probe: /api/unit/_ah/readiness_check
+    readinessProbe: /api/unit/_ah/readiness_check
+    readinessPort: http
+    livenessProbe: /api/unit/_ah/readiness_check
+    livenessPort: http
+    probeInitialDelaySeconds: 200 
+    livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
       enabled: true

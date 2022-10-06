@@ -16,10 +16,9 @@ apiVersion: v2
 name: indexer-queue
 type: application
 description: Installs the OSDU on Azure Core System Services
-version: 1.15.0
-appVersion: 0.15.0
+version: 1.17.0
+appVersion: 0.17.0
 dependencies:
-  - name: "helm-library"
-    version: "0.1.0"
-    repository: file://../helm-library
-    enabled: true
+  - name: "osdu-helm-library"
+    version: "0.2.0"
+    repository: file://../../osdu-helm-library
