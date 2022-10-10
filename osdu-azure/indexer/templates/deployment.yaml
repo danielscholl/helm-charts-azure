@@ -11,6 +11,7 @@
 {{- $podIdentityAuthEnabled := .Values.global.azure.podIdentityAuthEnabled}}
 {{- $isHpaEnabled := .Values.global.autoscale.enabled}}
 {{- $kubernetesConfigMaps := .Values.global.kubernetesConfigMaps -}}
+{{- $kubernetesSecrets := .Values.global.kubernetesSecrets -}}
 {{- range .Values.configuration }}
 
 apiVersion: apps/v1
@@ -35,6 +36,7 @@ spec:
         prometheus.io/port: "8081"
         prometheus.io/scrape: "true"
         configmap.reloader.stakater.com/reload: {{ $kubernetesConfigMaps | quote}}
+        secret.reloader.stakater.com/reload: {{ $kubernetesSecrets | quote}}
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
