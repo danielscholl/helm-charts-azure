@@ -2,7 +2,8 @@
 
 | osdu-security_compliance  | app-version  |
 | ------------------------- | ----------   |
-| 1.15.0                    | 0.15.0        |
+| 1.17.0                    | 0.17.0       |
+| 1.15.0                    | 0.15.0       |
 
 
 __Supported OSDU Services__

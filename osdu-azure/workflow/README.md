@@ -2,10 +2,11 @@
 
 | osdu-ingest_enrich  | app-version  |
 | ------------------- | ----------   |
-| 1.13.0               | 0.13.0        |
-| 1.12.0               | 0.12.0        |
-| 1.11.0               | 0.11.0        |
-| 1.10.0               | 0.10.0        |
+| 1.17.0              | 0.17.0       |
+| 1.13.0              | 0.13.0       |
+| 1.12.0              | 0.12.0       |
+| 1.11.0              | 0.11.0       |
+| 1.10.0              | 0.10.0       |
 | 1.9.0               | 0.9.0        |
 | 1.8.1               | 0.8.0        |
 | 1.8.0               | 0.8.0        |
@@ -15,5 +16,5 @@
 
 __Supported OSDU Services__
 
-- [WKS Service](https://community.opengroup.org/osdu/platform/data-flow/enrichment/wks)
+
 - [Ingest Workflow Service](https://community.opengroup.org/osdu/platform/data-flow/ingestion/ingestion-workflow)
