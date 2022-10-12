@@ -2,15 +2,16 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $primaryUserName := .Values.primaryUserName}}
 {{- $secondaryUserName := .Values.secondaryUserName}}
+{{- $userJobName := .Values.userJobName}}
 
 {{- range $index, $datapartition := $list}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "oep-user-creator1"
+  name: "{{ $userJobName }}"
   namespace: "es-{{ lower $datapartition }}"
 spec:
-  ttlSecondsAfterFinished: 100
+  ttlSecondsAfterFinished: 300
   template:
     metadata:
       name: "oep-user-creator"
