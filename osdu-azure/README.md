@@ -2,12 +2,13 @@
 
 | `osdu-*-*`          | app-version  |
 | ------------------- | ----------   |
-| 1.16.0               | 0.16.0        |
-| 1.15.0               | 0.15.0        |
-| 1.13.0               | 0.13.0        |
-| 1.12.0               | 0.12.0        |
-| 1.11.0               | 0.11.0        |
-| 1.10.0               | 0.10.0        |
+| 1.17.0              | 0.17.0       |
+| 1.16.0              | 0.16.0       |
+| 1.15.0              | 0.15.0       |
+| 1.13.0              | 0.13.0       |
+| 1.12.0              | 0.12.0       |
+| 1.11.0              | 0.11.0       |
+| 1.10.0              | 0.10.0       |
 | 1.9.0               | 0.9.0        |
 | 1.8.1               | 0.8.0        |
 | 1.8.0               | 0.8.0        |
@@ -15,24 +16,25 @@
 | 1.4.0-rc1           | 0.6.0-rc1    |
 | 1.3.1               | 0.5.0        |
 
-__Pull Helm Chart__
+## Pull Helm Chart
 
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.16.0
+VERSION=1.17.0
 
 # Pull Chart
 helm pull oci://msosdu.azurecr.io/helm/$CHART --version $VERSION --untar
 ```
 
-__Create Helm Chart Values__
+## Create Helm Chart Values
 
 Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
 
 _The following commands can help generate a prepopulated custom_values file._
+
 ```bash
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
@@ -90,7 +92,7 @@ global:
 EOF
 ```
 
-__Install Helm Chart__
+## Install Helm Chart
 
 Install the helm chart.
 
@@ -104,6 +106,8 @@ kubectl create namespace $NAMESPACE && kubectl label namespace $NAMESPACE istio-
 
 # Install Charts
 helm upgrade -i partition-services osdu-azure/osdu-partition_base -n $NAMESPACE -f osdu_azure_custom_values.yaml
+# Needed for policy service (available in M14-0.17.0)
+helm upgrade -i opa osdu-azure/osdu-opa -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm upgrade -i security-services osdu-azure/osdu-security_compliance -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm upgrade -i core-services osdu-azure/osdu-core_services -n $NAMESPACE -f osdu_azure_custom_values.yaml
 helm upgrade -i reference-services osdu-azure/osdu-reference_helper -n $NAMESPACE -f osdu_azure_custom_values.yaml
@@ -120,17 +124,4 @@ Well Delivery DDMS is still in 'osdu' namespace
 
 Click [here](osdu-ddms/README.md) for more information.
 
-__Optional Preview Features Helm Chart__
-
-The following charts are `preview only` features and will require additional backend systems to support.
-
-```bash
-# Ensure your context is set.
-# az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
-
-# Create Namespace
-NAMESPACE=osdu-azure
-
-# Install Charts
-helm install opa osdu-azure/osdu-opa -n $NAMESPACE -f osdu_azure_custom_values.yaml
-```
+## Optional Preview Features Helm Chart

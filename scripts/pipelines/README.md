@@ -32,13 +32,18 @@ _full_osdu_install
 * You may want to check your variables for the current version of each stage that will be installed.
 
 ```shell
+export ADO_ORGANIZATION=<organization_name>
+export ADO_PROJECT=osdu-mvp
+az devops login --organization https://dev.azure.com/$ADO_ORGANIZATION
+az devops configure --defaults organization=https://dev.azure.com/$ADO_ORGANIZATION project=$ADO_PROJECT
+
 az pipelines create \
   --name 'helm-charts-azure-install'  \
   --repository helm-charts-azure  \
   --branch master  \
   --repository-type tfsgit  \
   --yaml-path /scripts/pipelines/pipeline.yml  \
-  --skip-first-run true
+  --skip-first-run true \
   -ojson
 ```
 
