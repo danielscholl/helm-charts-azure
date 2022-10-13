@@ -63,31 +63,31 @@ spec:
                     request_method: request.method
                     request_path: response.headers['x-internal-uri-pattern']
   components:
-   ingressGateways:
-   - name: istio-ingressgateway
-     enabled: true
-     k8s:
-      replicaCount: 2
-      resources:
-        requests:
-          cpu: 350m
-          memory: 1G
-        limits:
-          cpu: "1"
-          memory: 2G
-      hpaSpec:
-        minReplicas: 2
-        maxReplicas: 10
-        metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 70
-        # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior
-   pilot:
-    k8s:
-      replicaCount: 2
-      hpaSpec:
-        minReplicas: 2
+    pilot:
+      k8s:
+        replicaCount: 2
+        hpaSpec:
+          minReplicas: 2
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        replicaCount: 2
+        resources:
+          requests:
+            cpu: 350m
+            memory: 1G
+          limits:
+            cpu: "1"
+            memory: 2G
+        hpaSpec:
+          minReplicas: 2
+          maxReplicas: 10
+          metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 70
+          # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior

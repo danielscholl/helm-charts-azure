@@ -27,13 +27,15 @@ global:
     tenant: <azure_tenant>
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
+    # Not needed if istio.certJob is not enabled (It is recommended to enable it)
+    keyvault: <azure_kvName>
+    subscription: <azure_subscription>
     srResourceGroupName: <azure_srResourceGroupName>
-    kvName: <azure_kvName>
     clusterName: <azure_clusterName>
     appGwName: <azure_appGwName>
-    subscription: <azure_subscription>
-    podIdentity: <azure_podIdentity>
-    commonPodIdentity: <azure_commonPodIdentity>
+    identity: <azure_podIdentity>
+    identity_id: <azure_podIdentityId>
+    crResourceGroupName: <cr_resourceGroupName>
 
   ################################################################################
   # Specify the istio specific values
@@ -44,15 +46,15 @@ global:
     password: <istio_password>
     loadBalancerIP: <istio_loadbalancerip>
     enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
-    dns_host: <istio_dns_host> 
-
-  ################################################################################
-  # Specify cron job specific values
-  #
-  job:
-    name: cert-checker
-    image: mcr.microsoft.com/azure-cli 
-    appgw_configmap_name: osdu-istio-appgw-cert
+    dns_host: <istio_dns_host>
+    ################################################################################
+    # Specify cron job specific values
+    #
+    # Values not needed if certJob is disabled
+    certJob:
+      enabled: true
+      name: cert-checker
+      image: mcr.microsoft.com/azure-cli:2.38.0
 
   ################################################################################
   # Specify Resiliency configuration

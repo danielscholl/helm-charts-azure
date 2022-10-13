@@ -3,6 +3,8 @@ kind: EnvoyFilter
 metadata:
   name: remove-uri-pattern-header
   namespace: istio-system
+  annotations:
+  {{- include "postOperator.annotations" . | indent 4 }}
 spec:
   priority: -100
   configPatches:

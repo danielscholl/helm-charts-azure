@@ -58,19 +58,20 @@ global:
     appid: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/aad-client-id --query value -otsv)
     podIdentityAuthEnabled: false
     srResourceGroupName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-rg
-    kvName: ${ENV_VAULT}
+    keyvault: ${ENV_VAULT}
     clusterName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-aks
     appGwName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-istio-gw
     subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-    podIdentity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-    commonPodIdentity: <azure_commonPodIdentity>
+    identity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
+    identity_id: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/osdu-identity-id --query value -otsv)
+    crResourceGroupName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
 
   #################################
   # Specify the istio specific values
   # based64 encoded username and password
   #
   istio:
-    loadBalancerIP: ""
+    loadBalancerIP: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/istio-int-load-balancer-ip --query value -otsv)
     enableIstioKeyvaultCert: false
     dns_host: ${ISTIO_DNS_HOST}
 EOF
