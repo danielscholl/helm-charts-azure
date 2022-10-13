@@ -159,7 +159,7 @@ acr_publish:
       - helm_dir: osdu-base
         helm_version: 1.0.0
       - helm_dir: osdu-istio
-        helm_version: 1.1.6
+        helm_version: 1.1.7
 
 helm_validate:
   <<: *helm_validate
@@ -181,6 +181,7 @@ helm_test:
   parallel:
     matrix:
       - helm_dir: osdu-istio
+        helm_cli_opts: "--set global.istio.certJob.enabled=false --no-hooks"
       - helm_dir: osdu-airflow2
         helm_cli_opts: "--set airflow.airflow.extraVolumes= --set airflow.airflow.extraVolumeMounts= --no-hooks"
       - helm_dir: osdu-azure/osdu-partition_base

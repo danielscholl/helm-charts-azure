@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.7] - 2022-10
+
+- Merged `azure/m12-master` branch to master for `osdu-istio/templates`.
+- Fixed `osdu-cert` jobs to use appgw.
+  - Needed to add VS and GW for health check in appgw on port 80 as well as rules for clusterissuer cert manager auto certificate update
+  - `osdu-base` should have the istio ingress annotation to handle the cert manager certificate creation.
+  - job will take care of upload the new created cert to the kv and update the KV, need to apply this change in infra [Infra Azure provisioning MR](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/merge_requests/738)
+
 ## [1.1.6] - 2022-09
 
 - Merged `azure/m12-master` branch to master for `osdu-istio/templates`.

@@ -3,6 +3,8 @@ kind: EnvoyFilter
 metadata:
   name: gateway-access-log
   namespace: istio-system
+  annotations:
+  {{- include "postOperator.annotations" . | indent 4 }}
 spec:
   configPatches:
   - applyTo: NETWORK_FILTER

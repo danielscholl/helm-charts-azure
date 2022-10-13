@@ -7,19 +7,23 @@ __Version Tracking__
 | `1.0.0`            |
 
 
-__Pull Helm Chart__
+## Install Helm Chart from oci
 
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 
 ```bash
-
+CHART=osdu-base
+VERSION=1.0.0
+helm upgrade -i osdu-base oci://msosdu.azurecr.io/helm/${CHART} --version ${VERSION} -n default --set 
+ingress.admin=<admin_email>
 ```
 
-__Create Helm Chart Values__
+### (Optional) Create Helm Chart Values
 
 Either manually modify the values.yaml for the chart or generate a custom_values yaml to use.
 
 _The following commands can help generate a prepopulated custom_values file._
+
 ```bash
 # Setup Variables
 CERT_EMAIL="<your_admin_email>"     # ie: admin@email.com
@@ -37,8 +41,7 @@ ingress:
 EOF
 ```
 
-
-__Install Helm Chart__
+## Install Helm Chart
 
 Install the helm chart.
 

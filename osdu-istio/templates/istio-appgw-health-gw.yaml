@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: istio-gateway
+  name: ig-appgw-80
   namespace: {{ .Release.Namespace }}
   annotations:
   {{- include "postOperator.annotations" . | indent 4 }}
@@ -9,12 +9,12 @@ spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
-    - port:
-        number: 443
-        name: https
-        protocol: HTTPS
-      hosts:
-        - {{ .Values.global.istio.dns_host }}
-      tls:
-        mode: SIMPLE
-        credentialName: {{ include "secret.certName" . }}
+    - hosts:
+      - "*"
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+# Not needed as it will redirect in virtual service
+#      tls:
+#        httpsRedirect: true

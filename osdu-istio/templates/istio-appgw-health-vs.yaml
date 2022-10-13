@@ -1,0 +1,49 @@
+{{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
+{{- $workflowRetryattempts := .Values.global.resiliency.workflow.retry_attempts | default 0 }}
+{{- $retryattemptsFileService := .Values.global.resiliency.retry_attempts_file_service | default 2 }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ig-appgw-80
+  namespace: {{ .Release.Namespace }}
+  annotations:
+  {{- include "postOperator.annotations" . | indent 4 }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ig-appgw-80
+  http:
+  - match:
+    - uri:
+        exact: /
+      scheme:
+        exact: http
+      port: 80
+    route:
+    - destination:
+        host: default.{{ .Values.global.namespace }}.svc.cluster.local
+        port:
+          number: 80
+    timeout: 20s
+    # Not supported yet with current istio version (1.8.0)
+    # Would be nice for appgw health check on port 80
+    # https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPDirectResponse
+    #    directResponse:
+    #      status: 200
+    #      body:
+    #        string: "Health Check for appgw"
+  - name: redirect
+    # The redirect for https has to happen in the virtual service,
+    # otherwise it will prevent the cert-manager http01 challenge from working
+    match:
+    - scheme:
+        exact: http
+      uri:
+        # This is not a perfect regex but RE2 does not allow negations so we have to hack a it
+        # Note: this pattern will redirect to HTTPS all URIs NOT starting with `/.well-` (which should be the best case since your business URIs are unlikely to start with that)
+        # this to let pass requests to renew certs like `/.well-known/acme-challenge/...`
+        regex: "^/(([^\\.].*)|(\\.[^w].*)|(\\.w[^e].*)|(\\.we[^l].*)|(\\.wel[^l].*)|(\\.well[^\\-].*))"
+    redirect:
+      scheme: https
+      redirectCode: 302 # 302 to not mess with risky permanent redirections since a workaround
