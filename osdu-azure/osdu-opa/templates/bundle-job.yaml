@@ -1,0 +1,57 @@
+# Azure bootstrap directions:
+# https://community.opengroup.org/osdu/platform/security-and-compliance/policy/-/blob/release/0.17/devops/azure/override-stages.yml#L39
+{{- $serviceName := .Values.serviceName}}
+{{- $namespace := .Release.Namespace }}
+{{- $partitions := .Values.opa.partitions }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $serviceName }}-bundles-job
+  namespace: {{ $namespace }}
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+  labels:
+    app: {{ $serviceName }}
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        aadpodidbinding: osdu-identity
+    spec:
+      containers:
+      - name: policy-bundle-update
+        image: mcr.microsoft.com/azure-cli:2.38.0
+        env:
+        - name: STORAGE_ACCOUNT
+          valueFrom:
+            secretKeyRef:
+              name: airflow
+              key: storage-account
+        command:
+        - /bin/bash
+        args:
+        - -c
+        - |
+          set -euo pipefail
+          az login --identity
+          export AZURE_STORAGE_KEY=$(az storage account keys list --account-name ${STORAGE_ACCOUNT} --query '[1].value' -otsv)
+          git clone --single-branch --depth 1 https://community.opengroup.org/osdu/platform/security-and-compliance/policy.git policy
+
+          echo "[INFO] Uploading default bundle to policy SA"
+          tar -cvzf bundle.tar.gz \
+            --directory policy/deployment/default-policies/ .manifest dataauthz.rego \
+            entitlements.rego legal.rego search.rego
+          az storage blob upload -f ./bundle.tar.gz -c policy-bundles --overwrite true --account-name ${STORAGE_ACCOUNT}
+          {{- range $partitions }}
+          echo "[INFO] Uploading partition {{ . }} bundle to policy SA"
+          DP_WORKDIR=$(mktemp -d)
+          sed -e 's/{{ printf "{{dp_id}}/%s" . }}/g' policy/deployment/scripts/azure/templates/manifest_template.manifest | tee $DP_WORKDIR/.manifest
+          sed -e 's/{{ printf "{{dp_id}}/%s" . }}/g' policy/deployment/scripts/azure/templates/dataauthz_template.rego | tee $DP_WORKDIR/dataauthz.rego
+          tar -cvzf bundle-{{ . }}.tar.gz --directory $DP_WORKDIR/ .manifest dataauthz.rego
+          az storage blob upload -f bundle-{{ . }}.tar.gz -c policy-bundles --overwrite true --account-name ${STORAGE_ACCOUNT}
+          {{- end }}
+      restartPolicy: Never
