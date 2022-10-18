@@ -19,9 +19,9 @@ function _check_default_values() {
   if [[ -z $OSDU_NAMESPACE ]]; then export OSDU_NAMESPACE=osdu-azure; echo "[WARN] No OSDU_NAMESPACE env, using default => $OSDU_NAMESPACE"; fi
   if [[ -z $HOSDU_BASE_VERSION ]]; then export HOSDU_BASE_VERSION=1.0.0; echo "[WARN] No HOSDU_BASE_VERSION env, using default => $HOSDU_BASE_VERSION"; fi
   if [[ -z $HOSDU_ISTIO_VERSION ]]; then export HOSDU_ISTIO_VERSION=1.1.6; echo "[WARN] No HOSDU_ISTIO_VERSION env, using default => $HOSDU_ISTIO_VERSION"; fi
-  if [[ -z $HOSDU_AIRFLOW2_VERSION ]]; then export HOSDU_AIRFLOW2_VERSION=1.16.0; echo "[WARN] No HOSDU_AIRFLOW2_VERSION env, using default => $HOSDU_AIRFLOW2_VERSION"; fi
-  if [[ -z $HOSDU_AZURE_VERSION ]]; then export HOSDU_AZURE_VERSION=1.16.0; echo "[WARN] No HOSDU_AZURE_VERSION env, using default => $HOSDU_AZURE_VERSION"; fi
-  if [[ -z $HOSDU_DMS_VERSION ]]; then export HOSDU_DMS_VERSION=1.16.0; echo "[WARN] No HOSDU_DMS_VERSION env, using default => $HOSDU_DMS_VERSION"; fi
+  if [[ -z $HOSDU_AIRFLOW2_VERSION ]]; then export HOSDU_AIRFLOW2_VERSION=1.17.0; echo "[WARN] No HOSDU_AIRFLOW2_VERSION env, using default => $HOSDU_AIRFLOW2_VERSION"; fi
+  if [[ -z $HOSDU_AZURE_VERSION ]]; then export HOSDU_AZURE_VERSION=1.17.0; echo "[WARN] No HOSDU_AZURE_VERSION env, using default => $HOSDU_AZURE_VERSION"; fi
+  if [[ -z $HOSDU_DMS_VERSION ]]; then export HOSDU_DMS_VERSION=1.17.0; echo "[WARN] No HOSDU_DMS_VERSION env, using default => $HOSDU_DMS_VERSION"; fi
   if [[ -z $EXTRA_HELM_OPT ]]; then
     echo "[INFO] EXTRA_HELM_OPT not specified by default set --wait --timeout 10m --debug"
     export EXTRA_HELM_OPT="--wait --timeout 10m --debug";

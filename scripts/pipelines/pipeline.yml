@@ -25,23 +25,26 @@ parameters:
     - '1.1.6'
   - name: osduAirflow2Version
     displayName: Osdu Airflow Version
-    default: '1.16.0'
+    default: '1.17.0'
     type: string
     values:
+    - '1.17.0'
     - '1.16.0'
     - '1.15.0'
   - name: osduAzureVersion
-    displayName: Osdu Istio Version
-    default: '1.16.0'
+    displayName: Osdu Azure Version
+    default: '1.17.0'
     type: string
     values:
+    - '1.17.0'
     - '1.16.0'
     - '1.15.0'
   - name: ddmsVersion
     displayName: Osdu Standard DMS Version
-    default: '1.16.0'
+    default: '1.17.0'
     type: string
     values:
+    - '1.17.0'
     - '1.16.0'
 
 variables:
@@ -50,6 +53,8 @@ variables:
 
   - name: HELM_VERSION
     value: 3.9.1
+  - name: HELM_OPTS
+    value: "--wait --timeout 5m --debug"
 
 stages:
   - template: /scripts/pipelines/tasks/helm-osdu-stages.yml
@@ -96,6 +101,9 @@ stages:
           subCharts:
             - releaseName: partition-services
               chartPath: osdu-partition_base
+            - releaseName: opa
+              chartPath: osdu-opa
+              extraHelmOpts: "--debug"
             - releaseName: security-services
               chartPath: osdu-security_compliance
             - releaseName: core-services

@@ -16,5 +16,5 @@ apiVersion: v2
 name: standard-ddms
 type: application
 description: Install standard DDMS service
-version: 1.15.0
-appVersion: 0.15.0
+version: 1.17.0
+appVersion: 0.17.0
