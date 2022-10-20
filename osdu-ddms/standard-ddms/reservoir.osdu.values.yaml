@@ -34,14 +34,14 @@ configuration:
     path: /api/oetp-client/v2
     probe:
       readiness:
-        path: /
+        path: /api/oetp-client/v2/
       liveness:
-        path: /metrics
+        path: /api/oetp-client/v2/metrics
     auth:
       disable:
-        - "/swagger*"
-        - "/metrics"
-        - "/"
+        - "/api/oetp-client/v2/swagger*"
+        - "/api/oetp-client/v2/metrics"
+        - "/api/oetp-client/v2/"
     config:
       RDMS_ETP_HOST: "oetp-service"
       RDMS_ETP_PORT: "80"
