@@ -92,8 +92,9 @@ stages:
       random_value=$(echo $RANDOM | md5sum | head -c 20; echo;)
       echo "[INFO] Installing osdu dependencies: osdu-base, istio-base, istio-operator"
       helm install osdu-base --generate-name --set ingress.admin=${random_value}@azure.com
-      helm install osdu-istio/istio-base --namespace istio-system --create-namespace --generate-name
-      helm install osdu-istio/istio-operator --namespace istio-system --create-namespace --generate-name
+      helm install osdu-istio/base-1.15.2.tgz --namespace istio-system --create-namespace --generate-name
+      helm install osdu-istio/istio-operator-1.15.2.tgz --namespace istio-system --create-namespace --generate-name \
+        --set hub=msosdu.azurecr.io/istio --set tag=1.15.2
       kubectl create ns osdu-azure && kubectl label namespace osdu-azure istio-injection=enabled && kubectl create ns airflow
       chart_name=$(helm show chart ${helm_dir} | awk '/^name/{print $2}' | sed 's/\_/\-/g')
       echo "[INFO] Chart name: $chart_name | rvalue: $random_value"
@@ -159,7 +160,7 @@ acr_publish:
       - helm_dir: osdu-base
         helm_version: 1.0.0
       - helm_dir: osdu-istio
-        helm_version: 1.1.7
+        helm_version: 1.1.8
 
 helm_validate:
   <<: *helm_validate

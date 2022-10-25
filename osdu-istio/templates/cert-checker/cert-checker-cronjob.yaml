@@ -7,7 +7,7 @@ metadata:
   labels:
     app: "{{ .Values.global.istio.certJob.name }}"
 spec:
-  schedule: "0 */1 * * *"  # Each hour
+  schedule: "0 */6 * * *"  # Each 6 hours
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:

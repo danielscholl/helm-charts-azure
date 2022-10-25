@@ -1,3 +1,4 @@
+{{- $serviceAnnotations := include "istio.gateway.annotations" (dict "Release" .Release "Values" .Values) }}
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
@@ -5,7 +6,7 @@ metadata:
   name: istio-osdu
 spec:
   hub: msosdu.azurecr.io/istio
-  tag: 1.14.0
+  tag: 1.15.2
   meshConfig:
     defaultConfig:
       extraStatTags:
@@ -25,8 +26,8 @@ spec:
         logLevel: info
     gateways:
       istio-ingressgateway:
-        serviceAnnotations:
-          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        serviceAnnotations: 
+          {{- $serviceAnnotations | indent 10 }}
         loadBalancerIP: "{{ .Values.global.istio.loadBalancerIP }}"
     telemetry:
       v2:

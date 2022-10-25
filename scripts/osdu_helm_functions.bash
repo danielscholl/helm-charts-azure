@@ -53,12 +53,11 @@ global:
     corsEnabled: false # set this to true if you want to enable CORS.
     suthEnabled: false # set this to true if you want to use SAuth identity envoy
     # Extra values for istio
-    kvName: ${ENV_VAULT}
     clusterName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-aks
     appGwName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-istio-gw
     subscription: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/subscription-id --query value -otsv)
-    podIdentity: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-osdu-identity
-    commonPodIdentity: <azure_commonPodIdentity>
+    srResourceGroupName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-sr --query value -otsv)-rg 
+    crResourceGroupName: $(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/base-name-cr --query value -otsv)-rg
 
   ingestion:
     airflowVersion2Enabled: true
@@ -71,7 +70,7 @@ global:
     enableKeyvaultCert: false         # <- Set this to true in order to use your own keyvault cert
 
   istio:
-    loadBalancerIP: ""
+    loadBalancerIP: "$(az keyvault secret show --id https://${ENV_VAULT}.vault.azure.net/secrets/istio-int-load-balancer-ip --query value -otsv)"
     enableIstioKeyvaultCert: false
     dns_host: "${ISTIO_DNS_HOST}"
 EOF

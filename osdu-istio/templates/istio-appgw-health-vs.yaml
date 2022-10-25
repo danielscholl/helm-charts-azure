@@ -17,25 +17,15 @@ spec:
   - match:
     - uri:
         exact: /
-      scheme:
-        exact: http
-      port: 80
-    route:
-    - destination:
-        host: default.{{ .Values.global.namespace }}.svc.cluster.local
-        port:
-          number: 80
-    timeout: 20s
-    # Not supported yet with current istio version (1.8.0)
-    # Would be nice for appgw health check on port 80
-    # https://istio.io/latest/docs/reference/config/networking/virtual-service/#HTTPDirectResponse
-    #    directResponse:
-    #      status: 200
-    #      body:
-    #        string: "Health Check for appgw"
+    - uri:
+        exact: /healthz
+    directResponse:
+      status: 200
+      body:
+        string: "Azure OSDU Platform"
+  # The redirect for https has to happen in the virtual service,
+  # otherwise it will prevent the cert-manager http01 challenge from working
   - name: redirect
-    # The redirect for https has to happen in the virtual service,
-    # otherwise it will prevent the cert-manager http01 challenge from working
     match:
     - scheme:
         exact: http

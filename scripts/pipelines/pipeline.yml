@@ -19,9 +19,10 @@ parameters:
     - '1.0.0'
   - name: osduIstioVersion
     displayName: Osdu Istio Version
-    default: '1.1.6'
+    default: '1.1.8'
     type: string
     values:
+    - '1.1.8'
     - '1.1.6'
   - name: osduAirflow2Version
     displayName: Osdu Airflow Version
@@ -81,9 +82,9 @@ stages:
           extraHelmOpts: $(HELM_OPTS)
           subCharts:
             - releaseName: istio-base
-              chartPath: istio-base
+              chartPath: base-1.15.2.tgz
             - releaseName: istio-operator
-              chartPath: istio-operator
+              chartPath: istio-operator-1.15.2.tgz
             - releaseName: osdu-istio
               chartPath: '.'
         # Airflow2
