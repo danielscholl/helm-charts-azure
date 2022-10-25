@@ -44,9 +44,11 @@ global:
   istio:
     username: <istio_username>
     password: <istio_password>
-    loadBalancerIP: <istio_loadbalancerip>
     enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
     dns_host: <istio_dns_host>
+    loadBalancerIP: ""
+    # If you need specific azure service annotations
+    # serviceAnnotations: {}
     ################################################################################
     # Specify cron job specific values
     #

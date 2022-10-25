@@ -26,3 +26,16 @@ Construct the name of the certificate name.
 {{- true -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Construct the service annotations by default of the Service Gateway
+*/}}
+{{- define "istio.gateway.annotations" -}}
+{{- if .Values.global.istio.serviceAnnotations }}
+{{- range $key, $val := .Values.global.istio.serviceAnnotations }}
+{{ $key }}: {{ $val }}
+{{- end }}
+{{- else }}
+service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+{{- end }}
+{{- end -}}

@@ -4,7 +4,8 @@ __Version Tracking__
 
 | Helm Chart Version | istio-base   | istio-operator  |
 | ------------------ | ------------ | --------------- |
-| `1.1.6`            | `1.2.0`      | `1.8.0`         |
+| `1.1.8`            | `1.15.2`     | `1.15.2`        |
+| `1.1.7`            | `1.1.0`      | `1.8.0`         |
 | `1.1.5`            | `1.1.0`      | `1.7.0`         |
 | `1.1.4`            | `1.1.0`      | `1.7.0`         |
 | `1.1.3`            | `1.1.0`      | `1.7.0`         |
@@ -20,7 +21,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-istio
-VERSION=1.1.6
+VERSION=1.1.8
 
 # Pull Chart
 helm pull oci://msosdu.azurecr.io/helm/$CHART --version $VERSION --untar
@@ -91,9 +92,21 @@ NAMESPACE=istio-system
 kubectl create namespace $NAMESPACE
 
 # Install Charts
-helm upgrade -i istio-base osdu-istio/istio-base -n $NAMESPACE
-helm upgrade -i istio-operator -n $NAMESPACE osdu-istio/istio-operator \
-  -f osdu-istio/istio-operator/values.yaml
+helm upgrade -i istio-base osdu-istio/base-1.15.2.tgz -n $NAMESPACE
+helm upgrade -i istio-operator osdu-istio/istio-operator-1.15.2.tgz -n $NAMESPACE \
+  --set hub=msosdu.azurecr.io/istio --set tag=1.15.2
 
-helm upgrade -i osdu-istio osdu-istio -n $NAMESPACE -f osdu-istio/values.yaml -f osdu_istio_custom_values.yaml
+helm upgrade -i osdu-istio osdu-istio/ -n $NAMESPACE -f osdu-istio/values.yaml -f osdu_istio_custom_values.yaml
+```
+
+## Istio upgrade notes
+
+If you are upgrading istio only and not other services such as airflow, osdu or ddms, it is recommended to restart all deployments to take the new istio version change.
+
+```shell
+for nss in $(kubectl get ns -l istio-injection=enabled -o jsonpath={.items[*].metadata.name}); do
+  for dd in $(kubectl get deploy -n $nss -o jsonpath={.items[*].metadata.name}); do
+    kubectl rollout restart deploy/$dd -n $nss
+  done
+done
 ```
