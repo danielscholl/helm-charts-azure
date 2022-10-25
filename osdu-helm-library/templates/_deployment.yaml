@@ -1,7 +1,8 @@
 {{- define "osdu-helm-library.deployment" -}}
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.global.pullPolicy -}}
-{{- $servicePort := .Values.global.service.port -}}
+{{- $containerPort := .Values.global.service.targetPort | default $.Values.global.service.port -}}
+{{- $hostName := .Values.global.ingress.dns -}}
 {{- $replicaCount := .Values.global.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
@@ -68,7 +69,7 @@ spec:
           imagePullPolicy: {{ $pullPolicy | default "Always" }}
           ports:
             - name: http
-              containerPort: {{ $servicePort }}
+              containerPort: {{ $containerPort }}
               protocol: TCP
           readinessProbe:
             httpGet:
