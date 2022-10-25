@@ -25,30 +25,6 @@ stages:
     - if: '$AZURE == "1" && $CI_COMMIT_TAG'
       when: on_success
 
-.helm_validate: &helm_validate
-  tags: ["osdu-small"]
-  image: mcr.microsoft.com/azure-cli:2.38.0
-  stage: build
-  before_script:
-    - |
-      curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -- --version v3.9.1
-  script:
-    - |
-      helm dependency update ${helm_dir} || echo "[WARN] Failed to update helm deps, skipping"
-      helm lint ${helm_dir}
-
-      if [[ -z $helm_values_file ]]; then
-        echo "[INFO] helm template ${helm_dir}"
-        helm template ${helm_dir} --debug
-      else
-        echo "[INFO] helm template ${helm_dir} -f ${helm_values_file}"
-        helm template  ${helm_dir} -f ${helm_values_file} --debug
-      fi
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - changes:
-        - ${helm_dir}/*
-
 # Needed vars
 # helm_dir -> Chart on which are the helm templates and chart definition
 # helm_cli_opts -> (Optional) If other options are needed for helm chart
@@ -162,20 +138,6 @@ acr_publish:
       - helm_dir: osdu-istio
         helm_version: 1.1.8
 
-helm_validate:
-  <<: *helm_validate
-  parallel:
-    matrix:
-      - helm_dir: osdu-base
-      - helm_dir: osdu-istio
-      - helm_dir: osdu-airflow2
-      - helm_dir: osdu-azure/osdu-partition_base
-      - helm_dir: osdu-azure/osdu-security_compliance
-      - helm_dir: osdu-azure/osdu-core_services
-      - helm_dir: osdu-azure/osdu-reference_helper
-      - helm_dir: osdu-azure/osdu-ingest_enrich
-      - helm_dir: osdu-ddms/standard-ddms
-
 # Istio base istio operators and osdu-base are being always installed as those are prerequirements
 helm_test:
   <<: *helm_test
@@ -198,3 +160,27 @@ helm_test:
         helm_cli_opts: "-f osdu-ddms/standard-ddms/well-delivery.osdu.values.yaml"
       - helm_dir: osdu-ddms/standard-ddms
         helm_cli_opts: "-f osdu-ddms/standard-ddms/wellbore.osdu.values.yaml"
+
+helm_go_unit_test:
+  stage: build
+  image: golang:1.18.6
+  tags: ["osdu-medium"]
+  cache:
+    paths:
+      - ${GOPATH}/pkg
+  before_script:
+    - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -- --version v3.9.1
+  variables:
+    GOPATH: $CI_PROJECT_DIR/go
+  script:
+    - |
+      for test_dir in $(find . -path "*/tests/unit/*.go" -type f -exec dirname {} \;); do
+        echo "[INFO] Testing dir ${test_dir}"
+        pushd ${test_dir}
+        go mod tidy
+        go test -v .
+        popd
+      done
+  rules:
+    - when: always
+    
