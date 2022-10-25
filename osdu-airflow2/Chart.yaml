@@ -19,7 +19,9 @@ appVersion: 1.0.0
 description: Installs the airflow and required components for osdu on Azure"
 version: 1.17.0
 
-dependencies:
-  - name: airflow
-    version: 8.5.2
-    #    repository: https://airflow-helm.github.io/charts
+# No effect if dependency is already at charts/
+# Will have counter effect as we are using custom airflow chart
+#dependencies:
+#  - name: airflow
+#    version: 8.5.2
+#    #repository: "https://airflow-helm.github.io/charts"

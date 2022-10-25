@@ -38,3 +38,5 @@ Charts should be installed in the following order.
 5. [ddms-*](osdu-ddms/README.md)
 
 __*Microsoft recommends installing osdu-airflow2 helm chart for OSDU platform.__
+
+[Helm validation and template test](./scripts/tests/README.md)

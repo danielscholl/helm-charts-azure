@@ -9,3 +9,4 @@ environments
 **/.vscode
 Chart.lock
 osdu-azure/**/*.tgz
+go.sum
