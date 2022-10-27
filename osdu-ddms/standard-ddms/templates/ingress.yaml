@@ -57,7 +57,7 @@ spec:
         paths:
         {{- range .Values.configuration }}
         {{- if .path }}
-        - path: {{ .path }}/*
+        - path: {{ .path }}*
           pathType: Prefix
           backend:
             service:
@@ -91,6 +91,10 @@ spec:
         host: {{ .service }}-service.{{ $namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if .pathRewrite }}
+    rewrite:
+      uri: {{ .pathRewrite | quote }}
+    {{- end }}
     timeout: 300s
     {{- if $retryattempts }}
     retries:

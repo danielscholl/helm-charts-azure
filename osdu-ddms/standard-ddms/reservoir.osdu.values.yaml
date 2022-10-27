@@ -12,8 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# FIXME: Specific to OSDU deployment
 ingress:
+  dns: <ingress_dns>
+  # This will not install istio virtual service but AGIC ingress instead
   appGateway:
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: false
@@ -59,12 +60,13 @@ configuration:
     container:
       image: open-etp-server
       containerPort: 9002
-    path: "/oetp/reservoir-ddms"
+    path: "/oetp/reservoir-ddms/"
+    pathRewrite: "/"
     podAnnotations:
       prometheus.io/path: /metrics
       prometheus.io/port: "9002"
       prometheus.io/scrape: "true"
-    command: "[\"openETPServer\", \"server\", \"--start\" , \"--verbose\", \"--authN\", \"none\"]"
+    command: "[\"openETPServer\", \"server\", \"--start\" , \"--verbose\", \"--authN\", \"none\", \"--authZ\", \"none\"]"
     probe:
       readiness:
         path: /health
@@ -77,6 +79,9 @@ configuration:
         - "*/.well-known/etp-server-capabilities"
     config:
       AZURE_ENABLE_MSI: "true"
-      PARTITION_URL: http://partition.osdu-azure/api/partition/v1
       RDMS_DATA_PARTITION_MODE: "osdu"
       KEYVAULT_URL: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
+      # Common helm-charts-azure core install is in osdu-azure ns
+      PARTITION_URL: http://partition.osdu-azure/api/partition/v1
+      STORAGE_URL: http://storage.osdu-azure/api/storage/v2
+      ENTITLEMENTS_URL: http://entitlement.osdu-azure/api/entitlements/v2
