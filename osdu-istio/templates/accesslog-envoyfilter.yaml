@@ -7,7 +7,7 @@ spec:
   configPatches:
   - applyTo: NETWORK_FILTER
     match:
-      context: GATEWAY
+      context: ANY
       listener:
         filterChain:
           filter:
