@@ -446,7 +446,9 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==3.0.2"
+        "apache-airflow-providers-cncf-kubernetes==3.0.2",
+        "strenum==0.4.8",
+        "styleframe==4.1"
       ]
     extraVolumeMounts:
       - name: azure-keyvault
