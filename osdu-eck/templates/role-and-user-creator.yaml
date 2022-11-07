@@ -35,7 +35,6 @@ metadata:
   name: "{{ $userJobName }}"
   namespace: "es-{{ lower $datapartition }}"
 spec:
-  ttlSecondsAfterFinished: 3000
   template:
     metadata:
       name: "oep-user-creator"
