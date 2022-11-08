@@ -6,7 +6,7 @@
 include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure-helm.yml"
-    ref: release/0.17
+    ref: v0.17.4
 
 stages:
   - build
