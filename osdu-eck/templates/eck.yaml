@@ -8,6 +8,14 @@
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
 {{- range $index, $datapartition := $list}}
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "es-{{ lower $datapartition }}"
+  labels:
+    name: "es-{{ lower $datapartition }}"
+    istio-injection: enabled
+---
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
