@@ -1,7 +1,7 @@
 {{- $licenseValue := .Values.licenseValue}}
-{{- $licenseType := .Values.licenseType}}
+{{- $licenseType := lower .Values.licenseType}}
 
-{{ if eq $licenseType "Enterprise" }}
+{{ if eq $licenseType "enterprise" }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 data:
   license: {{ $licenseValue | quote }}
-{{ else if eq $licenseType "Trial" }}
+{{ else if eq $licenseType "enterprisetrial" }}
 apiVersion: v1
 kind: Secret
 metadata:
