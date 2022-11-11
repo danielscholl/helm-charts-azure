@@ -16,8 +16,8 @@ apiVersion: v2
 name: common-base
 type: application
 description: Installs the OSDU on Azure Partition and Base Components
-version: 1.17.0
-appVersion: 0.17.0
+version: 1.18.0
+appVersion: 0.18.0
 dependencies:
   - name: "osdu-helm-library"
     version: "0.2.0"

@@ -16,8 +16,8 @@ apiVersion: v2
 name: crs-conversion
 type: application
 description: Installs the OSDU Platform Reference and Helper Services
-version: 1.17.0
-appVersion: 0.17.0
+version: 1.18.0
+appVersion: 0.18.0
 dependencies:
   - name: "osdu-helm-library"
     version: "0.2.0"

@@ -16,16 +16,16 @@ apiVersion: v2
 name: osdu-partition_base
 type: application
 description: Installs the OSDU on Azure Partition and Base Components
-version: 1.17.0
-appVersion: 0.17.0
+version: 1.18.0
+appVersion: 0.18.0
 dependencies:
   - name: "common-base"
     repository: file://../common-base
-    version: "1.17.0"
+    version: "1.18.0"
     enabled: true
   - name: "partition"
     repository: file://../partition
-    version: "1.17.0"
+    version: "1.18.0"
     enabled: true
   - name: "osdu-helm-library"
     version: ~0.2.0

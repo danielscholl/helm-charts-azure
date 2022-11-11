@@ -16,24 +16,24 @@ apiVersion: v2
 name: osdu-security_compliance
 type: application
 description: Installs the OSDU Platform Security and Compliance Services
-version: 1.17.0
-appVersion: 0.17.0
+version: 1.18.0
+appVersion: 0.18.0
 dependencies:
   - name: "entitlements"
     repository: file://../entitlements
-    version: "1.17.0"
+    version: "1.18.0"
     enabled: true
   - name: "legal"
     repository: file://../legal
-    version: "1.17.0"
+    version: "1.18.0"
     enabled: true
   - name: "policy"
     repository: file://../policy
-    version: "1.17.0"
+    version: "1.18.0"
     enabled: true
   - name: "secret"
     repository: file://../secret
-    version: "1.17.0"
+    version: "1.18.0"
   - name: "osdu-helm-library"
     version: ~0.2.0
     repository: file://../../osdu-helm-library
