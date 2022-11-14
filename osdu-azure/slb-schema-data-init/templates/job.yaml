@@ -1,0 +1,39 @@
+{{- $namespace := .Release.Namespace }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name | quote }}
+  namespace: {{ $namespace }}
+  labels:
+    app: {{ .Release.Name | quote }}
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 5
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        aadpodidbinding: osdu-identity
+      annotations:
+        proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - image: {{ .Values.image.repository }}/slb-schema-data-init:{{ .Chart.AppVersion }}
+        imagePullPolicy: Always
+        name: "slb-schema-data-init"
+        env:
+        - name: AZURE_DNS_NAME
+          value: {{ .Values.ingress.dns }}
+        - name: AZURE_TENANT_ID
+          value: {{ .Values.azure.tenant_id }}     
+        - name: AZURE_CLIENT_ID
+          value: {{ .Values.azure.client_id }}
+        - name: AZURE_CLIENT_SECRET
+          value: {{ .Values.azure.client_secret }}
+        - name: PARTITIONS # comma separated list of partitions
+          value: {{ .Values.storage.partitions }}
+        - name: IS_POD
+          value: true
+

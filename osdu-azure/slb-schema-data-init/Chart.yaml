@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: latest
+description: A data initialization agent for slb schemas on Azure.
+name: slb-schema-data-init
+type: application
+version: 2.0.0
