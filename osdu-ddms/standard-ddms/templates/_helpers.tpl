@@ -60,6 +60,5 @@ PODs selector labels
 {{- with index . 1 }}
 app: {{ .service }}
 app.kubernetes.io/instance: {{ .service }}
-app.kubernetes.io/version: {{ $.Chart.AppVersion }}
 {{- end }}
 {{- end }}
