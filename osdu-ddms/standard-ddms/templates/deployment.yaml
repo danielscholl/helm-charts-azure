@@ -38,6 +38,9 @@ spec:
   replicas: {{ $replicaCount }}
   selector:
     matchLabels: {{ $selector | nindent 8 }}
+{{- else }}
+  selector:
+    matchLabels: {{ $selector | nindent 8 }}
 {{- end }}
   template:
     metadata:
@@ -128,6 +131,61 @@ spec:
                   name: {{ $name }}-secret
                   key: {{ .key | quote }}
             {{- end }}
+          {{- end }}
+        {{- if .sidecar }}
+        - name: {{ .sidecar.name }}
+          image: {{ $.Values.azure.acr }}/{{ .sidecar.container.image }}:{{ .sidecar.container.tag | default $version }}
+          imagePullPolicy: "Always"
+          {{- if .sidecar.command }}
+          command: {{ .sidecar.command }}
+          {{- end }}
+          ports:
+            - name: sidecar
+              containerPort: {{ .sidecar.container.containerPort }}
+              protocol: TCP
+          {{- if .sidecar.probe }}
+          {{- if .sidecar.probe.readiness }}
+          readinessProbe:
+            httpGet:
+              path: {{ .sidecar.probe.readiness.path }}
+              port: sidecar
+            initialDelaySeconds: {{ .sidecar.probe.readiness.delay | default 30 }}
+          {{- end }}
+          {{- if .sidecar.probe.liveness }}
+          livenessProbe:
+            httpGet:
+              path: {{ .sidecar.probe.liveness.path }}
+              port: sidecar
+            initialDelaySeconds: {{ .sidecar.probe.liveness.delay | default 30 }}
+            periodSeconds: {{ .sidecar.probe.liveness.seconds | default 15 }}
+          {{- end }}
+          {{- end }}
+          {{- if or .sidecar.request .sidecar.limit }}
+          resources:
+            {{- if .sidecar.request }}
+            requests:
+              {{- if .sidecar.request.cpu }}
+              cpu: {{ .sidecar.request.cpu | quote }}
+              {{- end }}
+              {{- if .sidecar.request.memory }}
+              memory: {{ .sidecar.request.memory | quote }}
+              {{- end }}
+            {{- end }}
+            {{- if .sidecar.limit }}
+            limits:
+              {{- if .sidecar.limit.cpu }}
+              cpu: {{ .sidecar.limit.cpu | quote }}
+              {{- end }}
+              {{- if .sidecar.limit.memory }}
+              memory: {{ .sidecar.limit.memory | quote }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- if .sidecar.config }}
+          envFrom:
+          - configMapRef:
+              name: {{ .sidecar.name }}-config
+          {{- end }}
           {{- end }}
 {{- end }}
 {{- end }}
