@@ -5,7 +5,12 @@
 
 # FIXME: This needs to be separated from this repository!
 azure:
+  resourcegroup: <azure_resourcegroup>
+  subscription: <azure_subscription>
+  identity_id: <azure_identity_id>
+  enable_msi: <azure_enable_msi>
   tenant_id: <azure_tenant_id>
+  resource_id: <azure_app_resource_id>
   client_id: <azure_client_id>
   client_secret: <azure_client_secret>
 
@@ -17,3 +22,4 @@ storage:
 
 image:
   repository: <azure_acr>
+  
