@@ -20,6 +20,7 @@ ingress:
 
 # Annotation to support the key rotation for redis password in keyvaul
 deployment:
+  replicaCount: 1
   deploymentAnnotations:
     secret.reloader.stakater.com/reload: "{{.Release.Name }}-secret"
 
@@ -33,6 +34,7 @@ configuration:
   ###################
   # Seismic Service #
   ###################
+# seismic sdms
   - service: seismic-ddms
     container:
       image: sdms
@@ -60,10 +62,37 @@ configuration:
       CLOUDPROVIDER: "azure"
       PORT: "8080"
       KEYVAULT_URL: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
+      SIDECAR_URL: "htts://localhost:7138"
+      SIDECAR_ENABLE_INSERT: "false"
+      SIDECAR_ENABLE_GET: "false"
+      SIDECAR_ENABLE_DELETE: "false"
+      SIDECAR_ENABLE_QUERY: "true"
     # Use only for secret rotation
     secrets:
       - name: AZ_REDIS_PASSWORD
         key: k8.redis.password
+    request:
+      cpu: 0.1
+      memory: 1Gi
+    limit:
+      cpu: 1
+      memory: 4Gi
+# sidecar sdms
+    sidecar:
+      name: seismic-ddms-sidecar
+      container:
+        image: seismic-ddms-sidecar
+        containerPort: 7138
+      config:
+        ASPNETCORE_URLS: "https://+:7138;http://+:5160"
+        ASPNETCORE_ENVIRONMENT: "Development"
+        ASPNETCORE_Kestrel__Certificates__Default__Path: /app/aspnetapp.pfx
+      request:
+        cpu: 0.1
+        memory: 1Gi
+      limit:
+        cpu: 1
+        memory: 2Gi
   #################################
   # Seismic File Metadata Service #
   #################################
@@ -84,3 +113,9 @@ configuration:
     config:
       CLOUDPROVIDER: "azure"
       SDMS_SERVICE_HOST: "http://seismic-ddms/seistore-svc/api/v3"
+    request:
+      cpu: 0.3
+      memory: 1Gi
+    limit:
+      cpu: 1
+      memory: 4Gi

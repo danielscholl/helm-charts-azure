@@ -27,5 +27,19 @@ metadata:
 data:
   {{- tpl (toYaml .config) $ | nindent 4 }}
 {{- end }}
+
+# sidecar configmap
+{{- if .sidecar }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .sidecar.name }}-config
+  namespace: {{ $namespace }}
+  labels: {{ $labels | nindent 4 }}
+data:
+  {{- tpl (toYaml .sidecar.config) $ | nindent 4 }}
+{{- end }}
+
 {{- end }}
 {{- end }}

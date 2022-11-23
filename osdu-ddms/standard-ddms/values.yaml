@@ -88,7 +88,7 @@ deployment:
   # Annotation for the secret reloader to be used by Seismic
   # deploymentAnnotations:
   #   secret.reloader.stakater.com/reloader: your-secret-here
-    
+
 ################################################################################
 # Specify Resiliency settings for service retries
 #
