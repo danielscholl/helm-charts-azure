@@ -44,5 +44,7 @@ spec:
           value: {{ .Values.storage.partitions }}
         - name: SUBSCRIPTION
           value: {{ .Values.azure.subscription }}
+        - name: CONFIG_MAP_NAME
+          value: {{ .Values.config.configmapname }}
         - name: IS_POD
           value: "true"
