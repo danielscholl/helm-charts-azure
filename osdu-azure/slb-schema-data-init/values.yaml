@@ -20,6 +20,9 @@ ingress:
 storage:
   partitions: <storage_partitions> #A comma separated(no space) list of partition names 
 
+config:
+  configmapname: ~~CONFIG_MAP_NAME~~
+
 image:
   repository: <azure_acr>
   
