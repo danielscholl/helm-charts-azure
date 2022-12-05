@@ -12,6 +12,7 @@ spec:
   azureFile:
     secretName: airflow
     shareName: airflow2dags
+    secretNamespace: {{ .Release.Namespace }}
   volumeMode: Filesystem
   mountOptions:
   - dir_mode=0777

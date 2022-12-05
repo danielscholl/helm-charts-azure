@@ -1,0 +1,19 @@
+# # Sample Configuration
+# configuration:
+# - name: "storage"
+#   workloadSelector:
+#     labels:
+#       app.kubernetes.io/name: storage
+#       app.kubernetes.io/version: v1
+#       app.kubernetes.io/stack: blue  
+#   uriPatterns:
+#   - "/zample/v1/url/{id}"
+#   - "/zample/v2/query/{id}/{xyz}"
+# - name: "search"
+#   workloadSelector:
+#     labels:
+#       app: search
+#   uriPatterns:
+#   - "/zample/v1/url/{id}"
+#   - "/zample/v2/query/{id}/{xyz}"
+  

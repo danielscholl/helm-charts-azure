@@ -7,5 +7,7 @@ environments
 *.env
 .idea
 **/.vscode
+**/test.values.yaml
+**/.vscode
 Chart.lock
 osdu-azure/**/*.tgz

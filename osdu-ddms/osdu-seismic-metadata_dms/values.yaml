@@ -21,6 +21,7 @@ global:
   nodepool: services
   isAutoscalingEnabled: false
   pullPolicy: IfNotPresent
+  defaultNodepool: internal
 
 ################################################################################
 # Specify the azure environment specific values
@@ -58,6 +59,7 @@ identity:
 service:
   type: ClusterIP
   port: 80
+  target: 8000
 
 ################################################################################
 # Specify the Config Map
@@ -73,30 +75,13 @@ configuration:
   ##  SEISMIC FILE METADATA SERVICE
   #
   - service: seismic-file-metadata
-    repository: <azure_acr>/seimsic-metadata
+    repository: <azure_acr>/seismic-filemetadata
     path: /seismic-file-metadata/api/v1
-    probe: /seismic-file-metadata/api/v1/svcstatus
+    probe: /seismic-file-metadata/api/v1/service-status
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
-        - "/"
-        - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/api-docs"
-        - "*/swagger"
+        - "*/service-status"
         - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "*/actuator/health"
-        - "*/health"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "/seismic-file-metadata/api/v1/swagger-ui.html"
-        - "/seismic-file-metadata/api/v1/webjars/*"
-        - "/seismic-file-metadata/api/v1/swagger-ui/*"
-    env:
-    - name: KEYVAULT_URL
-      config:
-        name: osdu-svc-config
-        key: ENV_KEYVAULT
-
+        - "*/openapi.json"

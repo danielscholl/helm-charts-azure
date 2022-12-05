@@ -1,6 +1,7 @@
 {{- $namespace := .Release.Namespace }}
 {{- $serviceType := .Values.service.type }}
 {{- $servicePort := .Values.service.port }}
+{{- $targetPort := .Values.service.target }}
 {{- $release := .Release.Name }}
 {{- range .Values.configuration }}
 apiVersion: v1
@@ -14,7 +15,7 @@ spec:
   type: {{ $serviceType }}
   ports:
     - port: {{ $servicePort }}
-      targetPort: http
+      targetPort: {{ $targetPort }}
       protocol: TCP
       name: http
   selector:

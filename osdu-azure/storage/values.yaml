@@ -97,7 +97,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -143,12 +143,10 @@ configuration:
       value: southcentralus
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
+    - name: policy_enabled
+      value: "false"
     - name: policy_service_endpoint
       value: http://policy/api/policy/v1
-    - name: opa_enabled
-      value: "true"
-    - name: opa_endpoint
-      value: http://opa:8181
     - name: azure_istioauth_enabled
       value: "true"
     - name: azure_activedirectory_AppIdUri

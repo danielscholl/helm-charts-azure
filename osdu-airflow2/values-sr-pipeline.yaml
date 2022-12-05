@@ -70,7 +70,7 @@ pgbouncer:
 # Specify KEDA configuration
 #
 keda:
-  version_2_enabled: true
+  version_2_enabled: false
 
 
 ################################################################################
@@ -174,7 +174,7 @@ airflow:
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -203,7 +203,7 @@ airflow:
     podAnnotations:
       sidecar.istio.io/inject: "false"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
     replicas: 6
@@ -241,7 +241,7 @@ airflow:
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -262,7 +262,7 @@ airflow:
     users: null
     image:
       repository: msosdu.azurecr.io/airflow2-docker-image
-      tag: v2.2.4-v0.15-20220624-1
+      tag: v2.2.4-v0.14-20220427-1
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
@@ -338,6 +338,10 @@ airflow:
           secretKeyRef:
             name: central-logging
             key: appinsights
+      - name: AIRFLOW_VAR_POD_IDENTITY
+        value: "osdu-identity"
+      - name: AIRFLOW_VAR_NAMESPACE     # Namespace used by kubernetes pod operators in dags
+        value: "airflow"
       - name: AIRFLOW_VAR_AZURE_DNS_HOST
         value: #{DNS_HOST}#
       - name: AIRFLOW_VAR_AZURE_ENABLE_MSI
@@ -400,10 +404,7 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==3.0.2",
-        # EDS DAGs (eds ingest and eds scheduler) use the following packages (strenum and styleframe) 
-        "strenum==0.4.8",
-        "styleframe==4.1"
+        "apache-airflow-providers-cncf-kubernetes==3.0.2"
       ]
     extraVolumeMounts:
       - name: azure-keyvault

@@ -31,6 +31,15 @@ global:
       enabled: <autoscale_cpu_enabled>
     rps:
       enabled: <autoscale_rps_enabled>
+      averageValue: 20
+
+  resiliency:
+    retry_attempts: 2
+    rateLimit:
+      enabled: true
+      max_tokens: 150
+      tokens_per_fill: 150
+      fill_interval: 5s
 
   ################################################################################
   # Specify KEDA configuration
@@ -94,7 +103,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -157,9 +166,9 @@ configuration:
       value: "true"
     # Notification v2 not enabled (https://community.opengroup.org/osdu/platform/system/file/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L138)
     - name: service_bus_enabled_status
-      value: "false"
-    - name: event_grid_enabled_status
       value: "true"
+    - name: event_grid_enabled_status
+      value: "false"
     - name: KEYVAULT_URL
       config:
         name: osdu-svc-config

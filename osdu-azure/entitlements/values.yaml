@@ -21,7 +21,7 @@ global:
   nodepool: services
   defaultNodepool: internal
   isAutoscalingEnabled: false
-  kubernetesSecrets: "redis"
+  kubernetesSecrets: "redis,graphdbkey"
 
   ################################################################################
   # Specify the auto scale specific values
@@ -49,6 +49,7 @@ global:
     oidAuthEnabled: <azure_oidAuthEnabled>
     corsEnabled: <azure_corsEnabled>
     suthEnvoyFilterEnabled: <azure_suthEnvoyFilterEnabled>
+    service_account_id: <azure_identity_id>
 
 
   ################################################################################
@@ -94,7 +95,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -120,7 +121,7 @@ configuration:
     - name: root_data_group_quota
       value: "5000"
     - name: redis_ttl_seconds
-      value: "1"
+      value: "60"
     - name: partition_service_endpoint
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled

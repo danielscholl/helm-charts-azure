@@ -19,6 +19,7 @@
 global:
   replicaCount: 1
   nodepool: services
+  defaultNodepool: internal
   isAutoscalingEnabled: false
 
 ################################################################################
@@ -41,6 +42,7 @@ azure:
 ingress:
   dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
+  enableKeyvaultCert: true
 
 
 ################################################################################
@@ -64,6 +66,12 @@ service:
 #
 configMap: wellbore-svc-config
 
+
+################################################################################
+# Specify the core services namespace
+#
+coreServicesNamespace: osdu-azure
+
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -78,13 +86,14 @@ configuration:
     probe: /api/os-wellbore-ddms/healthz
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/api/os-wellbore-ddms/"
         - "/api/os-wellbore-ddms/ddms/v2/about"
         - "/api/os-wellbore-ddms/docs"
         - "/api/os-wellbore-ddms/openapi.json"
+        - "/api/os-wellbore-ddms/metrics"
     env:
     - name: SERVICE_NAME
       value: os-wellbore-ddms
@@ -92,7 +101,3 @@ configuration:
       config:
         name: osdu-svc-config
         key: ENV_KEYVAULT
-    - name: AZ_AI_INSTRUMENTATION_KEY
-      secret:
-        name: central-logging
-        key: appinsights

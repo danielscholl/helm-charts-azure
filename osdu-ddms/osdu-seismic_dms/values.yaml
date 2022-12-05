@@ -21,6 +21,7 @@ global:
   nodepool: services
   isAutoscalingEnabled: false
   pullPolicy: IfNotPresent
+  defaultNodepool: internal
 
 ################################################################################
 # Specify the azure environment specific values
@@ -42,7 +43,7 @@ azure:
 ingress:
   dns: <ingress_dns>
   issuer: letsencrypt-prod-dns
-  enableKeyvaultCert: false
+  enableKeyvaultCert: true
 
 
 ################################################################################
@@ -64,6 +65,8 @@ service:
 #
 configMap: seistore-svc-config
 pullPolicy: IfNotPresent
+
+
 ################################################################################
 # Side Car Configuration
 #
@@ -80,8 +83,6 @@ configEnv:
 sidecarImage:
   repo: <azure_acr>/sdms-sidecar
   tag: 1.1
-
-
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -95,7 +96,7 @@ configuration:
     path: /seistore-svc/api/v3/*
     probe: /seistore-svc/api/v3/svcstatus
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

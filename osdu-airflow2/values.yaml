@@ -18,7 +18,7 @@ appinsightstatsd:
   aadpodidbinding: "osdu-airflow2-identity"
   image:
     repository: msosdu.azurecr.io
-    tag: "1.0.0-OSDU"
+    tag: "v2.1.2-v0.14-20220418-5"
 
 #################################################################################
 # Specify log analytics configuration
@@ -70,14 +70,14 @@ pgbouncer:
 # Specify KEDA configuration
 #
 keda:
-  version_2_enabled: true
+  version_2_enabled: false
 
 
 ################################################################################
 # Specify the airflow configuration
 #
 airflow:
-  version_1_Installed: false
+  version_1_Installed: true
   pgbouncer:
     ## if the pgbouncer Deployment is created
     ##
@@ -104,7 +104,7 @@ airflow:
         appgw.ingress.kubernetes.io/request-timeout: "300"
         appgw.ingress.kubernetes.io/connection-draining: "true"
         appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
+        cert-manager.io/cluster-issuer: null
         # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
         # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
         # The certificate name needs to be changed if the namespace or the secret name change.
@@ -174,7 +174,7 @@ airflow:
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -203,7 +203,7 @@ airflow:
     podAnnotations:
       sidecar.istio.io/inject: "false"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
     replicas: 6
@@ -241,7 +241,7 @@ airflow:
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -261,14 +261,14 @@ airflow:
     usersUpdate: null
     users: null
     image:
-      repository: msosdu.azurecr.io/airflow2-docker-image
-      tag: v2.2.4-v0.16-20220906-2
+      repository: <azure_acr>/airflow2-docker-image
+      tag: <airflow_image_tag>
       pullPolicy: IfNotPresent
       pullSecret: ""
     config:
       AIRFLOW__SCHEDULER__STATSD_ON: "True"
       AIRFLOW__SCHEDULER__STATSD_HOST: "<statsd_endpoint>"
-      AIRFLOW__SCHEDULER__STATSD_PORT: "8121"
+      AIRFLOW__SCHEDULER__STATSD_PORT: <statsd_port>
       AIRFLOW__SCHEDULER__STATSD_PREFIX: "osdu_airflow2"
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
       ## Enable for Debug purpose
@@ -346,12 +346,11 @@ airflow:
         value: <azure_acr>
       - name: PYTHONPATH
         value: "/opt/celery"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_SIZE
-        value: "500"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_COUNT
-        value: "5"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_ENABLED
-        value: "true"
+      # Needed for installing python osdu python sdk. In future this will be changed
+      - name: CI_COMMIT_TAG
+        value: "v0.12.0"
+      - name: BUILD_TAG
+        value: "v0.12.0"
       ## Begin -- Ingest Manifest DAG variables
       - name: AIRFLOW_VAR_ENTITLEMENTS_MODULE_NAME
         value: "entitlements_client"
@@ -382,12 +381,6 @@ airflow:
       ## End -- Ingest Manifest DAG variables
       - name: AIRFLOW__API__AUTH_BACKEND
         value: "airflow.api.auth.backend.basic_auth"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_SIZE
-        value: "500"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_COUNT
-        value: "5"
-      - name: AIRFLOW_VAR_CORE__INGESTION__BATCH_SAVE_ENABLED
-        value: "true"
     extraPipPackages: [
         "flask-bcrypt==0.7.1",
         "apache-airflow[statsd,kubernetes,password]==2.2.4",
@@ -407,10 +400,7 @@ airflow:
         "tenacity==6.2.0",
         "authlib==0.15.4",
         "plyvel==1.3.0",
-        "apache-airflow-providers-cncf-kubernetes==3.0.2",
-        # EDS DAGs (eds ingest and eds scheduler) use the following packages (strenum and styleframe) 
-        "strenum==0.4.8",
-        "styleframe==4.1"
+        "apache-airflow-providers-cncf-kubernetes==3.0.2"
       ]
     extraVolumeMounts:
       - name: azure-keyvault

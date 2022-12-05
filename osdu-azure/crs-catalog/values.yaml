@@ -81,7 +81,7 @@ configuration:
     probe: /api/crs/catalog/swagger-ui/index.html
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -98,15 +98,11 @@ configuration:
         - "/api/crs/catalog/swagger-resources/*"
         - "/api/crs/catalog/webjars/*"
         - "/api/crs/catalog/swagger-ui/*"
-    pvc:
-      - name: crs
-        volume: shared-data
-    mount:
-      - name: shared-data
-        path: /mnt/crs_catalogs
     env:
     - name: spring_application_name
-      value: crs-catalog-service
+      value: crs-catalog
+    - name: CRS_CATALOG_FILENAME
+      value: /data/crs_catalog_v2.json
     - name: server.servlet.contextPath
       value: /api/crs/catalog/
     - name: server_port

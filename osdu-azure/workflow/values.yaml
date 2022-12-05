@@ -79,6 +79,17 @@ global:
     type: ClusterIP
     port: 80
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    rateLimit:
+      enabled: true
+      max_tokens: 500
+      tokens_per_fill: 500
+      fill_interval: 5s
+    retry_attempts: 3
+
 ################################################################################
 # Specify the OSDU Services to Load
 #
@@ -93,11 +104,11 @@ configuration:
     readinessPort: 8081
     livenessProbe: /actuator/health
     livenessPort: 8081
-    probeInitialDelaySeconds: 120
+    probeInitialDelaySeconds: 100
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -116,7 +127,7 @@ configuration:
         - "*/_ah/**"
         - "*/v3/api-docs"
         - "*/api-docs"
-        - "/api/workflow/v1/info"
+        - "/api/workflow/info"
     env:
       - name: spring_application_name
         value: workflow

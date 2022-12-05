@@ -1,14 +1,19 @@
-{{- $namespace := .Release.namespace }}
+{{- $namespace := .Release.Namespace }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Values.configMap }}
   namespace: {{ $namespace }}
+  labels:
+    app: {{ .Release.Name }}
+    release: {{ .Release.Name }}
 data:
   DES_SERVICE_HOST: https://{{ .Values.ingress.dns }}
+  ENV_KEYVAULT: https://{{ .Values.azure.keyvault }}.vault.azure.net/
   REDIS_INSTANCE_PORT: "6380"
   APP_ENVIRONMENT_IDENTIFIER: cloud
   CLOUDPROVIDER: azure
+  SDMS_SERVICE_HOST: https://{{ .Values.ingress.dns }}/seistore-svc/api/v3
   PORT: "80"
 
 ---

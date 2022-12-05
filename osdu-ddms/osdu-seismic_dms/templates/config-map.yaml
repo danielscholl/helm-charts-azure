@@ -16,7 +16,6 @@ data:
   SIDECAR_ENABLE_DELETE: "{{ .Values.configEnv.sidecarEnableDelete}}"
   SIDECAR_ENABLE_QUERY: "{{ .Values.configEnv.sidecarEnableQuery}}"
 
-
 ---
 
 apiVersion: v1

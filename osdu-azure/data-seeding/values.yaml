@@ -13,7 +13,7 @@ global:
     client_secret: <azure_client_secret>
     identity: <azure_identity>
     keyvault: <azure_keyvault>
-    appid: <azure_appid> # can be an AAD App OID or a user email
+    appids: <azure_appids> # comma separated list of appids, can be an AAD App OID or a user email
 
   storage:
     partitions: <storage_partitions>
