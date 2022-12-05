@@ -155,6 +155,8 @@ configuration:
       value: "statuschangedtopic"
     - name: azure_pubsub_publish
       value: "true"
+    - name: FILE_CHECKSUM_CALCULATION_LIMIT
+      value: "5368709120"
     # Notification v2 not enabled (https://community.opengroup.org/osdu/platform/system/file/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L138)
     - name: service_bus_enabled_status
       value: "false"
