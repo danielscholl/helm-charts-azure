@@ -4,6 +4,7 @@
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $configMap := .Values.configMap -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
@@ -23,11 +24,18 @@ spec:
       labels:
         app: {{ .service }}
         aadpodidbinding: osdu-identity
+      annotations:
+        prometheus.io/path: /api/os-wellbore-ddms/metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
     spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
-        nodepool: {{ $nodepool }}
-{{- end }}      
+        agentpool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
+{{- end }}
       volumes:
       {{- if .keyvault }}
         - name: azure-keyvault

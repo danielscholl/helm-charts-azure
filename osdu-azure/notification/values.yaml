@@ -90,7 +90,7 @@ configuration:
     probe: /api/notification/v1/swagger-ui/index.html
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

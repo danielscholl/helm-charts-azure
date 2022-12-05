@@ -1,9 +1,11 @@
 {{- $namespace := .Release.Namespace }}
 {{- $pullPolicy := .Values.pullPolicy -}}
+{{- $targetPort := .Values.service.target }}
 {{- $servicePort := .Values.service.port -}}
 {{- $replicaCount := .Values.replicaCount -}}
 {{- $isAutoscalingEnabled := .Values.global.isAutoscalingEnabled}}
 {{- $nodepool := .Values.global.nodepool}}
+{{- $defaultNodepool := .Values.global.defaultNodepool }}
 {{- $configMap := .Values.configMap -}}
 {{- $version := .Chart.AppVersion -}}
 {{- $release := .Release.Name }}
@@ -27,6 +29,9 @@ spec:
 {{- if $isAutoscalingEnabled }}
       nodeSelector:
         nodepool: {{ $nodepool }}
+{{- else if $defaultNodepool }}
+      nodeSelector:
+        agentpool: {{ $defaultNodepool }}
 {{- end }}      
       volumes:
       {{- if .keyvault }}
@@ -53,14 +58,23 @@ spec:
           imagePullPolicy: {{ $pullPolicy | default "Always" }}
           ports:
             - name: http
-              containerPort: {{ $servicePort }}
+              containerPort: {{ $targetPort }}
               protocol: TCP
           {{- if .probe }}
+          livenessProbe:
+            httpGet:
+              path: {{ .probe }}
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 60
           readinessProbe:
             httpGet:
               path: {{ .probe }}
               port: http
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+            periodSeconds: 60
           {{- end }}
           resources:
           {{- if .request }}

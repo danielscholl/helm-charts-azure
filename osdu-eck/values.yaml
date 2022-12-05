@@ -1,5 +1,8 @@
 nodepoolNamePrefix: <nodepool_name_prefix>
 dataPartitions: <dataPartition_names>
+primaryUserName: <primary_user_name>
+secondaryUserName: <secondary_user_name>
+userJobName: <user_job_name>
 licenseType: <license_type>
 licenseValue: <license_value>
 resources:
@@ -9,6 +12,11 @@ resources:
   requests:
     cpu: 0.2
 elasticsearch:
-  version: 7.11.2
+  version: 7.16.3
   nodeCount: 3
   storagePerNodeGB: 128
+azure:
+  tenant: <azure_tenant>
+  subscription: <azure_subscription>
+  resourcegroup: <azure_resourcegroup>
+  keyvault: <azure_keyvault>

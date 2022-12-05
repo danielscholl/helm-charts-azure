@@ -22,6 +22,7 @@ global:
   defaultNodepool: internal
   isAutoscalingEnabled: false
   kubernetesSecrets: "redis"
+  kubernetesConfigMaps: "es-primary-secondary-user-pwd-changed-flag"
 
 
   #################################################################################
@@ -114,7 +115,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"

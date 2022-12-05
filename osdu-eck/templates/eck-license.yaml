@@ -1,7 +1,7 @@
 {{- $licenseValue := .Values.licenseValue}}
-{{- $licenseType := .Values.licenseType}}
+{{- $licenseType := lower .Values.licenseType}}
 
-{{ if eq $licenseType "Enterprise" }}
+{{ if eq $licenseType "enterprise" }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -11,8 +11,8 @@ metadata:
   namespace: "elastic-system"
 type: Opaque
 data:
-  license: {{ $licenseValue | b64enc | quote }}
-{{ else if eq $licenseType "Trial" }}
+  license: {{ $licenseValue | quote }}
+{{ else if eq $licenseType "enterprisetrial" }}
 apiVersion: v1
 kind: Secret
 metadata:

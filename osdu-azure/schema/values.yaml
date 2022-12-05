@@ -77,6 +77,15 @@ global:
     type: ClusterIP
     port: 80
 
+  ################################################################################
+  # Specify Resiliency configuration
+  #
+  resiliency:
+    rateLimit:
+      enabled: true
+      max_tokens: 220
+      tokens_per_fill: 220
+      fill_interval: 5s
 
  ################################################################################
  # Specify the OSDU Services to Load
@@ -97,7 +106,7 @@ configuration:
     livenessPeriodSeconds: 10
     keyvault: true
     podDisruptionBudget:
-      enabled: true
+      enabled: false
     auth:
       disable:
         - "/"
@@ -138,8 +147,6 @@ configuration:
       value: opendes    # Make this configurable
     - name: azure_istioauth_enabled
       value: "true"
-    - name: event_grid_enabled
-      value: "false"
     - name: event_grid_topic
       value: "schemachangedtopic"
     - name: azure_activedirectory_AppIdUri
@@ -150,9 +157,9 @@ configuration:
       value: "schemachangedtopic"
     # Not enabled yet notification v2 (https://community.opengroup.org/osdu/platform/system/schema-service/-/blob/v0.15.0/devops/azure/chart/templates/deployment.yaml#L122)
     - name: event_grid_enabled
-      value: "true"
-    - name: service_bus_enabled
       value: "false"
+    - name: service_bus_enabled
+      value: "true"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config

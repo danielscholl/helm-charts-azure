@@ -13,8 +13,8 @@
 #  limitations under the License.
 
 apiVersion: v2
-name: osdu-ddms
+name: osdu-seismic-metadata_dms
 type: application
 description: Installs the OSDU Platform Seismic File Metadata Service
-version: 1.11.0
-appVersion: 0.11.0
+version: 1.15.0
+appVersion: 0.15.0

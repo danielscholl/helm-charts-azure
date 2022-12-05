@@ -12,11 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+
 # FIXME: Specific to OSDU deployment
 ingress:
-  appGateway:
+  appGateway: 
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: false
+
+# FIXME: Prometheus instrumentation needs to be implememented for Seismic DDMS and Seismic File Metadata
+# deployment:
+#   podAnnotations:
+    # prometheus.io/path: /seistore-svc/api/v3/metrics
+    # prometheus.io/port: "80"
+    # prometheus.io/scrape: "true"
 
 # Annotation to support the key rotation for redis password in keyvaul
 deployment:
@@ -24,7 +32,7 @@ deployment:
     secret.reloader.stakater.com/reload: "{{.Release.Name }}-secret"
 
 azure:
-  keyvault:
+  keyvault: 
     secrets:
     - key: k8.redis.password
       obj: redis-password
@@ -38,15 +46,10 @@ configuration:
       image: sdms
       containerPort: 8080
     path: /seistore-svc/api/v3
-  # FIXME: Prometheus instrumentation needs to be implememented for Seismic DDMS and Seismic File Metadata
-  # podAnnotations:
-    # prometheus.io/path: /seistore-svc/api/v3/metrics
-    # prometheus.io/port: "80"
-    # prometheus.io/scrape: "true"
     probe:
-      readiness:
+      readiness: 
         path: /seistore-svc/api/v3/svcstatus/readiness
-      liveness:
+      liveness: 
         path: /seistore-svc/api/v3/svcstatus
     auth:
       disable:
@@ -64,6 +67,7 @@ configuration:
     secrets:
       - name: AZ_REDIS_PASSWORD
         key: k8.redis.password
+  
   #################################
   # Seismic File Metadata Service #
   #################################
@@ -73,9 +77,9 @@ configuration:
       containerPort: 8000
     path: /seismic-file-metadata/api/v1
     probe:
-      readiness:
+      readiness: 
         path: /seismic-file-metadata/api/v1/service-status
-      liveness:
+      liveness: 
         path: /seismic-file-metadata/api/v1/service-status
     auth:
       disable:
@@ -84,3 +88,61 @@ configuration:
     config:
       CLOUDPROVIDER: "azure"
       SDMS_SERVICE_HOST: "http://seismic-ddms/seistore-svc/api/v3"
+
+uri-pattern-filter:
+  configuration:
+  - name: seismic-ddms
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: seismic-ddms
+    uriPatterns:
+    - "/seistore-svc/api/v3/svcstatus"
+    - "/seistore-svc/api/v3/svcstatus/access"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/lock"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/unlock"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/permission"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}ctagcheck"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/gtags"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/readdsdirfulllist"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/exist"
+    - "/seistore-svc/api/v3/dataset/tenant/{tenantid}/subproject/{subprojectid}/sizes"
+    - "/seistore-svc/api/v3/utility/ls"
+    - "/seistore-svc/api/v3/utility/storage-tiers"
+    - "/seistore-svc/api/v3/utility/cp"
+    - "/seistore-svc/api/v3/utility/gcs-access-token"
+    - "/seistore-svc/api/v3/utility/upload-connection-string"
+    - "/seistore-svc/api/v3/utility/download-connection-string"
+    - "/seistore-svc/api/v3/imptoken"
+    - "/seistore-svc/api/v3/subproject/tenant/{tenantid}/subproject/{subprojectid}"
+    - "/seistore-svc/api/v3/subproject/tenant/{tenantid}"
+    - "/seistore-svc/api/v3/tenant/{tenantid}"
+    - "/seistore-svc/api/v3/tenant/sdpath"
+    - "/seistore-svc/api/v3/user"
+    - "/seistore-svc/api/v3/user/roles"
+    - "/seistore-svc/api/v3/app"
+    - "/seistore-svc/api/v3/app/trusted"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/service-status"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/revision"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/is3D"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/traceHeaderFieldCount"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/textualHeader"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/extendedTextualHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/binaryHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/rawTraceHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/scaledTraceHeaders"
+  - name: seismic-file-metadata
+    workloadSelector:
+      labels:
+        app.kubernetes.io/instance: seismic-file-metadata
+    uriPatterns:
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/service-status"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/revision"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/is3D"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/traceHeaderFieldCount"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/textualHeader"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/extendedTextualHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/binaryHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/rawTraceHeaders"
+    - "/seistore-svc/api/v3/seismic-file-metadata/api/v1/segy/scaledTraceHeaders"

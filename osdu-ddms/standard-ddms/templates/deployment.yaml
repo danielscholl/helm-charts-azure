@@ -18,6 +18,7 @@
 {{- $pullPolicy := .Values.pullPolicy -}}
 {{- $nodePool := .Values.deployment.nodePool -}}
 {{- $deploymentAnnotations := .Values.deployment.deploymentAnnotations -}}
+{{- $podAnnotations := .Values.deployment.podAnnotations -}}
 {{- $replicaCount := .Values.deployment.replicaCount -}}
 {{- $name := include "standard-ddms.name" . }}
 {{- range .Values.configuration }}
@@ -41,9 +42,9 @@ spec:
 {{- end }}
   template:
     metadata:
-      {{- if .podAnnotations }}
+      {{- with $podAnnotations }}
       annotations:
-        {{- toYaml .podAnnotations | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       labels: {{ $labels | nindent 8 }}
         aadpodidbinding: {{ $name }}-identity
@@ -65,9 +66,6 @@ spec:
         - name: {{ .service }}
           image: {{ $.Values.azure.acr }}/{{ .container.image }}:{{ .container.tag | default $version }}
           imagePullPolicy: "Always"
-          {{- if .command }}
-          command: {{ .command }}
-          {{- end }}
           ports:
             - name: http
               containerPort: {{ .container.containerPort }}

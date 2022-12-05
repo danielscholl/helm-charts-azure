@@ -1,0 +1,97 @@
+{{- $list := split "," .Values.dataPartitions}}
+{{- $esVersion := .Values.elasticsearch.version}}
+{{- $primaryUserName := .Values.primaryUserName}}
+{{- $secondaryUserName := .Values.secondaryUserName}}
+{{- $userJobName := .Values.userJobName}}
+{{- range $index, $datapartition := $list}}
+---
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: azure-keyvault
+  namespace: "es-{{ lower $datapartition }}"
+spec:
+  parameters:
+    objects: |
+      array:
+        - |
+          objectName: {{ lower $datapartition }}-es-primary-user-password
+          objectType: secret
+        - |
+          objectName: {{ lower $datapartition }}-es-secondary-user-password
+          objectType: secret
+    resourceGroup: "{{ $.Values.azure.resourcegroup }}"
+    keyvaultName: "{{ $.Values.azure.keyvault }}"
+    subscriptionId: "{{ $.Values.azure.subscription }}"
+    tenantId: "{{ $.Values.azure.tenant }}"
+    usePodIdentity: "true"
+    useVMManagedIdentity: "false"
+    userAssignedIdentityID: ""
+  provider: azure
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ $userJobName }}"
+  namespace: "es-{{ lower $datapartition }}"
+spec:
+  template:
+    metadata:
+      name: "oep-user-creator"
+      labels:
+        aadpodidbinding: osdu-identity
+    spec:
+      initContainers:
+      - name: health-check
+        image: docker.elastic.co/elasticsearch/elasticsearch:{{ $esVersion }}
+        volumeMounts:
+          - name: es-basic-auth
+            mountPath: /mnt/elastic/es-basic-auth
+        args:
+        - /bin/sh
+        - -c
+        - >
+          set -e;
+          while [ $(curl -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -sw '%{http_code}' "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/" -o /dev/null) -ne 200 ]; do
+            sleep 15;
+          done
+      containers:
+      - name: role-and-user-creator
+        image: docker.elastic.co/elasticsearch/elasticsearch:{{ $esVersion }}
+        volumeMounts:
+          - name: es-basic-auth
+            mountPath: /mnt/elastic/es-basic-auth
+          - name: azure-keyvault
+            mountPath: /mnt/azure-keyvault
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 0
+        command: 
+              - sh
+              - "-c"
+              - |
+                /bin/bash <<'EOF'
+                sleep 10
+                set -e
+                CUSTOM_ELASTIC_ROLE="service-role"
+                ROLE_JSON="{\"metadata\":{\"type\":\"role\",\"name\":\"${CUSTOM_ELASTIC_ROLE}\"},\"cluster\":[\"all\"],\"indices\":[{\"names\":[\"*\"],\"privileges\":[\"read\",\"write\",\"create\",\"delete\",\"index\",\"monitor\",\"create_index\",\"delete_index\",\"view_index_metadata\",\"manage\"]}]}"
+                PRIMARY_USER_JSON="{\"password\":\"$(</mnt/azure-keyvault/{{ lower $datapartition }}-es-primary-user-password)\" ,\"roles\":[\"${CUSTOM_ELASTIC_ROLE}\"]}"
+                SECONDARY_USER_JSON="{\"password\": \"$(</mnt/azure-keyvault/{{ lower $datapartition }}-es-secondary-user-password)\",\"roles\":[\"${CUSTOM_ELASTIC_ROLE}\"]}"
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/role/${CUSTOM_ELASTIC_ROLE}" -k -H "Content-Type: application/json" -d"${ROLE_JSON}"  | tee /dev/stderr | grep "200 OK"                
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k -H "Content-Type: application/json" -d"${PRIMARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k -H "Content-Type: application/json" -d"${SECONDARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                                
+                curl -X POST "http://localhost:15000/quitquitquit" || echo 'No istio at all'
+                EOF
+      restartPolicy: Never
+      volumes:
+        - name: es-basic-auth
+          secret:
+            secretName: "elasticsearch-es-elastic-user"
+        - name: azure-keyvault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-keyvault
+---
+{{- end}}
