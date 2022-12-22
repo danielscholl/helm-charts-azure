@@ -29,7 +29,7 @@ ingress:
 configuration:
   - service: wellbore-ddms
     container:
-      image: wellbore-ddms
+      image: wellbore-domain
       containerPort: 8080
     path: /api/os-wellbore-ddms
     podAnnotations:
