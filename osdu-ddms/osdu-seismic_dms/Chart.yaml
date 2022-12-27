@@ -13,7 +13,7 @@
 #  limitations under the License.
 
 apiVersion: v2
-name: seismic-store-service
+name: osdu-seismic_dms
 type: application
 description: Installs the OSDU Platform Seismic DMS Suite
 version: 1.15.0
