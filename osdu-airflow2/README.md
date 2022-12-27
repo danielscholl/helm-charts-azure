@@ -4,6 +4,10 @@ __Version Tracking__
 
 | Helm Chart Version | airflow     | statsd  | osdu-lib  |
 | ------------------ | ----------- |-------- |-----------|
+| `1.18.3`           | `8.5.2`     | `1.0.0` | `0.18.0`  |
+| `1.18.2`           | `8.5.2`     | `1.0.0` | `0.18.0`  |
+| `1.18.1`           | `8.5.2`     | `1.0.0` | `0.18.0`  |
+| `1.18.0`           | `8.5.2`     | `1.0.0` | `0.18.0`  |
 | `1.17.0`           | `8.5.2`     | `1.0.0` | `0.17.0`  |
 | `1.16.0`           | `8.5.2`     | `1.0.0` | `0.16.0`  |
 | `1.15.0`           | `8.5.2`     | `1.0.0` | `0.15.0`  |
@@ -18,7 +22,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow2
-VERSION=1.17.0
+VERSION=1.18.0
 
 helm show chart oci://msosdu.azurecr.io/helm/$CHART --version $VERSION
 ```
@@ -35,7 +39,7 @@ DNS_HOST="<your_osdu_fqdn>"               # ie: osdu-$UNIQUE.contoso.com
 AZURE_ENABLE_MSI="<true/false>"           # Should be kept as false mainly because for enabling MSI for S2S Authentication some extra pod identity changes are required
 ENABLE_KEDA_2_X="true"            # If KEDA version used is 1.5.0 this should be "false", if KEDA is upgraded to 2.x this should be "true"
 AZURE_ACR="msosdu.azurecr.io"             # Use complete ACR url for this Variable, For eg.
-AIRFLOW_IMAGE_TAG="v2.2.4-v0.17-20221006-1"
+AIRFLOW_IMAGE_TAG="v2.2.4-v0.18-20221227-1"
 STATSD_HOST="appinsights-statsd"
 STATSD_PORT="8125"
 
@@ -499,7 +503,7 @@ Install the helm chart.
 # az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
 
 CHART=osdu-airflow2
-VERSION=1.17.0
+VERSION=1.18.3
 
 # Create Namespace
 NAMESPACE=airflow2
