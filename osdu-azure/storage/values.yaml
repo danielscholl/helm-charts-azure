@@ -148,7 +148,7 @@ configuration:
     - name: policy_service_endpoint
       value: http://policy/api/policy/v1
     - name: opa_enabled
-      value: "true"
+      value: "false"
     - name: opa_endpoint
       value: http://opa:8181
     - name: azure_istioauth_enabled
