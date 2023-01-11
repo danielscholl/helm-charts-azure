@@ -163,6 +163,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: policy_enabled
       value: "false"
+    - name: service.policy.enabled
+      value: "false"
     - name: policy_service_endpoint
       value: http://policy/api/policy/v1
     - name: azure_istioauth_enabled
