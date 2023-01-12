@@ -98,6 +98,7 @@ configuration:
         - "/api/unit/swagger-resources/*"
         - "/api/unit/swagger-ui/*"
         - "/api/unit/webjars/*"
+        - "/api/unit/v3/api-docs/*"
     env:
     - name: spring_application_name
       value: unit

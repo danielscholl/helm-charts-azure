@@ -121,6 +121,7 @@ configuration:
         - "/api/schema-service/v1/swagger-resources/*"
         - "/api/schema-service/v1/webjars/*"
         - "/api/schema-service/v1/swagger-ui/*"
+        - "/api/schema-service/v1/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
         - "/api/schema-service/v1/info"

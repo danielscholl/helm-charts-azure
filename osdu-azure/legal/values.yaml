@@ -108,6 +108,7 @@ configuration:
         - "/api/legal/v1/swagger-resources/*"
         - "/api/legal/v1/webjars/*"
         - "/api/legal/v1/swagger-ui/*"
+        - "/api/legal/v1/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:

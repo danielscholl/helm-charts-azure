@@ -103,6 +103,7 @@ configuration:
         - "/api/notification/v1/swagger-resources/*"
         - "/api/notification/v1/webjars/*"
         - "/api/notification/v1/swagger-ui/*"
+        - "/api/notification/v1/v3/api-docs/*"
     env:
     - name: spring_application_name
       value: notification-azure

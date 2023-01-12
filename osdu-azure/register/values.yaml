@@ -108,6 +108,7 @@ configuration:
         - "/api/register/v1/swagger-ui/*"
         - "/api/register/v1/webjars/*"
         - "/api/register/v1/test/challenge/*"
+        - "/api/register/v1/v3/api-docs/*"
     env:
     - name: spring_application_name
       value: register
