@@ -130,6 +130,7 @@ configuration:
         - "/api/search/v2/swagger-resources/*"
         - "/api/search/v2/webjars/*"
         - "/api/search/v2/swagger-ui/*"
+        - "/api/search/v2/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:

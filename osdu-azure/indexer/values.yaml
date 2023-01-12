@@ -124,6 +124,7 @@ configuration:
         - "/api/indexer/v2/swagger-resources/*"
         - "/api/indexer/v2/webjars/*"
         - "/api/indexer/v2/swagger-ui/*"
+        - "/api/indexer/v2/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
         - "*/index-worker"

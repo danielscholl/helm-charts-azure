@@ -98,6 +98,7 @@ configuration:
         - "/api/crs/catalog/swagger-resources/*"
         - "/api/crs/catalog/webjars/*"
         - "/api/crs/catalog/swagger-ui/*"
+        - "/api/crs/catalog/v3/api-docs/*"
     env:
     - name: spring_application_name
       value: crs-catalog

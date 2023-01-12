@@ -97,6 +97,7 @@ configuration:
         - "/api/crs/converter/swagger-resources/*"
         - "/api/crs/converter/webjars/*"
         - "/api/crs/converter/swagger-ui/*"
+        - "/api/crs/converter/v3/api-docs/*"
     env:
     - name: spring_application_name
       value: crs-conversion

@@ -116,6 +116,7 @@ configuration:
         - "/api/partition/v1/swagger-resources/*"
         - "/api/partition/v1/webjars/*"
         - "/api/partition/v1/swagger-ui/*"
+        - "/api/partition/v1/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:

@@ -122,12 +122,13 @@ configuration:
         - "/api/workflow/swagger-resources/*"
         - "/api/workflow/webjars/*"
         - "/api/workflow/swagger-ui/*"
+        - "/api/workflow/v3/api-docs/*"
         - "*/actuator/health"
         - "*/health"
         - "*/_ah/**"
         - "*/v3/api-docs"
         - "*/api-docs"
-        - "/api/workflow/info"
+        - "/api/workflow/**/info"
     env:
       - name: spring_application_name
         value: workflow

@@ -118,6 +118,7 @@ configuration:
         - "/api/file/swagger-resources/*"
         - "/api/file/webjars/*"
         - "/api/file/swagger-ui/*"
+        - "/api/file/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
         - "/api/file/info"
