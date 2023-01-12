@@ -112,6 +112,7 @@ configuration:
         - "/api/storage/v2/swagger-resources/*"
         - "/api/storage/v2/webjars/*"
         - "/api/storage/v2/swagger-ui/*"
+        - "/api/storage/v2/v3/api-docs/*"
         - "*/actuator/health"
         - "*/_ah/**"
     env:
