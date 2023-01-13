@@ -247,8 +247,8 @@ airflow:
   # Airflow - Common Configs
   ###################################
   airflow:
-    usersUpdate: null
-    users: null    
+    usersUpdate: false
+    users: []   
     image:
       repository: msosdu.azurecr.io/airflow2-docker-image
       tag: v2.2.4-v0.18-20221227-1

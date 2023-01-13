@@ -22,7 +22,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow2
-VERSION=1.18.0
+VERSION=1.18.3
 
 helm show chart oci://msosdu.azurecr.io/helm/$CHART --version $VERSION
 ```
@@ -306,8 +306,8 @@ airflow:
   # Airflow - Common Configs
   ###################################
   airflow:
-    usersUpdate: null
-    users: null
+    usersUpdate: false
+    users: []
     image:
       repository: $AZURE_ACR/airflow2-docker-image
       tag: $AIRFLOW_IMAGE_TAG
