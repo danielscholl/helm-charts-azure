@@ -44,7 +44,7 @@ global:
   istio:
     username: <istio_username>
     password: <istio_password>
-    enableIstioKeyvaultCert: <enable_istio_keyvault_cert>
+    enableIstioKeyvaultCert: false
     dns_host: <istio_dns_host>
     loadBalancerIP: ""
     # If you need specific azure service annotations

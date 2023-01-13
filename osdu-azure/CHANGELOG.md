@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.19.0]
+
+- Removed agic ingress in favor of istiogw+appgw [IAP!236](https://community.opengroup.org/osdu/platform/deployment-and-operations/infra-azure-provisioning/-/issues/236) [!19](https://community.opengroup.org/osdu/platform/deployment-and-operations/helm-charts-azure/-/issues/19)
+
 ## [1.11.0] - 2021-09-13
 - Onboarded dataset service
 - Added feature flag for keda v2 to be used provided infra is updated to keda v2.

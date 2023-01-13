@@ -84,15 +84,6 @@ global:
     osduAirflowURL: $OSDU_AIRFLOW_URL
     airflowDbName: $AIRFLOW_DB
 
-  ################################################################################
-  # Specify the Ingress Settings
-  #
-  ingress:
-    issuer: letsencrypt-prod-dns
-    dns: $DNS_HOST
-    enableKeyvaultCert: false           # <- Set this to true in order to use your own keyvault cert
-  configuration: null
-
 EOF
 ```
 
@@ -128,4 +119,15 @@ Well Delivery DDMS is still in 'osdu' namespace
 
 Click [here](osdu-ddms/README.md) for more information.
 
-## Optional Preview Features Helm Chart
+## Optional/Deprecated Features Helm Chart
+
+* [DEPRECATED] Using AGIC ingress instead of istiogw: Add the `true` value, plus settings for ingress.
+
+```yaml
+global:
+  ingress:
+    agicEnabled: true  ### < To enable ingress
+    dns: <ingress_dns> # Set your dns name  or appgw hostname
+    issuer: letsencrypt-prod-dns   # Optional value
+    enableKeyvaultCert: <ingress_enableKeyvaultCert>  # Optional value
+```

@@ -49,7 +49,7 @@ spec:
               K8S_ISTIONAMESPACE_NAME=istio-system
 
               # Compare expire dates of certificates in Key Vault and in istio-system namespaces
-              function check_expire_date() {
+              function check_cert_match() {
                 # Login to common resource (Already logged in)
                 # az login --identity
                 echo "[INFO] Getting secret id from appgw"
@@ -63,22 +63,27 @@ spec:
                 echo "[INFO] Keyvault secret decode: "
                 az keyvault certificate download  --vault-name  ${ENV_VAULT}  -n ${KV_CERT_NAME} --file ${KV_CERT_NAME}.pem
                 KV_CERT_EXPIREDATE=$(openssl x509 -in ${KV_CERT_NAME}.pem -enddate -noout |  cut -d '=' -f2)
+                KV_SUBJECT_NAME=$(openssl x509 -in ${KV_CERT_NAME}.pem  -subject -noout | cut -d '=' -f3 | sed 's/ //g')
                 KV_CERT_EXPIREDATE=$(date "+%Y-%m-%d" --date="${KV_CERT_EXPIREDATE}")
+                KV_SUM=$(echo $KV_SUBJECT_NAME $KV_CERT_EXPIREDATE | sha1sum | awk '{print $1}')
 
                 # Login to AKS (Not needed, using RBAC)
 
                 echo "[INFO] K8s secret decode: "
                 kubectl get secret -n ${K8S_ISTIONAMESPACE_NAME} ${K8S_CERT_SECRET} -o jsonpath='{.data.tls\.crt}' | base64 -d > cert.crt
                 SECRET_CERT_EXPIRE_DATE=$(openssl x509 -in cert.crt -enddate -noout |  cut -d '=' -f2)
+                K8S_SUBJECT_NAME=$(openssl x509 -in cert.crt  -subject -noout | cut -d '=' -f3 | sed 's/ //g')
                 SECRET_CERT_EXPIRE_DATE=$(date "+%Y-%m-%d" --date="${SECRET_CERT_EXPIRE_DATE}")
+                K8S_SUM=$(echo $K8S_SUBJECT_NAME $SECRET_CERT_EXPIRE_DATE | sha1sum | awk '{print $1}')
 
-                if [ ${KV_CERT_EXPIREDATE} = ${SECRET_CERT_EXPIRE_DATE} ]; then
-                  echo "KV_CERT_EXPIREDATE: ${KV_CERT_EXPIREDATE} and SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE}"
+                if [ ${K8S_SUM} = ${KV_SUM} ]; then
+                  echo "$K8S_SUBJECT_NAME $SECRET_CERT_EXPIRE_DATE ==  $KV_SUBJECT_NAME $KV_CERT_EXPIREDATE"
                   echo "The cert in secret is up to date"
                   exit 0
                 else
-                  echo "KV_CERT_EXPIREDATE: ${KV_CERT_EXPIREDATE} and SECRET_CERT_EXPIRE_DATE: ${SECRET_CERT_EXPIRE_DATE}"
+                  echo "$K8S_SUBJECT_NAME $SECRET_CERT_EXPIRE_DATE =/=  $KV_SUBJECT_NAME $KV_CERT_EXPIREDATE"
                   echo "The cert in secret is not up to date"
+                  echo "[INFO] Starting update routine"
                 fi
                 rm -f ${KV_CERT_NAME}.pem
               }
@@ -112,7 +117,7 @@ spec:
               # Log In in Azure
               az login --identity
               # Check certificate expire date.
-              check_expire_date
+              check_cert_match
 
 {{- if include "secret.istioKeyvaultCert" . }}
               # Download BYOC certificate from keyvault
@@ -139,7 +144,7 @@ spec:
 
               sleep 5
               # Check certificate expire date one more time
-              check_expire_date
+              check_cert_match
 
               echo "Cannot update cert in secret"
               exit 1
@@ -177,7 +182,7 @@ spec:
                 --ssl-cert ${KV_CERT_NAME}
 
               # Check certificate expire date one more time
-              check_expire_date
+              check_cert_match
 
               echo "Cannot update KV cert"
               exit 1

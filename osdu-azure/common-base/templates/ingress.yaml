@@ -1,3 +1,4 @@
+{{- if .Values.global.ingress.agicEnabled }}
 {{- $namespace := .Release.Namespace }}
 {{- $svcPort := .Values.global.service.port -}}
 {{- $release := .Release.name -}}
@@ -191,3 +192,4 @@ spec:
                 number: 80
           path: /api/eds/v1/*
           pathType: ImplementationSpecific
+{{- end }}

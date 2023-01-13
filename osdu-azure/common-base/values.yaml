@@ -51,8 +51,10 @@ global:
 
   ################################################################################
   # Specify the Ingress Settings
-  #
+  # If the agicEnabled it is set to true, it will install ingress for azure/application-gateway
+  # Deprecated in favor of istio-gw + appgw
   ingress:
+    agicEnabled: false
     dns: <ingress_dns>
     issuer: letsencrypt-prod-dns
     enableKeyvaultCert: <ingress_enableKeyvaultCert>
