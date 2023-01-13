@@ -43,10 +43,10 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 DNS_HOST="<your_osdu_fqdn>"         # ie: osdu-$UNIQUE.contoso.com
-OSDU_AIRFLOW_VERSION2_ENABLED="true"  # false to target airflow 1.10.12 or true to airflow2
+OSDU_AIRFLOW_VERSION2_ENABLED="true"  # false to target airflow 1.10.12 (retrocompatibility only)
 # this point to the URL for the airflow installation
-OSDU_AIRFLOW_URL="<airflow_url>"    # ie: "http://airflow-web.airflow.svc.cluster.local:8080/airflow" for airflow1
-AIRFLOW_DB="<airflow_db>"           # ie: airflow
+OSDU_AIRFLOW_URL="http://airflow2-web.airflow2.svc.cluster.local:8080/airflow2"    # internal airflow2 svc
+AIRFLOW_DB=airflow2                 # We are not using anymore airflow1 
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID

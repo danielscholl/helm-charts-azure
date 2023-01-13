@@ -54,9 +54,9 @@ global:
     corsEnabled: <azure_corsEnabled>
 
   ingestion:
-    airflowVersion2Enabled: <osdu_airflow_version2_enabled>
-    osduAirflowURL: <osdu_airflow_url>
-    airflowDbName: <airflow_db>
+    airflowVersion2Enabled: true
+    osduAirflowURL: http://airflow2-web.airflow2.svc.cluster.local:8080/airflow2
+    airflowDbName: airflow2
 
   ################################################################################
   # Specify the Ingress Settings
