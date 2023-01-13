@@ -15,7 +15,7 @@ Construct the name of the certificate name.
 */}}
 {{- define "secret.certName" -}}
 {{- if eq ( .Values.global.istio.enableIstioKeyvaultCert | quote ) "true" -}}
-{{- printf "appgw-ssl-cert" -}}
+{{- printf "istio-appgw-ssl-cert" -}}
 {{- else -}}
 {{- printf "osdu-istio-certificate" -}}
 {{- end -}}

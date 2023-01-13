@@ -37,7 +37,11 @@ _The following commands can help generate a prepopulated custom_values file._
 # Setup Variables
 UNIQUE="<your_osdu_unique>"         # ie: demo
 OSDU_NAMESPACE=osdu-azure
-ISTIO_DNS_HOST=myappgwistio.contoso.com
+# If you already registered your dns record for the istio appgw
+ISTIO_DNS_HOST=<your.own.domain.name.org>
+# If you're planning to use the default appgw dns hostname provided:
+ISTIO_DNS_HOST=$(az network public-ip list --query "[?contains(id,'istio')].dnsSettings.fqdn" \
+  --resource-group  $(az group list --query "[?contains(name, 'sr${UNIQUE}-')].name" -otsv |grep -v MC) -otsv)
 
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
