@@ -37,6 +37,7 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the auto scale specific values
@@ -152,6 +153,8 @@ configuration:
         key: application-appid
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     podIdentityEnvs:
     - name: AZURE_CLIENT_ID
       secret:

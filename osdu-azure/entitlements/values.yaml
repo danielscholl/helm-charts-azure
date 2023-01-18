@@ -50,7 +50,7 @@ global:
     corsEnabled: <azure_corsEnabled>
     suthEnvoyFilterEnabled: <azure_suthEnvoyFilterEnabled>
     service_account_id: <service_account_id_user_context>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -127,6 +127,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: SPRING_CONFIG_NAME
       value: "common,application"
     - name: azure_activedirectory_AppIdUri

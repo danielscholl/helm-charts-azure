@@ -34,6 +34,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     corsEnabled: <azure_corsEnabled>
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
 ################################################################################
 # Specify the auto scale specific values
@@ -119,6 +120,8 @@ configuration:
       value: contoso.com
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: SIS_DATA
       value: /apachesis_setup/SIS_DATA      
     - name: KEYVAULT_URI

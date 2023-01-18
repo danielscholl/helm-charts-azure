@@ -61,7 +61,7 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -149,6 +149,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: BATCH_SIZE
       value: "100"
     - name: SEARCH_QUERY_LIMIT
