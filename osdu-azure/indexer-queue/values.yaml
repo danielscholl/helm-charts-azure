@@ -55,7 +55,6 @@ global:
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
 
-
   ################################################################################
   # Specify the Ingress Settings
   #

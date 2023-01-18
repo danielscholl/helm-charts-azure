@@ -44,7 +44,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     corsEnabled: <azure_corsEnabled>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -114,6 +114,8 @@ configuration:
       value: http://entitlements/api/entitlements/v2
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: unit_service_spring_logging_level
       value: INFO
     - name: PARTITION_API

@@ -34,6 +34,7 @@ global:
     subscription: <azure_subscription>
     podIdentity: <azure_podIdentity>
     commonPodIdentity: <azure_commonPodIdentity>
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the istio specific values
@@ -62,3 +63,13 @@ global:
       retry_attempts: 3
     retry_attempts: 1
     retry_attempts_file_service : 2
+
+################################################################################
+  #SpecifyCORSConfiguration
+  #
+  cors:
+    origins: <cors_origins>
+    methods: <cors_methods>
+    allowedheaders: <cors_allowed_headers>
+    exposedheaders: <cors_exposed_headers>
+    maxage: <cors_max_age>
