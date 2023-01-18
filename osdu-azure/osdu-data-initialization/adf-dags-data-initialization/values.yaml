@@ -21,3 +21,4 @@ config:
   airflow_web_url: <airflow_web_url>
   namespace: <osdu_services_namespace>
   environment: <execution_environment>
+  dag_names: <dag_names>

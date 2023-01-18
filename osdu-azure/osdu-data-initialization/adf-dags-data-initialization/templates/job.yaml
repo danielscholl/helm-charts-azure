@@ -53,3 +53,5 @@ spec:
               key: admin-password
         - name: ENVIRONMENT
           value: {{ .Values.config.environment }}
+        - name: DAG_NAMES
+          value: {{ .Values.config.dag_names }}
