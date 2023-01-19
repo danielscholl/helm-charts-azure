@@ -47,7 +47,7 @@ global:
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     oidAuthEnabled: <azure_oidAuthEnabled>
     corsEnabled: <azure_corsEnabled>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -140,6 +140,8 @@ configuration:
       value: http://partition/api/partition/v1
     - name: azure_istioauth_enabled
       value: true
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: azure_activedirectory_AppIdUri
       value: api://$(aad_client_id)
     - name: azure_paas_podIdentity_isEnabled

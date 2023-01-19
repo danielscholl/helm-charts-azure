@@ -44,7 +44,7 @@ global:
     keyvault: <azure_keyvault>
     appid: <azure_appid>
     corsEnabled: <azure_corsEnabled>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -118,6 +118,8 @@ configuration:
       value: http://search/api/search/v2
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config

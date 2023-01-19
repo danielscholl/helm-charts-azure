@@ -52,7 +52,7 @@ global:
     appid: <azure_appid>
     podIdentityAuthEnabled: <azure_podIdentityAuthEnabled>
     corsEnabled: <azure_corsEnabled>
-
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the Ingress Settings
@@ -154,6 +154,8 @@ configuration:
       value: http://opa:8181
     - name: azure_istioauth_enabled
       value: "true"
+    - name: azure_istio_corsEnabled
+      value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: azure_activedirectory_AppIdUri
       value: "api://$(aad_client_id)"
     - name: JAVA_OPTS
