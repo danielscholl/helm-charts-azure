@@ -1,0 +1,25 @@
+# This file contains the essential configs for the Azure Data Initialization Agent
+################################################################################
+# Specify the azure environment specific values
+#
+
+# FIXME: This needs to be separated from this repository!
+azure:
+  resourcegroup: <azure_resourcegroup>
+  subscription: <azure_subscription>
+  identity_id: <azure_identity_id>
+  enable_msi: <azure_enable_msi>
+  tenant_id: <azure_tenant_id>
+  resource_id: <azure_app_resource_id>
+  client_id: <azure_client_id>
+  client_secret: <azure_client_secret>
+
+ingress:
+  dns: <ingress_dns>
+
+storage:
+  partitions: <storage_partitions> #A comma separated(no space) list of partition names 
+
+image:
+  repository: <azure_acr>
+  
