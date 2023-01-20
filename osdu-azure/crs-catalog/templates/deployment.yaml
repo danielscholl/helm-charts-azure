@@ -97,8 +97,8 @@ spec:
             {{- range .env }}
             - name: {{ .name }}
               {{- if .value }}
-              { { - $v := .value } }
-              value: { { tpl ($v | quote) $ } }
+              {{- $v := .value }}
+              value: {{ tpl ($v | quote) $ }}
               {{- end }}
               {{- if .config }}
               valueFrom:
