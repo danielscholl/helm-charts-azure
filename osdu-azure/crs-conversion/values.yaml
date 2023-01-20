@@ -125,7 +125,7 @@ configuration:
     - name: azure_istio_corsEnabled
       value: "{{ .Values.global.azure.istioCorsEnabled }}"
     - name: SIS_DATA
-      value: /apachesis_setup/SIS_DATA
+      value: /mnt/crs_conversion/apachesis_setup/SIS_DATA
     - name: KEYVAULT_URI
       config:
         name: osdu-svc-config
