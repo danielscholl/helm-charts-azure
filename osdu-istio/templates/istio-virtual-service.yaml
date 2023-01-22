@@ -1,6 +1,13 @@
 {{- $retryattempts := .Values.global.resiliency.retry_attempts | default 0 }}
 {{- $workflowRetryattempts := .Values.global.resiliency.workflow.retry_attempts | default 0 }}
 {{- $retryattemptsFileService := .Values.global.resiliency.retry_attempts_file_service | default 2 }}
+{{- $corsorigins := .Values.global.cors.origins }}
+{{- $corsmethods := .Values.global.cors.methods }}
+{{- $corsallowedheaders := .Values.global.cors.allowedheaders }}
+{{- $corsexposdedheaders := .Values.global.cors.exposedheaders }}
+{{- $corsmaxage := print .Values.global.cors.maxage }}
+{{- $corsallowCredentials := .Values.global.azure.allowCredentials | default true }}
+{{- $istiocorsenabled := print .Values.global.azure.istioCorsEnabled | default "false" }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -22,6 +29,27 @@ spec:
         host: default.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -31,6 +59,27 @@ spec:
         host: partition.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -40,6 +89,27 @@ spec:
         host: legal.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -49,6 +119,27 @@ spec:
         host: storage.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -61,6 +152,27 @@ spec:
         host: indexer.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
   - match:
     - uri:
         prefix: /api/search/v2/query
@@ -72,6 +184,27 @@ spec:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -81,6 +214,27 @@ spec:
         host: search.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -90,6 +244,27 @@ spec:
         host: search-extensions.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -99,6 +274,27 @@ spec:
         host: delivery.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -108,6 +304,27 @@ spec:
         host: schema.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -117,6 +334,27 @@ spec:
         host: register.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -126,6 +364,27 @@ spec:
         host: crs-catalog.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -135,6 +394,27 @@ spec:
         host: crs-conversion.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -144,6 +424,27 @@ spec:
         host: unit.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -156,6 +457,27 @@ spec:
         host: file.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -168,6 +490,27 @@ spec:
         host: file.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -182,6 +525,27 @@ spec:
         host: file.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -191,6 +555,27 @@ spec:
         host: file.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -203,6 +588,27 @@ spec:
         host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 120s
   - match:
     - uri:
@@ -212,6 +618,27 @@ spec:
         host: workflow.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -221,6 +648,27 @@ spec:
         host: notification.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -230,6 +678,27 @@ spec:
         host: entitlements.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -239,6 +708,27 @@ spec:
         host: ingestion-service.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
   - match:
     - uri:
         prefix: "/api/policy/v1"
@@ -247,6 +737,27 @@ spec:
         host: policy.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
@@ -256,6 +767,27 @@ spec:
         host: dataset.{{ .Values.global.namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- if eq $istiocorsenabled "true" }}
+    corsPolicy:
+      allowHeaders:
+        {{- range (split ";" $corsallowedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      allowMethods:
+        {{- range (split ";" $corsmethods) }}
+        - {{ . }}
+        {{- end }}
+      allowOrigins:
+        {{- range (split ";" $corsorigins) }}
+        - exact: {{ . | quote }}
+        {{- end }}
+      exposeHeaders:
+        {{- range (split ";" $corsexposdedheaders) }}
+        - {{ . | quote }}
+        {{- end }}
+      maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
+    {{- end }}
     timeout: 300s
   - match:
     - uri:
