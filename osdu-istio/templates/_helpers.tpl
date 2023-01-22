@@ -4,7 +4,7 @@
 {{- $corsallowedheaders := .Values.global.cors.allowedheaders }}
 {{- $corsexposdedheaders := .Values.global.cors.exposedheaders }}
 {{- $corsmaxage := print .Values.global.cors.maxage }}
-{{- $corsallowCredentials := .Values.global.azure.allowCredentials | default true }}
+{{- $corsallowCredentials := .Values.global.cors.allowCredentials }}
 {{- $istiocorsenabled := print .Values.global.azure.istioCorsEnabled | default "false" }}
 
 {{- if eq $istiocorsenabled "true" }}

@@ -73,3 +73,4 @@ global:
     allowedheaders: <cors_allowed_headers>
     exposedheaders: <cors_exposed_headers>
     maxage: <cors_max_age>
+    allowCredentials: true
