@@ -9,23 +9,23 @@
 
 {{- if eq $istiocorsenabled "true" }}
 corsPolicy:
-    allowHeaders:
-    {{- range (split ";" $corsallowedheaders) }}
+  allowHeaders:
+  {{- range (split ";" $corsallowedheaders) }}
     - {{ . | quote }}
-    {{- end }}
-    allowMethods:
-    {{- range (split ";" $corsmethods) }}
+  {{- end }}
+  allowMethods:
+  {{- range (split ";" $corsmethods) }}
     - {{ . | quote }}
-    {{- end }}
-    allowOrigins:
-    {{- range (split ";" $corsorigins) }}
+  {{- end }}
+  allowOrigins:
+  {{- range (split ";" $corsorigins) }}
     - exact: {{ . | quote }}
-    {{- end }}
-    exposeHeaders:
-    {{- range (split ";" $corsexposdedheaders) }}
+  {{- end }}
+  exposeHeaders:
+  {{- range (split ";" $corsexposdedheaders) }}
     - {{ . | quote }}
-    {{- end }}
-    maxAge: {{ duration $corsmaxage }}
-    allowCredentials: {{ $corsallowCredentials }}
+  {{- end }}
+  maxAge: {{ duration $corsmaxage }}
+  allowCredentials: {{ $corsallowCredentials }}
 {{- end }}
 {{- end }}
