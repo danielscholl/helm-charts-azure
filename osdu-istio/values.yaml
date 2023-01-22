@@ -68,9 +68,9 @@ global:
   #SpecifyCORSConfiguration
   #
   cors:
-    origins: <cors_origins>
-    methods: <cors_methods>
-    allowedheaders: <cors_allowed_headers>
-    exposedheaders: <cors_exposed_headers>
+    origins: "<cors_origins>"
+    methods: "<cors_methods>"
+    allowedheaders: "<cors_allowed_headers>"
+    exposedheaders: "<cors_exposed_headers>"
     maxage: <cors_max_age>
     allowCredentials: true
