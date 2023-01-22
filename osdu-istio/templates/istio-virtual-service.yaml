@@ -6,7 +6,8 @@
 {{- $corsallowedheaders := .Values.global.cors.allowedheaders }}
 {{- $corsexposdedheaders := .Values.global.cors.exposedheaders }}
 {{- $corsmaxage := print .Values.global.cors.maxage }}
-{{- $istiocorsenabled := print .Values.global.azure.istioCorsEnabled | default "false" }}# test
+{{- $corsallowCredentials := .Values.global.azure.allowCredentials | default true }}
+{{- $istiocorsenabled := print .Values.global.azure.istioCorsEnabled | default "false" }}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -32,7 +33,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -44,9 +45,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -61,7 +63,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -73,9 +75,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -90,7 +93,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -102,9 +105,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -119,7 +123,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -131,9 +135,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -151,7 +156,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -163,9 +168,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
   - match:
     - uri:
@@ -182,7 +188,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -194,9 +200,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -211,7 +218,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -223,9 +230,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -240,7 +248,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -252,9 +260,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -269,7 +278,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -281,9 +290,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -298,7 +308,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -310,9 +320,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -327,7 +338,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -339,9 +350,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -356,7 +368,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -368,9 +380,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -385,7 +398,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -397,9 +410,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -414,7 +428,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -426,9 +440,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -446,7 +461,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -458,9 +473,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -478,7 +494,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -490,9 +506,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -512,7 +529,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -524,9 +541,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -541,7 +559,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -553,9 +571,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -573,7 +592,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -585,9 +604,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 120s
   - match:
@@ -602,7 +622,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -614,9 +634,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -631,7 +652,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -643,9 +664,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -660,7 +682,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -672,9 +694,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -689,7 +712,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -701,9 +724,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
   - match:
     - uri:
@@ -717,7 +741,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -729,9 +753,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
@@ -746,7 +771,7 @@ spec:
     corsPolicy:
       allowHeaders:
         {{- range (split ";" $corsallowedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       allowMethods:
         {{- range (split ";" $corsmethods) }}
@@ -758,9 +783,10 @@ spec:
         {{- end }}
       exposeHeaders:
         {{- range (split ";" $corsexposdedheaders) }}
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
       maxAge: {{ duration $corsmaxage }}
+      allowCredentials: {{ $corsallowCredentials }}
     {{- end }}
     timeout: 300s
   - match:
