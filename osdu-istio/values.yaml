@@ -62,3 +62,14 @@ global:
       retry_attempts: 3
     retry_attempts: 1
     retry_attempts_file_service : 2
+
+################################################################################
+  #SpecifyCORSConfiguration
+  #
+  cors:
+    origins: <cors_origins>
+    methods: <cors_methods>
+    allowedheaders: <cors_allowed_headers>
+    exposedheaders: <cors_exposed_headers>
+    maxage: <cors_max_age>
+    allowCredentials: true
