@@ -1,7 +1,9 @@
+{{- $randSuffix := randAlphaNum 9 | lower -}}
+{{-  $jobName := printf "%s-%s" .Values.global.job.name $randSuffix -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Values.global.job.name }}
+  name: {{ $jobName }}
   namespace: {{ .Release.Namespace }}
   labels:
     app: "{{ .Values.global.job.name }}"
