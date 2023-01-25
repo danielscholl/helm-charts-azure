@@ -60,3 +60,38 @@ PODs selector labels
 app.kubernetes.io/instance: {{ .service }}
 {{- end }}
 {{- end }}
+
+{{/*
+Istio Cors Configuration
+*/}}
+{{- define "istio.cors.configuration" }}
+{{- $corsorigins := .Values.cors.origins }}
+{{- $corsmethods := .Values.cors.methods }}
+{{- $corsallowedheaders := .Values.cors.allowedheaders }}
+{{- $corsexposdedheaders := .Values.cors.exposedheaders }}
+{{- $corsmaxage := print .Values.cors.maxage }}
+{{- $corsallowCredentials := .Values.cors.allowCredentials }}
+{{- $istiocorsenabled := print .Values.azure.istioCorsEnabled | default "false" }}
+
+{{- if eq $istiocorsenabled "true" }}
+corsPolicy:
+  allowHeaders:
+  {{- range (split ";" $corsallowedheaders) }}
+    - {{ . | quote }}
+  {{- end }}
+  allowMethods:
+  {{- range (split ";" $corsmethods) }}
+    - {{ . | quote }}
+  {{- end }}
+  allowOrigins:
+  {{- range (split ";" $corsorigins) }}
+    - exact: {{ . | quote }}
+  {{- end }}
+  exposeHeaders:
+  {{- range (split ";" $corsexposdedheaders) }}
+    - {{ . | quote }}
+  {{- end }}
+  maxAge: {{ duration $corsmaxage }}
+  allowCredentials: {{ $corsallowCredentials }}
+{{- end }}
+{{- end }}

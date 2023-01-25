@@ -42,6 +42,7 @@ azure:
   identity: <azure_identity>
   identity_id: <azure_identity_id>
   acr: <azure_acr>
+  istioCorsEnabled: <azure_istio_corsEnabled>
   keyvault: 
     name: <azure_keyvault>
     secrets:
@@ -162,3 +163,14 @@ configuration:
     # secrets:
     #   - name: AZ_AI_INSTRUMENTATION_KEY
     #     key: appinsight.key
+
+################################################################################
+# DDMS CORS Configuration
+#
+cors:
+  origins: "<cors_origins>"
+  methods: "<cors_methods>"
+  allowedheaders: "<cors_allowed_headers>"
+  exposedheaders: "<cors_exposed_headers>"
+  maxage: <cors_max_age>
+  allowCredentials: true
