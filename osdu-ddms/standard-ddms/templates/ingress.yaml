@@ -15,6 +15,7 @@
 {{- if .Values.enabled }}
 {{- $name := include "standard-ddms.name" . }}
 {{- $labels := include "standard-ddms.common-labels" . }}
+{{- $corsConfiguration := include "istio.cors.configuration" . }}
 {{- $namespace := .Release.Namespace }}
 {{- $retryattempts := .Values.resiliency.retry_attempts | default 0 }}
 {{- $dns := .Values.ingress.dns -}}
@@ -85,6 +86,7 @@ spec:
         host: {{ .service }}-service.{{ $namespace }}.svc.cluster.local
         port:
           number: 80
+    {{- $corsConfiguration | indent 4 }}
     timeout: 300s
     {{- if $retryattempts }}
     retries:
