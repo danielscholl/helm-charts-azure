@@ -94,34 +94,6 @@ airflow:
     name: airflow
 
   ###################################
-  # Kubernetes - Ingress Configs
-  ###################################
-  ingress:
-    enabled: <airflow_ingress_enabled>
-    web:
-      annotations:
-        kubernetes.io/ingress.class: azure/application-gateway
-        appgw.ingress.kubernetes.io/request-timeout: "300"
-        appgw.ingress.kubernetes.io/connection-draining: "true"
-        appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-        # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
-        # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
-        # The certificate name needs to be changed if the namespace or the secret name change.
-        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-azure-osdu-certificate"
-        cert-manager.io/acme-challenge-type: http01
-      path: "/airflow2"
-      host: <airflow_ingress_web_host>
-      livenessPath: "/airflow2/health"
-      tls:
-        enabled: false
-        secretName: osdu-certificate
-      precedingPaths:
-        - path: "/airflow2/*"
-          serviceName: airflow2-web
-          servicePort: 8080
-
-  ###################################
   # Database - External Database
   ###################################
   postgresql:
@@ -161,30 +133,30 @@ airflow:
   # Airflow - WebUI Configs
   ###################################
   web:
-    replicas: 2
+    replicas: 1
     livenessProbe:
       timeoutSeconds: 60
     resources:
       requests:
-        cpu: "1000m"
-        memory: "4Gi"
+        cpu: "600m"
+        memory: "2Gi"
       limits:
-        cpu: "1000m"
+        cpu: "1200m"
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 60
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
     baseUrl: "http://localhost/airflow"
 
   ###################################
@@ -193,23 +165,23 @@ airflow:
   workers:
     resources:
       requests:
-        cpu: "1200m"
-        memory: "5Gi"
+        cpu: "600m"
+        memory: "4Gi"
       limits:
         cpu: "1200m"
-        memory: "5Gi"
+        memory: "6Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
-    replicas: 6
+    replicas: 1
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 300
@@ -218,7 +190,7 @@ airflow:
       gracefullTerminationPeriod: 600
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
 
   ###################################
   # Airflow - Flower Configs
@@ -230,27 +202,27 @@ airflow:
   # Airflow - Scheduler Configs
   ###################################
   scheduler:
-    replicas: 2
+    replicas: 1
     resources:
       requests:
-        cpu: "2500m"
+        cpu: "600m"
         memory: "1Gi"
       limits:
         cpu: "2500m"
-        memory: "1Gi"
+        memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 60
     podAnnotations:
-      sidecar.istio.io/inject: "false"
+      sidecar.istio.io/inject: "true"
     variables: |
       {}
     
@@ -282,7 +254,7 @@ airflow:
       AIRFLOW__LOGGING__REMOTE_LOGGING: "True"
       AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
       AIRFLOW__LOGGING__LOGGING_CONFIG_CLASS: "log_config.DEFAULT_LOGGING_CONFIG"
-      AIRFLOW__LOGGING__LOGGING_LEVEL: DEBUG
+      AIRFLOW__LOGGING__LOGGING_LEVEL: INFO
       AIRFLOW__LOGGING__LOG_FILENAME_TEMPLATE: "{{ run_id }}/{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{% if dag_run.conf is not none and 'correlation_id' in dag_run.conf %}{{ dag_run.conf['correlation_id'] }}{% else %}None{% endif %}/{{ try_number }}.log"
       AIRFLOW__CELERY__SSL_ACTIVE: "True"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"

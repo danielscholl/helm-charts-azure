@@ -12,11 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-# FIXME: Specific to OSDU deployment
 ingress:
-  appGateway:
-    issuer: letsencrypt-prod-dns
-    enableKeyvaultCert: false
+  dns: <ingress_dns>
 
 # Annotation to support the key rotation for redis password in keyvaul
 deployment:

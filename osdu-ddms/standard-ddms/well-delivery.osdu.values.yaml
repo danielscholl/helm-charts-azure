@@ -22,9 +22,7 @@ azure:
 
 # FIXME: Specific to OSDU deployment
 ingress:
-  appGateway:
-    issuer: letsencrypt-prod-dns
-    enableKeyvaultCert: false
+  dns: <ingress_dns>
 
 configuration:
   - service: well-delivery-ddms
