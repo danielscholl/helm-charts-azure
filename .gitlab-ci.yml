@@ -164,23 +164,34 @@ helm_test:
 helm_go_unit_test:
   stage: build
   image: golang:1.18.6
-  tags: ["osdu-medium"]
   cache:
     paths:
       - ${GOPATH}/pkg
   before_script:
     - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -s -- --version v3.9.1
+    - >-
+      curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/v0.13.13/terratest_log_parser_linux_amd64 &&
+      mv -v terratest_log_parser /usr/bin/ && chmod +x /usr/bin/terratest_log_parser
   variables:
     GOPATH: $CI_PROJECT_DIR/go
+    TESTS_PATH: scripts/tests/unit
   script:
-    - |
-      for test_dir in $(find . -path "*/tests/unit/*.go" -type f -exec dirname {} \;); do
-        echo "[INFO] Testing dir ${test_dir}"
-        pushd ${test_dir}
-        go mod tidy
-        go test -v .
-        popd
-      done
+    - pushd ${TESTS_PATH}
+    - go clean -testcache
+    - go mod tidy
+    - go test -v . | tee $CI_PROJECT_DIR/helm_test_output.log
+  after_script:
+    - terratest_log_parser -testlog $CI_PROJECT_DIR/helm_test_output.log -outputdir $CI_PROJECT_DIR/test_output
+    - cat $CI_PROJECT_DIR/test_output/summary.log
   rules:
-    - when: always
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+  artifacts:
+    expire_in: 2 hours
+    paths:
+      - $CI_PROJECT_DIR/test_output/*
+    reports:
+       junit: $CI_PROJECT_DIR/test_output/*.xml
     

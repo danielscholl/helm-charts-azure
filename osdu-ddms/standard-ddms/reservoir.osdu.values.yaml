@@ -15,11 +15,6 @@
 ingress:
   dns: <ingress_dns>
   # This will not install istio virtual service but AGIC ingress instead
-  appGateway:
-    issuer: letsencrypt-prod-dns
-    enableKeyvaultCert: false
-  annotations:
-    appgw.ingress.kubernetes.io/backend-path-prefix: "/"
 
 deployment:
   replicaCount: 1

@@ -83,7 +83,7 @@ envoyFilter:
 #
 deployment:
   # nodePool: default
-  replicaCount: 2
+  replicaCount: 1
 
   # Annotation for the secret reloader to be used by Seismic
   # deploymentAnnotations:

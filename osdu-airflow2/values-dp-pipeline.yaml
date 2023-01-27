@@ -95,22 +95,6 @@ airflow:
     name: airflow
 
   ###################################
-  # Kubernetes - Ingress Configs
-  ###################################
-  ingress:
-    enabled: false
-    web:
-      path: "/airflow2/"
-      host: #{AIRFLOW_DNS_HOST}#
-      livenessPath: "/airflow/health"
-      tls:
-        BYOCEnabled: #{DP_ENABLE_KEYVAULT_CERT}#
-        secretName: airflow2-prod-certificate
-        certificateAdmin: admin@email.com
-        sslServer: https://acme-v02.api.letsencrypt.org/directory
-      istioGateway: osdu/istio-gateway
-
-  ###################################
   # Database - External Database
   ###################################
   postgresql:
@@ -155,15 +139,15 @@ airflow:
       timeoutSeconds: 60
     resources:
       requests:
-        cpu: "1000m"
-        memory: "4Gi"
+        cpu: "600m"
+        memory: "2Gi"
       limits:
-        cpu: "1000m"
+        cpu: "1200m"
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false
@@ -173,7 +157,7 @@ airflow:
         coolDownPeriod: 60
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
     baseUrl: "http://localhost/airflow"
 
   ###################################
@@ -182,17 +166,17 @@ airflow:
   workers:
     resources:
       requests:
-        cpu: "1200m"
-        memory: "5Gi"
+        cpu: "600m"
+        memory: "4Gi"
       limits:
         cpu: "1200m"
-        memory: "5Gi"
+        memory: "6Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     # Use replicas when auto scaling is not enabled
     replicas: 6
@@ -207,7 +191,7 @@ airflow:
       gracefullTerminationPeriod: 600
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
 
   ###################################
   # Airflow - Flower Configs
@@ -219,18 +203,18 @@ airflow:
   # Airflow - Scheduler Configs
   ###################################
   scheduler:
-    replicas: 2
+    replicas: 1
     resources:
       requests:
-        cpu: "2500m"
+        cpu: "600m"
         memory: "1Gi"
       limits:
         cpu: "2500m"
-        memory: "1Gi"
+        memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podDisruptionBudget:
-      enabled: true
+      enabled: false
       maxUnavailable: 1
     autoscale:
       enabled: false

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Airflow helm chart dependency
+
+* Published in oci the airflow helm chart for convenience at build time.
+  * Can work either with local tgz or published airflow chart.
+  * Reason it is that it was breaking the osdu-airflow2 chart and installing postgres and redis which are not required for osdu-airflow2
+
 ## AKS Security policies for airflow2
 
 Tracking this issue in airflow-community. [ISSUE](https://github.com/airflow-helm/charts/issues/578)

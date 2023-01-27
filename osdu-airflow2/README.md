@@ -46,7 +46,7 @@ STATSD_PORT="8125"
 # This logs your local Azure CLI in using the configured service principal.
 az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID
 
-GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}')].name" -otsv)
+GROUP=$(az group list --query "[?contains(name, 'cr${UNIQUE}-')].name" -otsv)
 ENV_VAULT=$(az keyvault list --resource-group $GROUP --query [].name -otsv)
 
 # This needs to be set to where OSDU is installed.
@@ -151,34 +151,6 @@ airflow:
     name: airflow
 
   ###################################
-  # Kubernetes - Ingress Configs
-  ###################################
-  ingress:
-    enabled: true
-    web:
-      annotations:
-        kubernetes.io/ingress.class: azure/application-gateway
-        appgw.ingress.kubernetes.io/request-timeout: "300"
-        appgw.ingress.kubernetes.io/connection-draining: "true"
-        appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
-        cert-manager.io/cluster-issuer: letsencrypt-prod-dns
-        # The certificate is created in app gateway in the format 'cert-{namespace}-{tls-secret-name}'
-        # Here the secret name is osdu-certificate. This secret is created in osdu namespace.
-        # The certificate name needs to be changed if the namespace or the secret name change.
-        appgw.ingress.kubernetes.io/appgw-ssl-certificate: "cert-osdu-azure-osdu-certificate"
-        cert-manager.io/acme-challenge-type: http01
-      path: "/airflow2"
-      host: $DNS_HOST
-      livenessPath: "/airflow2/health"
-      tls:
-        enabled: false
-        secretName: osdu-certificate
-      precedingPaths:
-        - path: "/airflow2/*"
-          serviceName: airflow2-web
-          servicePort: 8080
-
-  ###################################
   # Database - External Database
   ###################################
   postgresql:
@@ -223,22 +195,22 @@ airflow:
       timeoutSeconds: 60
     resources:
       requests:
-        cpu: "1000m"
-        memory: "4Gi"
+        cpu: "600m"
+        memory: "2Gi"
       limits:
-        cpu: "1000m"
+        cpu: "1200m"
         memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 60
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
     baseUrl: "http://localhost/airflow"
 
   ###################################
@@ -247,20 +219,20 @@ airflow:
   workers:
     resources:
       requests:
-        cpu: "1200m"
-        memory: "5Gi"
+        cpu: "600m"
+        memory: "4Gi"
       limits:
         cpu: "1200m"
-        memory: "5Gi"
+        memory: "6Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     podAnnotations:
       sidecar.istio.io/inject: "false"
     # Use replicas when auto scaling is not enabled
-    replicas: 6
+    replicas: 1
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 300
@@ -269,7 +241,7 @@ airflow:
       gracefullTerminationPeriod: 600
     labels:
       # DO NOT DELETE THIS LABEL. SET IT TO "false" WHEN AUTOSCALING IS DISABLED, SET IT TO "true" WHEN AUTOSCALING IS ENABLED
-      autoscalingEnabled: "false"
+      autoscalingEnabled: "true"
 
   ###################################
   # Airflow - Flower Configs
@@ -281,19 +253,19 @@ airflow:
   # Airflow - Scheduler Configs
   ###################################
   scheduler:
-    replicas: 2
+    replicas: 1
     resources:
       requests:
-        cpu: "2500m"
+        cpu: "600m"
         memory: "1Gi"
       limits:
         cpu: "2500m"
-        memory: "1Gi"
+        memory: "4Gi"
     podLabels:
       aadpodidbinding: "osdu-airflow2-identity"
     autoscale:
-      enabled: false
-      minReplicas: 2
+      enabled: true
+      minReplicas: 1
       maxReplicas: 20
       scaleDown:
         coolDownPeriod: 60
@@ -331,7 +303,7 @@ airflow:
       AIRFLOW__LOGGING__REMOTE_LOGGING: "True"
       AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: "wasb-airflowlog"
       AIRFLOW__LOGGING__LOGGING_CONFIG_CLASS: "log_config.DEFAULT_LOGGING_CONFIG"
-      AIRFLOW__LOGGING__LOGGING_LEVEL: DEBUG
+      AIRFLOW__LOGGING__LOGGING_LEVEL: INFO
       AIRFLOW__LOGGING__LOG_FILENAME_TEMPLATE: "{{ run_id }}/{{ ti.dag_id }}/{{ ti.task_id }}/{{ ts }}/{% if dag_run.conf is not none and 'correlation_id' in dag_run.conf %}{{ dag_run.conf['correlation_id'] }}{% else %}None{% endif %}/{{ try_number }}.log"
       AIRFLOW__CELERY__SSL_ACTIVE: "True"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
@@ -490,7 +462,6 @@ airflow:
     ###################################
     containerSecurityContext:
       allowPrivilegeEscalation: false
-
 EOF
 ```
 
@@ -514,7 +485,7 @@ POD_OPERATOR_NAMESPACE=airflow
 kubectl create namespace $POD_OPERATOR_NAMESPACE
 
 # Install Charts
-helm upgrade -i airflow2 oci://msosdu.azurecr.io/helm/$CHART --version $VERSION -n $NAMESPACE -f osdu_airflow2_custom_values.yaml --wait --timeout 10m
+helm upgrade -i airflow2 oci://msosdu.azurecr.io/helm/$CHART --version $VERSION -n $NAMESPACE -f osdu_airflow2_custom_values.yaml
 ```
 
 
