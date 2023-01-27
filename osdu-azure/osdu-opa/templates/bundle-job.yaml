@@ -50,8 +50,12 @@ spec:
           echo "[INFO] Uploading partition {{ . }} bundle to policy SA"
           DP_WORKDIR=$(mktemp -d)
           sed -e 's/{{ printf "{{dp_id}}/%s" . }}/g' policy/deployment/scripts/azure/templates/manifest_template.manifest | tee $DP_WORKDIR/.manifest
-          sed -e 's/{{ printf "{{dp_id}}/%s" . }}/g' policy/deployment/scripts/azure/templates/dataauthz_template.rego | tee $DP_WORKDIR/dataauthz.rego
-          tar -cvzf bundle-{{ . }}.tar.gz --directory $DP_WORKDIR/ .manifest dataauthz.rego
+          for ff in $(find ./policy/deployment/scripts/azure/templates/ -name "*.rego" -type f); do
+            FILE_NAME=$(basename $ff | sed 's/_template//')
+            echo "[INFO] Parsing $ff => $FILE_NAME"
+            sed -e 's/{{ printf "{{dp_id}}/%s" . }}/g' $ff | tee $DP_WORKDIR/$FILE_NAME
+          done
+          tar -cvzf bundle-{{ . }}.tar.gz --directory $DP_WORKDIR/ .manifest $( find $DP_WORKDIR/ -name "*.rego" -type f -exec basename {} \; | xargs )
           az storage blob upload -f bundle-{{ . }}.tar.gz -c policy-bundles --overwrite true --account-name ${STORAGE_ACCOUNT}
           {{- end }}
       restartPolicy: Never
