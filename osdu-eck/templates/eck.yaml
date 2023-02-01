@@ -6,6 +6,9 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
+{{- $snapshotBackupEnabled := .Values.elasticsearch.snapshot.enabled}}
+{{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
+{{- $storageAccountKey := .Values.elasticsearch.snapshot.storageAccountKey}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
@@ -16,6 +19,18 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
+{{ if $snapshotBackupEnabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-snapshot-secrets
+  namespace: "es-{{ lower $datapartition }}"
+type: Opaque
+data:
+  azure.client.default.account: {{ b64enc $storageAccountName }}
+  azure.client.default.key: {{ b64enc $storageAccountKey }}
+---
+{{ end }}
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -25,6 +40,10 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
+  {{ if $snapshotBackupEnabled }}
+  secureSettings:
+  - secretName: azure-snapshot-secrets
+  {{ end }}
   http:
     tls:
       selfSignedCertificate:
@@ -59,6 +78,27 @@ spec:
             traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
             traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         spec:
+          initContainers:
+          - name: elastic-internal-init-keystore
+            securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+            env:
+            - name: ZONE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['topology.kubernetes.io/zone']
+          - name: install-plugins
+            env:
+            - name: ZONE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['topology.kubernetes.io/zone']
+            command:
+            - sh
+            - -c
+            - |
+              bin/elasticsearch-plugin install --batch repository-azure
           tolerations:
           - key: "sku"
             operator: "Equal"
