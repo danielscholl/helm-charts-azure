@@ -12,7 +12,7 @@ resources:
   requests:
     cpu: 0.2
 elasticsearch:
-  version: 7.16.3
+  version: 7.17.8
   nodeCount: 3
   storagePerNodeGB: 128
   snapshot:
