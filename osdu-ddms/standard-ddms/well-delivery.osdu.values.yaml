@@ -62,6 +62,7 @@ configuration:
       partition_service_endpoint: "http://partition.osdu-azure/api/partition/v1"
       azure_activedirectory_session_stateless: "true"
       azure_istioauth_enabled: "true"
+      azure_istio_corsEnabled: "{{ .Values.azure.istioCorsEnabled }}"
       KEYVAULT_URI: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
     
     # FIXME:  Critical architecture issue. Should be fixed. Specific to OSDU deployment
