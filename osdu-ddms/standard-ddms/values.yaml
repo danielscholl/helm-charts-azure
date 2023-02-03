@@ -65,7 +65,7 @@ ingress:
 # Specify Pod Distribution Budget Setting
 #
 podDisruptionBudget:
-  enabled: true
+  enabled: false
 
 ################################################################################
 # Specify the Rate Limiting Service settings
