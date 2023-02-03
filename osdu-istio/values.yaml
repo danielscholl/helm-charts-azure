@@ -34,6 +34,7 @@ global:
     subscription: <azure_subscription>
     podIdentity: <azure_podIdentity>
     commonPodIdentity: <azure_commonPodIdentity>
+    istioCorsEnabled: <azure_istio_corsEnabled>
 
   ################################################################################
   # Specify the istio specific values
