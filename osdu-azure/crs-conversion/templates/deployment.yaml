@@ -47,9 +47,6 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: azure-keyvault
-        - name: shared-data
-          persistentVolumeClaim:
-            claimName: crs-conversion-pvc
       {{- end }}
       {{- range .pvc }}
         - name: {{ .volume }}
@@ -90,8 +87,6 @@ spec:
           - name: azure-keyvault
             mountPath: "/mnt/azure-keyvault"
             readOnly: true
-          - name: shared-data
-            mountPath: /mnt/crs_conversion
           {{- end }}
           {{- range .mount }}
           - name: {{ .name }}
