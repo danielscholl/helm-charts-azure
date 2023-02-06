@@ -141,6 +141,8 @@ configuration:
         value: "OBSOLETE"
       - name: storage_service_endpoint
         value: http://storage/api/storage/v2
+      - name: external_dataset_service_endpoint
+        value: http://eds-dms/api/eds/v1
       - name: partition_service_endpoint
         value: http://partition/api/partition/v1
       - name: azure_istioauth_enabled
