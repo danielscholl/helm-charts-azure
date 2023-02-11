@@ -16,44 +16,44 @@ apiVersion: v2
 name: osdu-core_services
 type: application
 description: Installs the OSDU on Azure Core System Services
-version: 1.18.0
-appVersion: 0.18.0
+version: 1.19.0
+appVersion: 0.19.0
 dependencies:
   - name: "schema"
     repository: file://../schema
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "storage"
     repository: file://../storage
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "file"
     repository: file://../file
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "indexer"
     repository: file://../indexer
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "search"
     repository: file://../search
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "register"
     repository: file://../register
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "notification"
     repository: file://../notification
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "indexer-queue"
     repository: file://../indexer-queue
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "dataset"
     repository: file://../dataset
-    version: "1.18.0"
+    version: "1.19.0"
     enabled: true
   - name: "osdu-helm-library"
     version: ~0.2.0

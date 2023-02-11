@@ -16,8 +16,8 @@ apiVersion: v2
 name: eds-dms
 type: application
 description: Installs the OSDU Platform External Data Sources Data Management Service
-version: 1.18.0
-appVersion: 0.18.0
+version: 1.19.0
+appVersion: 0.19.0
 dependencies:
   - name: "osdu-helm-library"
     version: "0.2.0"
