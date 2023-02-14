@@ -14,7 +14,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 CHART=osdu-base
 VERSION=1.0.0
-helm upgrade -i osdu-base oci://msosdu.azurecr.io/helm/${CHART} --version ${VERSION} -n default --set 
+helm upgrade -i osdu-base oci://msosdu.azurecr.io/helm/${CHART} --version ${VERSION} -n default --set \
 ingress.admin=<admin_email>
 ```
 
