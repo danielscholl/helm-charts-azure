@@ -28,7 +28,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-azure
-VERSION=1.18.3
+VERSION=1.19.0
 
 # Pull Chart
 helm pull oci://msosdu.azurecr.io/helm/$CHART --version $VERSION --untar
