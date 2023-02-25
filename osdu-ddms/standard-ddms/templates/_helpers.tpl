@@ -53,12 +53,11 @@ app.kubernetes.io/instance: {{ .service }}
 {{- end }}
 
 {{/*
-PODs selector labels
+PODs selector labels. PLEASE DO NOT ADD ANY SELECTOR LABELS
 */}}
 {{- define "standard-ddms.selector-labels" -}}
 {{- $ := index . 0 }}
 {{- with index . 1 }}
-app: {{ .service }}
 app.kubernetes.io/instance: {{ .service }}
 {{- end }}
 {{- end }}
