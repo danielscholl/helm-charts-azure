@@ -63,7 +63,7 @@ configuration:
       prometheus.io/path: /metrics
       prometheus.io/port: "9002"
       prometheus.io/scrape: "true"
-    command: "[\"openETPServer\", \"server\", \"--start\" , \"--verbose\", \"--authN\", \"none\", \"--authZ\", \"none\"]"
+    command: '["openETPServer", "server", "--start" , "--log_level", "info", "-M", "500MB", "-Q", "1000", "--authN", "none", "--authZ", "delegate="]'
     probe:
       readiness:
         path: /health
@@ -78,7 +78,9 @@ configuration:
       AZURE_ENABLE_MSI: "true"
       RDMS_DATA_PARTITION_MODE: "osdu"
       KEYVAULT_URL: "https://{{ .Values.azure.keyvault.name }}.vault.azure.net/"
+      CLOUD_PROVIDER: az
       # Common helm-charts-azure core install is in osdu-azure ns
       PARTITION_URL: http://partition.osdu-azure/api/partition/v1
       STORAGE_URL: http://storage.osdu-azure/api/storage/v2
       ENTITLEMENTS_URL: http://entitlement.osdu-azure/api/entitlements/v2
+      DOMAIN_NAME: "contoso.com"
