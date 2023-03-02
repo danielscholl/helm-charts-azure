@@ -9,7 +9,7 @@ Individual DDMSs helm charts are **DEPRECATED!** and will be not supported start
 Helm Charts are stored in OCI format and stored in an Azure Container Registry for Convenience.
 ```bash
 CHART="standard-ddms"
-VERSION="1.19.0"
+VERSION="1.19.2"
 
 ACR='msosdu.azurecr.io'
 
