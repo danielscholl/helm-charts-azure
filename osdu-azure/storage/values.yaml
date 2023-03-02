@@ -102,18 +102,16 @@ configuration:
       disable:
         - "/"
         - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/storage/v2/swagger-resources/*"
-        - "/api/storage/v2/webjars/*"
-        - "/api/storage/v2/swagger-ui/*"
-        - "*/actuator/health"
-        - "*/_ah/**"
+        - '*/configuration/ui'
+        - '*/configuration/security'
+        - '*/swagger'
+        - /api/storage/v2/swagger-ui/*
+        - '*/api-docs'
+        - '*/api-docs/swagger-config'
+        - '*/api-docs.yaml'
+        - '*/api-docs/*'
+        - '*/actuator/health'
+        - '*/_ah/**'
     env:
     - name: spring_application_name
       value: storage
