@@ -81,8 +81,9 @@ envoyFilter:
 # Common Deployment Settings
 #
 deployment:
-  # nodePool: default
+  nodePool: internal
   replicaCount: 2
+
   # Annotation for the secret reloader to be used by Seismic
   # deploymentAnnotations:
   #   secret.reloader.stakater.com/reloader: your-secret-here
