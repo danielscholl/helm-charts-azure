@@ -99,8 +99,6 @@ configuration:
       disable:
         - "/"
         - "*/index.html"
-        - "*/configuration/ui"
-        - "*/configuration/security"
         - "*/swagger"
         - "/api/entitlements/v2/swagger-ui/*"
         - "*/api-docs"
