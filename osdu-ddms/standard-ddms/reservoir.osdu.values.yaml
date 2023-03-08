@@ -82,5 +82,5 @@ configuration:
       # Common helm-charts-azure core install is in osdu-azure ns
       PARTITION_URL: http://partition.osdu-azure/api/partition/v1
       STORAGE_URL: http://storage.osdu-azure/api/storage/v2
-      ENTITLEMENTS_URL: http://entitlement.osdu-azure/api/entitlements/v2
+      ENTITLEMENTS_URL: http://entitlements.osdu-azure/api/entitlements/v2
       DOMAIN_NAME: "contoso.com"
