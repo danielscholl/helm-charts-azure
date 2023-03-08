@@ -99,17 +99,17 @@ configuration:
       disable:
         - "/"
         - "*/index.html"
-        - "*/api-docs"
         - "*/configuration/ui"
         - "*/configuration/security"
         - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/dataset/swagger-resources/*"
-        - "/api/dataset/webjars/*"
-        - "*/actuator/health"
-        - "*/readiness_check"
-        - "*/_ah/**"
+        - /api/dataset/v1/swagger-ui/*
+        - '*/api-docs'
+        - '*/api-docs/swagger-config'
+        - '*/api-docs/*'
+        - '*/api-docs.yaml'
+        - '*/_ah/**'
+        - '*/actuator/health'
+        - '*/readiness_check'
     env:
       - name: spring.application.name
         value: dataset
