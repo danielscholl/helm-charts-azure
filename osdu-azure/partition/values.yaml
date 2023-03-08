@@ -108,8 +108,6 @@ configuration:
         - "*/index.html"
         - "*/v1/api-docs"
         - "*/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
         - "*/swagger"
         - "*/swagger-ui.html"
         - "*/swagger-resources"
