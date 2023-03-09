@@ -7,6 +7,8 @@
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
 {{- $snapshotBackupEnabled := .Values.elasticsearch.snapshot.enabled}}
+{{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
+{{- $storageAccountKey := .Values.elasticsearch.snapshot.storageAccountKey}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
@@ -17,7 +19,7 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
-{{- if and ( not ( empty $.Values.elasticsearch.snapshot.storageAccountName | default)) (ne $.Values.elasticsearch.snapshot.storageAccountName "null")}}
+{{- if ne $storageAccountName "null"}}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -25,10 +27,10 @@ metadata:
   namespace: "es-{{ lower $datapartition }}"
 type: Opaque
 data:
-  azure.client.default.account: {{ b64enc $.Values.elasticsearch.snapshot.storageAccountName }}
-  azure.client.default.key: {{ b64enc $.Values.elasticsearch.snapshot.storageAccountKey }}
+  azure.client.default.account: {{ b64enc $storageAccountName }}
+  azure.client.default.key: {{ b64enc $storageAccountKey }}
 ---
-{{ end }}
+{{- end }}
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -38,7 +40,7 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
-  {{- if and ( not ( empty $.Values.elasticsearch.snapshot.storageAccountName | default)) (ne $.Values.elasticsearch.snapshot.storageAccountName "null")}}
+  {{- if ne $storageAccountName "null"}}
   secureSettings:
   - secretName: azure-snapshot-secrets
   {{- end }}
