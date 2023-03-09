@@ -19,7 +19,7 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
-{{- if ne $storageAccountName "null"}}
+{{- if and (not (empty $storageAccountName)) (ne $storageAccountName "null" ) }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -40,7 +40,7 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
-  {{- if ne $storageAccountName "null"}}
+  {{- if and (not (empty $storageAccountName)) (ne $storageAccountName "null" ) }}
   secureSettings:
   - secretName: azure-snapshot-secrets
   {{- end }}
@@ -78,6 +78,7 @@ spec:
             traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
             traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         spec:
+        {{- if and (not (empty $storageAccountName)) (ne $storageAccountName "null" ) }}
           initContainers:
           - name: elastic-internal-init-keystore
             securityContext:
@@ -99,6 +100,7 @@ spec:
             - -c
             - |
               bin/elasticsearch-plugin install --batch repository-azure
+        {{- end }}
           tolerations:
           - key: "sku"
             operator: "Equal"
