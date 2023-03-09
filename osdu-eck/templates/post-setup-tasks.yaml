@@ -3,6 +3,7 @@
 {{- $primaryUserName := .Values.primaryUserName}}
 {{- $secondaryUserName := .Values.secondaryUserName}}
 {{- $userJobName := .Values.userJobName}}
+{{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
@@ -73,13 +74,27 @@ spec:
                 /bin/bash <<'EOF'
                 sleep 10
                 set -e
+                DP_NAME="{{ lower $datapartition }}"
+                REPO_CREATE_PAYLOAD="{\"type\":\"azure\",\"settings\":{\"container\":\"{{ lower $datapartition }}\",\"compress\":true,\"base_path\":\"{{ lower $datapartition }}\"}}"
+                SLM_POLICY_PAYLOAD="{\"schedule\": \"0 0/30 * * * ?\",\"name\":\"<snapshot-{{ lower $datapartition }}-{now{YYYY.MM.dd_HH.mm.ss}}>\",\"repository\":\"{{ lower $datapartition }}\",\"config\":{},\"retention\":{\"expire_after\":\"30d\",\"min_count\": 24,\"max_count\": 100}}"
+
                 CUSTOM_ELASTIC_ROLE="service-role"
                 ROLE_JSON="{\"metadata\":{\"type\":\"role\",\"name\":\"${CUSTOM_ELASTIC_ROLE}\"},\"cluster\":[\"all\"],\"indices\":[{\"names\":[\"*\"],\"privileges\":[\"read\",\"write\",\"create\",\"delete\",\"index\",\"monitor\",\"create_index\",\"delete_index\",\"view_index_metadata\",\"manage\"]}]}"
                 PRIMARY_USER_JSON="{\"password\":\"$(</mnt/azure-keyvault/{{ lower $datapartition }}-es-primary-user-password)\" ,\"roles\":[\"${CUSTOM_ELASTIC_ROLE}\"]}"
                 SECONDARY_USER_JSON="{\"password\": \"$(</mnt/azure-keyvault/{{ lower $datapartition }}-es-secondary-user-password)\",\"roles\":[\"${CUSTOM_ELASTIC_ROLE}\"]}"
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/role/${CUSTOM_ELASTIC_ROLE}" -k -H "Content-Type: application/json" -d"${ROLE_JSON}"  | tee /dev/stderr | grep "200 OK"                
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k -H "Content-Type: application/json" -d"${PRIMARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                
-                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k -H "Content-Type: application/json" -d"${SECONDARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                                
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k -H "Content-Type: application/json" -d"${SECONDARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"
+
+                {{ if $storageAccountName }}
+                #Create Snapshot Repo
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_snapshot/${DP_NAME}" -k -H "Content-Type: application/json" -d"${REPO_CREATE_PAYLOAD}"  | tee /dev/stderr | grep "200 OK"
+                sleep 10
+
+                #Create SLM Policy
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPUT "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_slm/policy/twice-an-hour-snapshots" -k -H "Content-Type: application/json" -d"${SLM_POLICY_PAYLOAD}"  | tee /dev/stderr | grep "200 OK"
+                {{ end }}
+
                 curl -X POST "http://localhost:15000/quitquitquit" || echo 'No istio at all'
                 EOF
       restartPolicy: Never

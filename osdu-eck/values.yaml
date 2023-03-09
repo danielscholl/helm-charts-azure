@@ -16,9 +16,8 @@ elasticsearch:
   nodeCount: 3
   storagePerNodeGB: 128
   snapshot:
-    enabled: <snapshot_enabled>
-    storageAccountName: <snapshot_storageAccountName>
-    storageAccountKey: <snapshot_storageAccountNameKey>
+    storageAccountName: <es_snapshot_storage_account_name>
+    storageAccountKey: <es_snapshot_storage_account_key>
 azure:
   tenant: <azure_tenant>
   subscription: <azure_subscription>

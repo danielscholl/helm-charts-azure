@@ -19,7 +19,7 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
-{{ if $snapshotBackupEnabled }}
+{{ if $storageAccountName }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -40,7 +40,7 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
-  {{ if $snapshotBackupEnabled }}
+  {{ if $storageAccountName }}
   secureSettings:
   - secretName: azure-snapshot-secrets
   {{ end }}
