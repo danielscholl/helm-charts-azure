@@ -6,7 +6,6 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
-{{- $snapshotBackupEnabled := .Values.elasticsearch.snapshot.enabled}}
 {{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
 {{- $storageAccountKey := .Values.elasticsearch.snapshot.storageAccountKey}}
 {{- range $index, $datapartition := $list}}
