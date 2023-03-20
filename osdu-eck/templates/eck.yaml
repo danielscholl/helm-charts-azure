@@ -8,6 +8,7 @@
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
 {{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
 {{- $storageAccountKey := .Values.elasticsearch.snapshot.storageAccountKey}}
+{{- $storageAccountDnsSuffix := .Values.elasticsearch.snapshot.storageAccountDnsSuffix}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
@@ -70,6 +71,9 @@ spec:
         node.store.allow_mmap: false
         node.attr.zone: ${ZONE}
         cluster.routing.allocation.awareness.attributes: k8s_node_name,zone
+        {{- if not (empty $storageAccountDnsSuffix) }}
+        azure.client.default.endpoint_suffix: {{ $storageAccountDnsSuffix }}
+        {{- end }}
       podTemplate:
         metadata:
           annotations:

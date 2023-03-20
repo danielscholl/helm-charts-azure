@@ -84,12 +84,24 @@ spec:
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k -H "Content-Type: application/json" -d"${PRIMARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k -H "Content-Type: application/json" -d"${SECONDARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"
                 {{- if not (empty $storageAccountName) }}
-                REPO_NAME="{{ lower $datapartition }}_{{ lower $clusterRole }}"
+
+                {{- if eq $clusterRole "primary" }}
+                ALTERNATE_CLUSTER="secondary"
+                {{- else }}
+                ALTERNATE_CLUSTER="primary"
+                {{- end }}
+                REPO_NAME="{{ lower $datapartition }}-{{ lower $clusterRole }}"
+                ALT_REPO_NAME="{{ lower $datapartition }}-${ALTERNATE_CLUSTER}"
+
                 echo "Creating Snapshot Repo"
                 #Create Snapshot Repo
                 REPO_CREATE_PAYLOAD="{\"type\":\"azure\",\"settings\":{\"container\":\"{{ lower $datapartition }}\",\"compress\":true,\"base_path\":\"${REPO_NAME}\"}}"
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_snapshot/${REPO_NAME}" -k -H "Content-Type: application/json" -d"${REPO_CREATE_PAYLOAD}"  | tee /dev/stderr | grep "200 OK"
+
+                ALR_REPO_CREATE_PAYLOAD="{\"type\":\"azure\",\"settings\":{\"container\":\"{{ lower $datapartition }}\",\"compress\":true,\"readonly\":true,\"base_path\":\"${ALT_REPO_NAME}\"}}"
+                curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_snapshot/${ALT_REPO_NAME}" -k -H "Content-Type: application/json" -d"${ALR_REPO_CREATE_PAYLOAD}"  | tee /dev/stderr | grep "200 OK"
                 sleep 10
+
                 echo "Creating SLM Policy"
                 #Create SLM Policy
                 SLM_POLICY_PAYLOAD="{\"schedule\": \"0 0/30 * * * ?\",\"name\":\"<snapshot-${REPO_NAME}-{now{YYYY.MM.dd_HH.mm.ss}}>\",\"repository\":\"${REPO_NAME}\",\"config\":{},\"retention\":{\"expire_after\":\"30d\",\"min_count\": 24,\"max_count\": 100}}"
