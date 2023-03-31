@@ -98,20 +98,15 @@ configuration:
     auth:
       disable:
         - "/"
-        - "*/index.html"
-        - "*/v2/api-docs"
-        - "*/api-docs"
-        - "*/configuration/ui"
-        - "*/configuration/security"
-        - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "/api/file/swagger-resources/*"
-        - "/api/file/webjars/*"
-        - "/api/file/swagger-ui/*"
-        - "*/actuator/health"
-        - "*/_ah/**"
-        - "/api/file/info"
+        - '*/actuator/health'
+        - '*/_ah/**'
+        - '*/api-docs.yaml'
+        - '*/api-docs'
+        - '*/index.html'
+        - /api/file/v2/swagger-ui/*
+        - '*/swagger'
+        - '*/swagger-ui.html'
+        - '*/api-docs/swagger-config'
     env:
     - name: spring_application_name
       value: file
