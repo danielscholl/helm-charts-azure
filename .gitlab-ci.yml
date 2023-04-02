@@ -6,6 +6,7 @@
 include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure-helm.yml"
+    ref: release/0.20
 
 stages:
   - build
@@ -15,10 +16,10 @@ stages:
 
 .azure_helm:
   image: mcr.microsoft.com/azure-cli:2.38.0
-  tags: ["osdu-small"]
+  tags: [ "osdu-small" ]
   allow_failure: true
   before_script:
-    - !reference [.azure_helm_init, script]
+    - !reference [ .azure_helm_init, script ]
   rules:
     - if: '$AZURE == "1" && $CI_COMMIT_BRANCH =~ /^release/'
       when: on_success
@@ -29,7 +30,7 @@ stages:
 # helm_dir -> Chart on which are the helm templates and chart definition
 # helm_cli_opts -> (Optional) If other options are needed for helm chart
 .helm_test: &helm_test
-  tags: ['osdu-medium']
+  tags: [ 'osdu-medium' ]
   image: mcr.microsoft.com/azure-cli:2.38.0
   stage: test
   before_script:
@@ -107,7 +108,7 @@ stages:
         source ./scripts/incremental_app_parse.bash
         _incremental_osdu_azure_app_parse
       fi
-    - !reference [.azure_helm_package, script]
+    - !reference [ .azure_helm_package, script ]
 
 # Function to parse the version for the osdu helm charts
 .helm_tag_parse:
@@ -193,5 +194,4 @@ helm_go_unit_test:
     paths:
       - $CI_PROJECT_DIR/test_output/*
     reports:
-       junit: $CI_PROJECT_DIR/test_output/*.xml
-    
+      junit: $CI_PROJECT_DIR/test_output/*.xml
