@@ -4,7 +4,7 @@
 {{- $secondaryUserName := .Values.secondaryUserName}}
 {{- $clusterRole := .Values.clusterRole}}
 {{- $userJobName := .Values.userJobName}}
-{{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
+{{- $storageAccountNames := .Values.elasticsearch.snapshot.storageAccountNames}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
@@ -83,7 +83,7 @@ spec:
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/role/${CUSTOM_ELASTIC_ROLE}" -k -H "Content-Type: application/json" -d"${ROLE_JSON}"  | tee /dev/stderr | grep "200 OK"                
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$primaryUserName}}" -k -H "Content-Type: application/json" -d"${PRIMARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"                
                 curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XGET "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k | tee /dev/stderr | grep "404 Not Found" && curl -s -i -u elastic:$(</mnt/elastic/es-basic-auth/elastic) -XPOST "http://elasticsearch-es-http.es-{{ lower $datapartition }}:9200/_security/user/{{$secondaryUserName}}" -k -H "Content-Type: application/json" -d"${SECONDARY_USER_JSON}"  | tee /dev/stderr | grep "200 OK"
-                {{- if not (empty $storageAccountName) }}
+                {{- if not (empty $storageAccountNames) }}
 
                 {{- if eq $clusterRole "primary" }}
                 ALTERNATE_CLUSTER="secondary"

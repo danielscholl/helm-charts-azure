@@ -6,9 +6,9 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
-{{- $storageAccountName := .Values.elasticsearch.snapshot.storageAccountName}}
-{{- $storageAccountKey := .Values.elasticsearch.snapshot.storageAccountKey}}
-{{- $storageAccountDnsSuffix := .Values.elasticsearch.snapshot.storageAccountDnsSuffix}}
+{{- $storageAccountNames := .Values.elasticsearch.snapshot.storageAccountNames}}
+{{- $storageAccountKeys := .Values.elasticsearch.snapshot.storageAccountKeys}}
+{{- $storageAccountBlobEndpoints := .Values.elasticsearch.snapshot.storageAccountBlobEndpoints}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
@@ -19,7 +19,7 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
-{{- if not (empty $storageAccountName) }}
+{{- if not (empty $storageAccountNames) }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -27,8 +27,8 @@ metadata:
   namespace: "es-{{ lower $datapartition }}"
 type: Opaque
 data:
-  azure.client.default.account: {{ b64enc $storageAccountName }}
-  azure.client.default.key: {{ b64enc $storageAccountKey }}
+  azure.client.default.account: {{ b64enc (index $storageAccountNames (sub (trimPrefix "_" $index) 0)) }}
+  azure.client.default.key:  {{ b64enc (index $storageAccountKeys (sub (trimPrefix "_" $index) 0)) }}
 ---
 {{- end }}
 apiVersion: elasticsearch.k8s.elastic.co/v1
@@ -40,7 +40,7 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
-  {{- if not (empty $storageAccountName) }}
+  {{- if not (empty $storageAccountNames) }}
   secureSettings:
   - secretName: azure-snapshot-secrets
   {{- end }}
@@ -71,8 +71,8 @@ spec:
         node.store.allow_mmap: false
         node.attr.zone: ${ZONE}
         cluster.routing.allocation.awareness.attributes: k8s_node_name,zone
-        {{- if not (empty $storageAccountDnsSuffix) }}
-        azure.client.default.endpoint_suffix: {{ $storageAccountDnsSuffix }}
+        {{- if not (empty $storageAccountBlobEndpoints) }}
+        azure.client.default.endpoint_suffix: ignored;BlobEndpoint={{ index $storageAccountBlobEndpoints (sub (trimPrefix "_" $index) 0) }}
         {{- end }}
       podTemplate:
         metadata:
@@ -81,7 +81,7 @@ spec:
             traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
             traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         spec:
-        {{- if not (empty $storageAccountName) }}
+        {{- if not (empty $storageAccountNames) }}
           initContainers:
           - name: elastic-internal-init-keystore
             securityContext:
