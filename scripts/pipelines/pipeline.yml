@@ -26,27 +26,30 @@ parameters:
     - '1.1.6'
   - name: osduAirflow2Version
     displayName: Osdu Airflow Version
-    default: '1.19.0'
+    default: '1.20.0'
     type: string
     values:
+    - '1.20.0'
     - '1.19.0'
     - '1.18.3'
     - '1.17.0'
     - '1.16.0'
   - name: osduAzureVersion
     displayName: Osdu Azure Version
-    default: '1.19.0'
+    default: '1.20.0'
     type: string
     values:
+    - '1.20.0'
     - '1.19.0'
     - '1.18.3'
     - '1.17.0'
     - '1.16.0'
   - name: ddmsVersion
     displayName: Osdu Standard DMS Version
-    default: '1.19.0'
+    default: '1.20.0'
     type: string
     values:
+    - '1.20.0'
     - '1.19.0'
     - '1.18.3'
     - '1.17.0'
