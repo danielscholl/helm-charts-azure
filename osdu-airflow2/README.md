@@ -4,6 +4,7 @@ __Version Tracking__
 
 | Helm Chart Version | airflow     | statsd  | osdu-lib  |
 | ------------------ | ----------- |-------- |-----------|
+| `1.20.0`           | `8.5.2`     | `1.0.0` | `0.20.0`  |
 | `1.19.2`           | `8.5.2`     | `1.0.0` | `0.19.0`  |
 | `1.19.1`           | `8.5.2`     | `1.0.0` | `0.19.0`  |
 | `1.19.0`           | `8.5.2`     | `1.0.0` | `0.19.0`  |
@@ -25,7 +26,7 @@ Helm Charts are stored in OCI format and stored in an Azure Container Registry f
 ```bash
 # Setup Variables
 CHART=osdu-airflow2
-VERSION=1.19.2
+VERSION=1.20.0
 
 helm show chart oci://msosdu.azurecr.io/helm/$CHART --version $VERSION
 ```
@@ -477,7 +478,7 @@ Install the helm chart.
 # az aks get-credentials -n <your kubernetes service> --admin -g <resource group>
 
 CHART=osdu-airflow2
-VERSION=1.19.2
+VERSION=1.20.0
 
 # Create Namespace
 NAMESPACE=airflow2

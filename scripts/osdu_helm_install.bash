@@ -42,8 +42,8 @@ function Help()
   echo "n     Namespace (only if -c -r -s are specified)."
   echo "v     Chart Version (only if -c -r -s are specified)."
   echo
-  echo "Example: ./osdu_helm_install.bash -r airflow2 -n airflow2 -c oci://msosdu.azurecr.io/helm/osdu-airflow2 -v 1.19.0"
-  echo "Example: ./osdu_helm_install.bash -r partition-services -n osdu-azure -c oci://msosdu.azurecr.io/helm/osdu-azure -v 1.19.0 -s osdu-partition_base"
+  echo "Example: ./osdu_helm_install.bash -r airflow2 -n airflow2 -c oci://msosdu.azurecr.io/helm/osdu-airflow2 -v 1.20.0"
+  echo "Example: ./osdu_helm_install.bash -r partition-services -n osdu-azure -c oci://msosdu.azurecr.io/helm/osdu-azure -v 1.20.0 -s osdu-partition_base"
   echo
 }
 
