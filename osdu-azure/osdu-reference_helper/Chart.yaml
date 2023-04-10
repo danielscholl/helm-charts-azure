@@ -16,20 +16,20 @@ apiVersion: v2
 name: osdu-reference_helper
 type: application
 description: Installs the OSDU Platform Reference and Helper Services
-version: 1.19.0
-appVersion: 0.19.0
+version: 1.20.0
+appVersion: 0.20.0
 dependencies:
   - name: "unit"
     repository: file://../unit
-    version: "1.19.0"
+    version: "1.20.0"
     enabled: true
   - name: "crs-catalog"
     repository: file://../crs-catalog
-    version: "1.19.0"
+    version: "1.20.0"
     enabled: true
   - name: "crs-conversion"
     repository: file://../crs-conversion
-    version: "1.19.0"
+    version: "1.20.0"
     enabled: true
   - name: "osdu-helm-library"
     repository: file://../../osdu-helm-library
