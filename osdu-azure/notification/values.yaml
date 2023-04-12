@@ -98,16 +98,13 @@ configuration:
       enabled: true
     auth:
       disable:
-        - "/"
-        - "*/v2/api-docs"
-        - "*/api-docs"
-        - "*/swagger"
-        - "*/swagger-ui.html"
-        - "*/swagger-resources"
-        - "*/actuator/health"
-        - "/api/notification/v1/swagger-resources/*"
-        - "/api/notification/v1/webjars/*"
-        - "/api/notification/v1/swagger-ui/*"
+        - /
+        - '*/swagger'
+        - '*/actuator/health'
+        - /api/notification/v1/swagger-ui/*
+        - /api/notification/v1/api-docs
+        - /api/notification/v1/api-docs.yaml
+        - /api/notification/v1/api-docs/swagger-config
     env:
     - name: spring_application_name
       value: notification-azure
