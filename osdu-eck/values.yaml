@@ -5,6 +5,7 @@ secondaryUserName: <secondary_user_name>
 userJobName: <user_job_name>
 licenseType: <license_type>
 licenseValue: <license_value>
+clusterRole: <cluster_role>
 resources:
   limits:
     cpu: 2
@@ -12,9 +13,13 @@ resources:
   requests:
     cpu: 0.2
 elasticsearch:
-  version: 7.16.3
+  version: 7.17.8
   nodeCount: 3
   storagePerNodeGB: 128
+  snapshot:
+    storageAccountNames: <es_snapshot_storage_account_names>
+    storageAccountKeys: <es_snapshot_storage_account_keys>
+    storageAccountBlobEndpoints: <es_snapshot_storage_blob_endpoints>
 azure:
   tenant: <azure_tenant>
   subscription: <azure_subscription>

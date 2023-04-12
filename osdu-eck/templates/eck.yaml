@@ -6,6 +6,9 @@
 {{- $esVersion := .Values.elasticsearch.version}}
 {{- $esNodeCount := .Values.elasticsearch.nodeCount}}
 {{- $esNodeStorage := .Values.elasticsearch.storagePerNodeGB}}
+{{- $storageAccountNames := .Values.elasticsearch.snapshot.storageAccountNames}}
+{{- $storageAccountKeys := .Values.elasticsearch.snapshot.storageAccountKeys}}
+{{- $storageAccountBlobEndpoints := .Values.elasticsearch.snapshot.storageAccountBlobEndpoints}}
 {{- range $index, $datapartition := $list}}
 ---
 apiVersion: v1
@@ -16,6 +19,18 @@ metadata:
     name: "es-{{ lower $datapartition }}"
     istio-injection: enabled
 ---
+{{- if not (empty $storageAccountNames) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-snapshot-secrets
+  namespace: "es-{{ lower $datapartition }}"
+type: Opaque
+data:
+  azure.client.default.account: {{ b64enc (index $storageAccountNames (sub (trimPrefix "_" $index) 0)) }}
+  azure.client.default.key:  {{ b64enc (index $storageAccountKeys (sub (trimPrefix "_" $index) 0)) }}
+---
+{{- end }}
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
@@ -25,6 +40,10 @@ metadata:
     eck.k8s.elastic.co/downward-node-labels: "topology.kubernetes.io/zone"
 spec:
   version: {{ $esVersion }}
+  {{- if not (empty $storageAccountNames) }}
+  secureSettings:
+  - secretName: azure-snapshot-secrets
+  {{- end }}
   http:
     tls:
       selfSignedCertificate:
@@ -52,6 +71,9 @@ spec:
         node.store.allow_mmap: false
         node.attr.zone: ${ZONE}
         cluster.routing.allocation.awareness.attributes: k8s_node_name,zone
+        {{- if not (empty $storageAccountBlobEndpoints) }}
+        azure.client.default.endpoint_suffix: ignored;BlobEndpoint={{ index $storageAccountBlobEndpoints (sub (trimPrefix "_" $index) 0) }}
+        {{- end }}
       podTemplate:
         metadata:
           annotations:
@@ -59,6 +81,29 @@ spec:
             traffic.sidecar.istio.io/excludeOutboundPorts: "9300"
             traffic.sidecar.istio.io/excludeInboundPorts: "9300"
         spec:
+        {{- if not (empty $storageAccountNames) }}
+          initContainers:
+          - name: elastic-internal-init-keystore
+            securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+            env:
+            - name: ZONE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['topology.kubernetes.io/zone']
+          - name: install-plugins
+            env:
+            - name: ZONE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.annotations['topology.kubernetes.io/zone']
+            command:
+            - sh
+            - -c
+            - |
+              bin/elasticsearch-plugin install --batch repository-azure
+        {{- end }}
           tolerations:
           - key: "sku"
             operator: "Equal"
